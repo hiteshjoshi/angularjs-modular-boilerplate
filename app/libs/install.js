@@ -20,7 +20,8 @@ module.exports = function(app,callback){
     else{
       log("No admin found.Will try to create a new one.")
       var newAdmin = new Admin({
-        name : "Admin user",
+        firstName : "Admin",
+        lastName : "user",
         email: "me@hiteshjoshi.com",
         password : "@Hitesh@90",
         is_admin:true
