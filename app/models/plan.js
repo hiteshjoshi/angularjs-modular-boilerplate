@@ -48,3 +48,24 @@ var PlanUsage = new Schema({
 
 mongoose.model('PlanUsage', PlanUsage);
 mongoose.model('Plan', PlansSchema);
+
+
+var Reminder = new Schema({
+  user : {type : Schema.ObjectId, ref : 'User'},
+  created : {type:Date,default:Date.now},
+  title : { type: String, default: '' },
+    notify_by:{
+      email:{ type: Boolean, default: true },
+      text:{ type: Boolean, default: true },
+      voice:{ type: Boolean, default: true }
+    },
+    recipients:{type : [], default :[]},//Schema.ObjectId
+    text_sms : { type: String, default: '' },
+    email : { type: String, default: '' },
+    number_voice_recording:{ type: Number, default: '' },
+    schedule_date : { type: Date},
+    start: { type: Date},
+    schedule_time : { type: String, default: '' },
+    recurring : { type: Boolean, default: true }
+});
+mongoose.model('Reminder', Reminder);

@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Plan = mongoose.model('Plan');
 var Session = mongoose.model('Session');
+var Reminder = mongoose.model('Reminder');
 var PlanUsage = mongoose.model('PlanUsage');
 var config = require('config');
 var session = require('session');
@@ -15,71 +16,71 @@ var paypal = require('paypal-rest-sdk');
 
 
 
-var billingPlanAttributes = {
-    "description": "Regular plan for Care to call",
-    "merchant_preferences": {
-        "auto_bill_amount": "yes",
-        "cancel_url": "http://care.demo.hatchitup.com/#/payment_cancelled",
-        "initial_fail_amount_action": "continue",
-        "max_fail_attempts": "1",
-        "return_url": "http://care.demo.hatchitup.com/#/payment_success",
-        "setup_fee": {
-            "currency": "USD",
-            "value": "1"
-        }
-    },
-    "name": "Testing1-Regular1",
-    "payment_definitions": [
-        {
-            "amount": {
-                "currency": "USD",
-                "value": "10"
-            },
-            "cycles": "0",
-            "frequency": "MONTH",
-            "frequency_interval": "1",
-            "name": "Regular 1",
-            "type": "REGULAR"
-        }
-    ],
-    "type": "INFINITE"
-};
+// var billingPlanAttributes = {
+//     "description": "Regular plan for Care to call",
+//     "merchant_preferences": {
+//         "auto_bill_amount": "yes",
+//         "cancel_url": "http://care.demo.hatchitup.com/#/payment_cancelled",
+//         "initial_fail_amount_action": "continue",
+//         "max_fail_attempts": "1",
+//         "return_url": "http://care.demo.hatchitup.com/#/payment_success",
+//         "setup_fee": {
+//             "currency": "USD",
+//             "value": "1"
+//         }
+//     },
+//     "name": "Testing1-Regular1",
+//     "payment_definitions": [
+//         {
+//             "amount": {
+//                 "currency": "USD",
+//                 "value": "10"
+//             },
+//             "cycles": "0",
+//             "frequency": "MONTH",
+//             "frequency_interval": "1",
+//             "name": "Regular 1",
+//             "type": "REGULAR"
+//         }
+//     ],
+//     "type": "INFINITE"
+// };
 
-paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
-    if (error) {
-        console.log(error);
-        throw error;
-    } else {
-        console.log("Create Billing Plan Response");
-        console.log(billingPlan.id);
-        Plan.findOneAndUpdate({paypalId:'P-1FE969941S812015TKOPUGIQ'},{paypalId:billingPlan.id}).lean().exec();
-        var billing_plan_update_attributes = [
-			    {
-			        "op": "replace",
-			        "path": "/",
-			        "value": {
-			            "state": "ACTIVE"
-			        }
-			    }
-			];
+// paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
+//     if (error) {
+//         console.log(error);
+//         throw error;
+//     } else {
+//         console.log("Create Billing Plan Response");
+//         console.log(billingPlan.id);
+//         Plan.findOneAndUpdate({paypalId:'P-1FE969941S812015TKOPUGIQ'},{paypalId:billingPlan.id}).lean().exec();
+//         var billing_plan_update_attributes = [
+// 			    {
+// 			        "op": "replace",
+// 			        "path": "/",
+// 			        "value": {
+// 			            "state": "ACTIVE"
+// 			        }
+// 			    }
+// 			];
 
-		paypal.billingPlan.update(billingPlan.id, billing_plan_update_attributes, function (error, response) {
-            if (error) {
-                console.log(error.response);
-                throw error;
-            } else {
-                paypal.billingPlan.get(billingPlan.id, function (error, billingPlan) {
-                    if (error) {
-                        console.log(error.response);
-                        throw error;
-                    } else {
-                        console.log(billingPlan.state);
-                    }
-                });
-            }
-        });
-    }
-});
+// 		paypal.billingPlan.update(billingPlan.id, billing_plan_update_attributes, function (error, response) {
+//             if (error) {
+//                 console.log(error.response);
+//                 throw error;
+//             } else {
+//                 paypal.billingPlan.get(billingPlan.id, function (error, billingPlan) {
+//                     if (error) {
+//                         console.log(error.response);
+//                         throw error;
+//                     } else {
+//                         console.log(billingPlan.state);
+//                     }
+//                 });
+//             }
+//         });
+//     }
+// });
 
 // // var create_webhook_json = {
 // //     "url": "https://careapi.demo.hatchitup.com/paypal_webhook",
@@ -177,7 +178,12 @@ module.exports.controller = function(router,passport) {
 	// 				}
 	// 			})(req, res, next);
 	// 	});
+	
 
+	router.route('/reminders')
+	.all(session.checkToken)
+	.get(methods.getReminders)
+	.post(methods.addReminder);
 
 	router.route('/profile').all(session.checkToken).get(methods.profile);
 	router.route('/user/pay').all(session.checkToken).put(methods.pay);
@@ -197,6 +203,44 @@ var methods = {};
 /**************************************************************************************************************************/
 /***************************************** All the HTTP methods goes here *************************************************/
 /**************************************************************************************************************************/
+
+
+methods.getReminders = function(req,res){
+	Reminder.find({user:req.user._id})
+	.sort('schedule_date')
+	.lean()
+	.exec(function(err,r){
+		resData.userMessage = "Reminder added!";
+		resData.data = r;
+		return res.send(resData);
+	});
+}
+methods.addReminder = function(req,res){
+	var reminder = {
+		user:req.user._id,
+		title : req.body.title,
+		notify_by:{
+			email:req.body.notify_by_email?true:false,
+			text:req.body.notify_by_text?true:false,
+			voice:req.body.notify_by_voice?true:false
+		},
+		recipients:req.body.recipients,
+		text_sms : req.body.text_sms,
+		email : req.body.email,
+		number_voice_recording:req.body.number_voice_recording,
+		schedule_date : new Date(req.body.schedule_date.slice(0,10)+req.body.schedule_time.slice(10,req.body.schedule_time.length)),
+		start:new Date(req.body.schedule_date.slice(0,10)+req.body.schedule_time.slice(10,req.body.schedule_time.length)),
+		schedule_time : req.body.schedule_time,
+		recurring : req.body.recurring
+	};
+
+	var newReminder = new Reminder(reminder);
+	newReminder.save(function(err,r){
+		resData.userMessage = "Reminder added!";
+		resData.data = r;
+		return res.send(resData);
+	});
+};
 
 methods.signup = function(req,res){
 	var user = new User(req.body);
