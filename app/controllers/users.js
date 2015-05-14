@@ -13,6 +13,7 @@ var utils = require('utils')
 var paypal = require('paypal-rest-sdk');
  paypal.configure(config.paypal);
 
+Plan.findOneAndUpdate({paypalId:'P-4GX207377T9451908IQEYLUI'},{paypalId:'P-1FE969941S812015TKOPUGIQ'}).lean().exec();
 
 // var billingPlanAttributes = {
 //     "description": "Regular plan for Care to call",
