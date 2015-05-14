@@ -149,7 +149,7 @@ methods.signup = function(req,res){
 		              paid:paid
 		          });
 		          newPlan.save(function(err,np){
-		          	var token = jwt.sign({firstName:user.firstName,lastName:user.lastName,,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
+		          	var token = jwt.sign({firstName:user.firstName,lastName:user.lastName,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
 					var newSession = new Session({
 						user : user._id,
 						token:token
