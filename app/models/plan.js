@@ -42,7 +42,8 @@ var PlanUsage = new Schema({
 	  	voice : {type:Number,default:0}
 	},
 	members : {type:Number,default:1},
-	paid:{type:Boolean,default:false}
+	paid:{type:Boolean,default:false},
+  processed:{type:Boolean,default:false}
 });
 
 mongoose.model('PlanUsage', PlanUsage);
