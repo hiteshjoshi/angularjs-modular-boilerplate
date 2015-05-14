@@ -19,8 +19,9 @@ session.checkToken = function(req,res,next){
         var bearer = bearerHeader.split(" ");
         bearerToken = bearer[1];
         req.token = bearerToken;
-
         bearerToken = bearerToken.slice(1,bearerToken.length).slice(0,-1);
+
+        
 
         //get User for this session
         Session
@@ -31,7 +32,7 @@ session.checkToken = function(req,res,next){
         .lean()
         .exec(function(err,user){
         	if(user && !err){
-        		req.user = user.user;
+                req.user = user.user;
         		next();
         	}
         	else

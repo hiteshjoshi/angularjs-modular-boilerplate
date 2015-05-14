@@ -13,7 +13,7 @@ var Schema = mongoose.Schema;
  */
 
 
-var careGiver = {
+var careGiver = new Schema({
     first_name : String,
     last_name : String,
     landline : Number,
@@ -21,7 +21,7 @@ var careGiver = {
     time_zone:{type:String,default:"Pacific"},
     email_address:String,
     preferred_number:Number //1 = mobile or 2= landline
-};
+});
 
 
 var UserSchema = new Schema({

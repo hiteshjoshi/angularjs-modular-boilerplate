@@ -19,6 +19,7 @@ paypal.configure(config.paypal);
 	data : the object or array for data
 	userMessage : the message for user, if any.
 */
+
 var resData = {
 	error:false,
 	code:"",
@@ -26,6 +27,9 @@ var resData = {
 	userMessage:''
 };
 
+// PlanUsage.findOneAndUpdate({user_id:'555357186045386b4a9b7e92'},{members:10,"reminder.text":10}).lean().exec(function(err,data){
+// 	console.log(err,data);
+// });
 /*
 Routings/controller goes here
 */
@@ -34,7 +38,7 @@ module.exports.controller = function(router,passport) {
 	// router.route('session').get(function(req,res,next){
 
 	// });
-
+	
 	router.route('/login')
 		  .post(function(req,res,next){
 		  	passport.authenticate('local',function(err,user,info){
@@ -47,20 +51,24 @@ module.exports.controller = function(router,passport) {
 	 				//res.cookie('costartsession',info.sessionToken , {domain: config.cookieDomain, path: '/'});
 			  		resData.error = false;
 			  		resData.data = {
-			  			token :info.sessionToken,
-						plan:newPlan
+			  			token :info.sessionToken
 					}
 					resData.userMessage = "Thank you! Please wait while we take you to your dashboard...";
 					res.send(resData);
 	 			});
-		  	})
+		  	})(req, res, next);
 		  });
+	
+	router.route('/logout')
+		  .all(session.checkToken)
+		  .get(methods.logout);
 	
 	router.route('/signup')
 		  .post(methods.signup);
+	
 
 	router.route('/plans')
-		  .get(methods.plans);	
+		  .get(methods.plans);
 
 	// router.route('/auth/facebook')
 	// 	.get(passport.authenticate('facebook',{ scope: config.facebook.scope }));
@@ -83,7 +91,10 @@ module.exports.controller = function(router,passport) {
 
 	router.route('/profile').all(session.checkToken).get(methods.profile);
 	router.route('/user/pay').all(session.checkToken).put(methods.pay);
-	router.route('/user/network').all(session.checkToken).get(methods.userNetwork);
+	router.route('/user/network').all(session.checkToken)
+	.post(methods.addNetwork)
+	.put(methods.removeNetwork)
+	.get(methods.userNetwork);
 	router.route('/profile/:userId').get(methods.userProfile);
 
 };
@@ -134,11 +145,11 @@ methods.signup = function(req,res){
 		                text : plan.reminder.text,
 		                voice: plan.reminder.voice
 		              },
-		              members : 0,
+		              members : plan.members,
 		              paid:paid
 		          });
 		          newPlan.save(function(err,np){
-		          	var token = jwt.sign({name:user.name,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
+		          	var token = jwt.sign({firstName:user.firstName,lastName:user.lastName,,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
 					var newSession = new Session({
 						user : user._id,
 						token:token
@@ -273,9 +284,63 @@ methods.pay = function(req,res){
 
 
 methods.userNetwork = function(req,res){
-	User.findone({_id:req.user_id}).lean().exec(function(err,data){
+
+	User.findOne({_id:req.user._id}).lean().exec(function(err,data){
 		resData.error = false;
-		resData.data = data.care_giver;
-		return res.send(resData);
+		
+		// if(req.query.ecard)
+		// 	data.care_giver.push({first_name:data.firstName,last_name:data.lastName,_id:data._id,email:data.email});
+
+		resData.data = {members:data.care_giver,total:data.care_giver.length};
+		PlanUsage.findOne({user_id:req.user._id}).lean().exec(function(err,plandata){
+			resData.data.allowed = plandata.members;
+			return res.send(resData);	
+		});
 	});
+}
+
+
+methods.addNetwork = function(req,res){
+	console.log(req.body);
+	var newNetwork = {
+	    first_name : req.body.firstName,
+	    last_name : req.body.lastName,
+	    landline : req.body.landline,
+	    mobile : req.body.mobile,
+	    time_zone:req.body.timezone,
+	    email_address:req.body.email_address,
+	    preferred_number:req.body.preferred //1 = mobile or 2= landline
+	};
+	User.findOneAndUpdate({_id:req.user._id},{$push:{care_giver:newNetwork}}).lean().exec(function(err,data){
+		resData.error = false;
+		resData.data = {members:data.care_giver,total:data.care_giver.length};
+		PlanUsage.findOne({user_id:req.user._id}).lean().exec(function(err,plandata){
+			resData.data.allowed = plandata.members;
+			return res.send(resData);	
+		});
+		
+	});
+};
+
+
+methods.removeNetwork = function(req,res){
+	
+	var memberId = req.body.member_id;
+	User.findOneAndUpdate({_id:req.user._id},{$pull:{care_giver:{_id:memberId}}})
+	.lean().exec(function(err,data){
+		resData.error = false;
+		resData.data = {members:data.care_giver,total:data.care_giver.length};
+		PlanUsage.findOne({user_id:req.user._id}).lean().exec(function(err,plandata){
+			resData.data.allowed = plandata.members;
+			return res.send(resData);	
+		});
+		
+	});
+};
+
+
+
+methods.logout = function(req,res){
+	Session.findOneAndRemove({user:req.user._id}).exec();
+	res.send(200);
 }

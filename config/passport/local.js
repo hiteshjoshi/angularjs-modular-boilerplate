@@ -33,7 +33,7 @@ module.exports = new LocalStrategy({
       }
 
       //create session here.
-      var token = jwt.sign({_id:String(user._id),name:user.name,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
+      var token = jwt.sign({_id:String(user._id),firstName:user.firstName,lastName:user.lastName,email:user.email,is_admin:user.is_admin},config.sessionSecret,{ expiresInMinutes: 60*120 });
       var newSession = new Session({
         user : user._id,
         token:token
