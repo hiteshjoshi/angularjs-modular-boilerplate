@@ -11,7 +11,95 @@ var session = require('session');
 var jwt = require('jsonwebtoken');
 var utils = require('utils')
 var paypal = require('paypal-rest-sdk');
-paypal.configure(config.paypal);
+ paypal.configure(config.paypal);
+
+
+// var billingPlanAttributes = {
+//     "description": "Regular plan for Care to call",
+//     "merchant_preferences": {
+//         "auto_bill_amount": "yes",
+//         "cancel_url": "http://careapi.demo.hatchitup.com/#/payment_cancelled",
+//         "initial_fail_amount_action": "continue",
+//         "max_fail_attempts": "1",
+//         "return_url": "http://careapi.demo.hatchitup.com/#/payment_success",
+//         "setup_fee": {
+//             "currency": "USD",
+//             "value": "1"
+//         }
+//     },
+//     "name": "Testing1-Regular1",
+//     "payment_definitions": [
+//         {
+//             "amount": {
+//                 "currency": "USD",
+//                 "value": "10"
+//             },
+//             "cycles": "0",
+//             "frequency": "MONTH",
+//             "frequency_interval": "1",
+//             "name": "Regular 1",
+//             "type": "REGULAR"
+//         }
+//     ],
+//     "type": "INFINITE"
+// };
+
+// // paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
+// //     if (error) {
+// //         console.log(error);
+// //         throw error;
+// //     } else {
+// //         console.log("Create Billing Plan Response");
+// //         console.log(billingPlan.id);
+// //         var billing_plan_update_attributes = [
+// // 			    {
+// // 			        "op": "replace",
+// // 			        "path": "/",
+// // 			        "value": {
+// // 			            "state": "ACTIVE"
+// // 			        }
+// // 			    }
+// // 			];
+
+// // 		paypal.billingPlan.update(billingPlan.id, billing_plan_update_attributes, function (error, response) {
+// //             if (error) {
+// //                 console.log(error.response);
+// //                 throw error;
+// //             } else {
+// //                 paypal.billingPlan.get(billingPlan.id, function (error, billingPlan) {
+// //                     if (error) {
+// //                         console.log(error.response);
+// //                         throw error;
+// //                     } else {
+// //                         console.log(billingPlan.state);
+// //                     }
+// //                 });
+// //             }
+// //         });
+// //     }
+// // });
+
+// // var create_webhook_json = {
+// //     "url": "https://careapi.demo.hatchitup.com/paypal_webhook",
+// //     "event_types": [
+// //         {
+// //             "name": "PAYMENT.AUTHORIZATION.CREATED"
+// //         },
+// //         {
+// //             "name": "PAYMENT.AUTHORIZATION.VOIDED"
+// //         }
+// //     ]
+// // };
+
+// // paypal.notification.webhook.create(create_webhook_json, function (error, webhook) {
+// //     if (error) {
+// //         console.log(error.response);
+// //         throw error;
+// //     } else {
+// //         console.log("Create webhook Response");
+// //         console.log(webhook);
+// //     }
+// // });
 
 /* the response object for API
 	error : true / false 
@@ -194,11 +282,10 @@ methods.plans = function(req,res){
 methods.profile = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
-	.populate('plan_id','paypalId price paid members name')
+	.populate('plan_id','paypalId price paid members name processed')
 	.populate('user_id','firstName lastName email_verified name email billing_details')
 	.lean()
 	.exec(function(err,plan){
-		console.log(plan,req.user);
 		resData.data = plan;
 		res.send(resData);
 	});
@@ -219,7 +306,6 @@ methods.pay = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
 	.populate('plan_id','paypalId')
-	.lean()
 	.exec(function(err,plan){
 		if(plan.paid){
 			return res.redirect('/');
@@ -258,8 +344,9 @@ methods.pay = function(req,res){
 			};
 			paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement) {
 
+
 				if (error) {
-                    console.log(error.response.message);
+                    //console.log(error.response.message);
                     //throw error;
                     resData.error = true;
                     resData.userMessage = error.response.message;
@@ -269,7 +356,9 @@ methods.pay = function(req,res){
                         if (billingAgreement.links[index].rel === 'approval_url') {
                             var approval_url = billingAgreement.links[index].href;
                             //res.redirect(approval_url);
-                            resData.data = approval_url
+                            resData.data = approval_url;
+                            plan.processed = true;
+                            plan.save();
                             return res.send(resData);
                         }
                     }
@@ -279,7 +368,6 @@ methods.pay = function(req,res){
 		}
 	})
 
-	
 }
 
 
