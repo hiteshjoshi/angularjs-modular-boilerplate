@@ -13,72 +13,73 @@ var utils = require('utils')
 var paypal = require('paypal-rest-sdk');
  paypal.configure(config.paypal);
 
-Plan.findOneAndUpdate({paypalId:'P-4GX207377T9451908IQEYLUI'},{paypalId:'P-1FE969941S812015TKOPUGIQ'}).lean().exec();
 
-// var billingPlanAttributes = {
-//     "description": "Regular plan for Care to call",
-//     "merchant_preferences": {
-//         "auto_bill_amount": "yes",
-//         "cancel_url": "http://careapi.demo.hatchitup.com/#/payment_cancelled",
-//         "initial_fail_amount_action": "continue",
-//         "max_fail_attempts": "1",
-//         "return_url": "http://careapi.demo.hatchitup.com/#/payment_success",
-//         "setup_fee": {
-//             "currency": "USD",
-//             "value": "1"
-//         }
-//     },
-//     "name": "Testing1-Regular1",
-//     "payment_definitions": [
-//         {
-//             "amount": {
-//                 "currency": "USD",
-//                 "value": "10"
-//             },
-//             "cycles": "0",
-//             "frequency": "MONTH",
-//             "frequency_interval": "1",
-//             "name": "Regular 1",
-//             "type": "REGULAR"
-//         }
-//     ],
-//     "type": "INFINITE"
-// };
 
-// // paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
-// //     if (error) {
-// //         console.log(error);
-// //         throw error;
-// //     } else {
-// //         console.log("Create Billing Plan Response");
-// //         console.log(billingPlan.id);
-// //         var billing_plan_update_attributes = [
-// // 			    {
-// // 			        "op": "replace",
-// // 			        "path": "/",
-// // 			        "value": {
-// // 			            "state": "ACTIVE"
-// // 			        }
-// // 			    }
-// // 			];
+var billingPlanAttributes = {
+    "description": "Regular plan for Care to call",
+    "merchant_preferences": {
+        "auto_bill_amount": "yes",
+        "cancel_url": "http://care.demo.hatchitup.com/#/payment_cancelled",
+        "initial_fail_amount_action": "continue",
+        "max_fail_attempts": "1",
+        "return_url": "http://care.demo.hatchitup.com/#/payment_success",
+        "setup_fee": {
+            "currency": "USD",
+            "value": "1"
+        }
+    },
+    "name": "Testing1-Regular1",
+    "payment_definitions": [
+        {
+            "amount": {
+                "currency": "USD",
+                "value": "10"
+            },
+            "cycles": "0",
+            "frequency": "MONTH",
+            "frequency_interval": "1",
+            "name": "Regular 1",
+            "type": "REGULAR"
+        }
+    ],
+    "type": "INFINITE"
+};
 
-// // 		paypal.billingPlan.update(billingPlan.id, billing_plan_update_attributes, function (error, response) {
-// //             if (error) {
-// //                 console.log(error.response);
-// //                 throw error;
-// //             } else {
-// //                 paypal.billingPlan.get(billingPlan.id, function (error, billingPlan) {
-// //                     if (error) {
-// //                         console.log(error.response);
-// //                         throw error;
-// //                     } else {
-// //                         console.log(billingPlan.state);
-// //                     }
-// //                 });
-// //             }
-// //         });
-// //     }
-// // });
+paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
+    if (error) {
+        console.log(error);
+        throw error;
+    } else {
+        console.log("Create Billing Plan Response");
+        console.log(billingPlan.id);
+        Plan.findOneAndUpdate({paypalId:'P-1FE969941S812015TKOPUGIQ'},{paypalId:billingPlan.id}).lean().exec();
+        var billing_plan_update_attributes = [
+			    {
+			        "op": "replace",
+			        "path": "/",
+			        "value": {
+			            "state": "ACTIVE"
+			        }
+			    }
+			];
+
+		paypal.billingPlan.update(billingPlan.id, billing_plan_update_attributes, function (error, response) {
+            if (error) {
+                console.log(error.response);
+                throw error;
+            } else {
+                paypal.billingPlan.get(billingPlan.id, function (error, billingPlan) {
+                    if (error) {
+                        console.log(error.response);
+                        throw error;
+                    } else {
+                        console.log(billingPlan.state);
+                    }
+                });
+            }
+        });
+    }
+});
 
 // // var create_webhook_json = {
 // //     "url": "https://careapi.demo.hatchitup.com/paypal_webhook",
@@ -321,7 +322,7 @@ methods.pay = function(req,res){
 
 			var billingAgreementAttributes = {
 			    "name": "Fast Speed Agreement",
-			    "description": "Agreement for Fast Speed Plan",
+			    "description": "Agreement for Care to call basic plan",
 			    "start_date": startDate.getUTCFullYear()+'-'
 						      + pad(startDate.getUTCMonth()+1)+'-'
 						      + pad(startDate.getUTCDate())+'T'
