@@ -17,8 +17,6 @@ Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
       paypalId: 'P-4GX207377T9451908IQEYLUI',
       active: true,
       plan_type: 1,
-      updated: Mon May 11 2015 23:02:59 GMT+0530 (IST),
-      created: Mon May 11 2015 23:02:59 GMT+0530 (IST),
       users: 0,
       price: '20',
       members: 10,
