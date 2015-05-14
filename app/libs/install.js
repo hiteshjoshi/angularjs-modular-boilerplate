@@ -5,8 +5,31 @@
 
 var mongoose = require('mongoose');
 var Admin = mongoose.model('User');
+var Plan = mongoose.model('Plan');
 var log = console.log;
 module.exports = function(app,callback){
+
+
+  
+Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
+  if(!plan){
+    var newPlan = new Plan({
+      paypalId: 'P-4GX207377T9451908IQEYLUI',
+      active: true,
+      plan_type: 1,
+      updated: Mon May 11 2015 23:02:59 GMT+0530 (IST),
+      created: Mon May 11 2015 23:02:59 GMT+0530 (IST),
+      users: 0,
+      price: '20',
+      members: 10,
+      reminder: { voice: 10, emails: 10 },
+      description: 'asdf',
+      name: 'This is amazing new plan',
+    });
+    newPlan.save();
+  }
+})
+  
 
   //Check if we have someone as admin.
   Admin.findOne({is_admin:true}).exec(function(error,data){
