@@ -8,9 +8,7 @@ var appCore = angular.module('app.core', [
   'ngCookies',
   'ngAnimate',
   'ngTouch',
-  'ui.bootstrap',
-  'ui.router',
-  'ui.jq'
+  'ui.router'
 ]);
 
 /** routes and run configs */
