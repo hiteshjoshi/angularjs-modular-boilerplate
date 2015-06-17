@@ -12,14 +12,14 @@ $ npm install -g grunt-cli
 ```sh
 $ npm install -g bower
 ```
-+ **cd** to the Miveus folder and run this 2 command:
++ **cd** to the  folder and run this 2 command:
 ```sh
 $ npm install
 ```
 ```sh
 $ bower install
 ```
-+ Then you can run the Command Line Instruction available in Miveus. Just make sure that you **cd** to the Miveus folder.
++ Then you can run the Command Line Instruction in grunt.js. Just make sure that you **cd** to the folder.
 
 
 ### Command Line Instruction
