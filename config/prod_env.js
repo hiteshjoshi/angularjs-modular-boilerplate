@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  db: 'mongodb://localhost/your_project_development',
+  db: 'mongodb://localhost/noobjs_dev',
   sessionSecret: "thisisareallylongandbigsecrettoken",
   baseUrl:"http://costart.in/",
   cookieDomain:".costart.in",
@@ -30,5 +30,12 @@ module.exports = {
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.google.com/m8/feeds',
     ]
+  },
+  paypal : {
+    'mode' :'live',
+    'host': 'api.paypal.com',
+    'port': '',
+    'client_id': 'AYEuHDPWGFsj6hfct5W-ikizJ-MMqRIjoB4r8Drfo1fWZyvSHXW4Lzh5rH1BBcA1eip9s_ZBkQKDl0SP',
+    'client_secret': 'EFXv3BgirJiuynXRLYZDkn0dfA7Hv4mJ4osqPjps_Ua0a5y31ghh1MezT9cFnBMdYpAM_f8TXjbulVBS'
   }
 };

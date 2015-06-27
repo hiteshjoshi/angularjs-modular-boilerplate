@@ -19,9 +19,7 @@ session.checkToken = function(req,res,next){
         var bearer = bearerHeader.split(" ");
         bearerToken = bearer[1];
         req.token = bearerToken;
-        bearerToken = bearerToken.slice(1,bearerToken.length).slice(0,-1);
-
-        
+        bearerToken = bearerToken.slice(1,bearerToken.length).slice(0,-1);    
 
         //get User for this session
         Session
@@ -33,6 +31,7 @@ session.checkToken = function(req,res,next){
         .exec(function(err,user){
         	if(user && !err){
                 req.user = user.user;
+                req.admin = user.is_admin;
         		next();
         	}
         	else
@@ -51,14 +50,6 @@ session.checkToken = function(req,res,next){
         resData.userMessage = "Your session has been expired. Please relogin.";
 		res.status(403).json(resData);
     }
-};
-
-
-session.masterToken = function(req,res,next){
-
-};
-session.newMasterSession = function(){
-
 };
 
 

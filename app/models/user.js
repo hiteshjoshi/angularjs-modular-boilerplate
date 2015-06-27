@@ -35,18 +35,21 @@ var UserSchema = new Schema({
   joined : {type:Date,default:Date.now},
   email_verified:{type:Boolean,default:false},
   care_giver:{type:[careGiver],default:[]},
-  landline : Number,
-  mobile : Number,
-  preferred_number:Number, //1 = mobile or 2= landline
+  landline : {type:String,default:null},
+  mobile : {type:String,default:null},
+  invite_code : {type:String,default:null}, //invite code sent by admin of respective company
+  unique_code:{type:String,index:{unique:true}}, //used to forgot password for verify email address
+  preferred_number:{type:Number,default:1}, //1 = mobile or 2= landline
   billing_details:{
-    address_1:'',
-    address_2:'',
-    city:'',
-    state:'',
-    postal:'',
-    country_code:'',
+    address_1:{type:String,default:''},
+    address_2:{type:String,default:''},
+    city:{type:String,default:''},
+    state:{type:String,default:''},
+    postal:{type:String,default:''},
+    country_code:{type:String,default:''},
     timezone:{type:String,default:"Pacific"},
-  }
+  },
+  plan : {type : Schema.ObjectId, ref : 'Plan'}
 });
 
 
@@ -74,15 +77,15 @@ var validatePresenceOf = function (value) {
 
 // the below 5 validations only apply if you are signing up traditionally
 
-UserSchema.path('firstName').validate(function (name) {
-  if (this.skipValidation()) return true;
-  return name.length;
-}, 'Name cannot be blank');
+// UserSchema.path('firstName').validate(function (name) {
+//   if (this.skipValidation()) return true;
+//   return name.length;
+// }, 'Name cannot be blank');
 
-UserSchema.path('lastName').validate(function (name) {
-  if (this.skipValidation()) return true;
-  return name.length;
-}, 'Name cannot be blank');
+// UserSchema.path('lastName').validate(function (name) {
+//   if (this.skipValidation()) return true;
+//   return name.length;
+// }, 'Name cannot be blank');
 
 
 UserSchema.path('email').validate(function (email) {

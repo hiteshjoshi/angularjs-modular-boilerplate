@@ -21,7 +21,7 @@ var PlansSchema = new Schema({
   	voice : {type:Number,default:10}
   },
   members : {type:Number,default:10},
-  price: { type: String, default: '' },
+  price: { type: Number, default: '' },
   users: { type: Number, default: 0 ,index:true}, //total number of customers opted for this plan
   created : {type:Date,default:Date.now},
   updated : {type:Date,default:Date.now},
@@ -30,13 +30,12 @@ var PlansSchema = new Schema({
   paypalId:{ type: String, default: '' }
 });
 
-
 var PlanUsage = new Schema({
 	user_id : {type : Schema.ObjectId, ref : 'User'},
 	plan_id : {type : Schema.ObjectId, ref : 'Plan'},
 	joined : {type:Date,default:Date.now},
 	expiring:{type:Date,default:Date.now},
-	reminder: {
+	used: {
 	  	emails : {type:Number,default:0},
 	  	text : {type:Number,default:0},
 	  	voice : {type:Number,default:0}
@@ -46,8 +45,6 @@ var PlanUsage = new Schema({
   processed:{type:Boolean,default:false}
 });
 
-mongoose.model('PlanUsage', PlanUsage);
-mongoose.model('Plan', PlansSchema);
 
 
 var Reminder = new Schema({
@@ -68,4 +65,18 @@ var Reminder = new Schema({
     schedule_time : { type: String, default: '' },
     recurring : { type: Boolean, default: true }
 });
+
+
+
+
+var Paypal = new Schema({
+  paypalId : { type: String, default: '' },
+  plan : {type : Schema.ObjectId, ref : 'Plan'},
+  created : { type: Date,default:Date.now}
+});
+
+
+mongoose.model('Paypal', Paypal);
+mongoose.model('PlanUsage', PlanUsage);
+mongoose.model('Plan', PlansSchema);
 mongoose.model('Reminder', Reminder);

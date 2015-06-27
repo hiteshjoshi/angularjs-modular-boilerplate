@@ -15,9 +15,10 @@ var expressValidator = require('express-validator')
 module.exports = function (app, passport) {
   winston.emitErrs = true;
 
-  var logger = new winston.Logger({
+  if(env === 'production'){
+
+    var logger = new winston.Logger({
       transports: [
-          new (winston.transports.Console)(),
           new winston.transports.File({
               name : 'info',
               level: 'info',
@@ -33,14 +34,29 @@ module.exports = function (app, passport) {
               level: 'error',
               filename: config.logDir + '/error.log',
               handleExceptions: true,
-              json: false,
+              json: true,
               maxsize: 5242880, //5MB
               maxFiles: 5,
               colorize: true
+          }),
+          new winston.transports.File({
+              level: 'debug',
+              filename: config.logDir + '/debug.log',
+              handleExceptions: true,
+              json: false,
+              colorize: true
           })
       ],
-      exitOnError: true
-  });
+      exitOnError: false
+    });  
+  }
+  else{
+    var logger = new winston.Logger({
+      transports: [
+          new (winston.transports.Console)()
+      ]
+    });  
+  }
 
   module.exports = logger;
   module.exports.stream = {

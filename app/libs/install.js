@@ -9,8 +9,8 @@ var Plan = mongoose.model('Plan');
 var log = console.log;
 module.exports = function(app,callback){
 
+var planId = null;
 
-  
 Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
   if(!plan){
     var newPlan = new Plan({
@@ -25,6 +25,7 @@ Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
       name: 'This is amazing new plan',
     });
     newPlan.save();
+    planId = newPlan._id;
   }
 })
   
