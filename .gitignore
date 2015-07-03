@@ -13,3 +13,5 @@ docs
 mockup
 composer.lock
 composer.phar
+src/components/*/**.css
+src/assets/styles/*.css
