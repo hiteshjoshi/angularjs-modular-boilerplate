@@ -10,6 +10,13 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
 
   grunt.initConfig({
+
+    /** SASS task **/
+    jshint: require('./grunt/sass')(path),
+
+    /** Less task */
+    less: require('./grunt/less')(path),
+
     /** JShint task */
     jshint: require('./grunt/jshint')(path),
 
@@ -50,6 +57,7 @@ module.exports = function (grunt) {
    */
   grunt.registerTask('serve', [
     'jshint',
+    'sass',//This can be changed to 'sass' as well
     'clean:bundles',
     'webpack:src',
     'connect:src',
