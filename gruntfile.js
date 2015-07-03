@@ -12,7 +12,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
 
     /** SASS task **/
-    jshint: require('./grunt/sass')(path),
+    sass: require('./grunt/sass')(path),
 
     /** Less task */
     less: require('./grunt/less')(path),

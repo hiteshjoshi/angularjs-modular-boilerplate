@@ -1,4 +1,4 @@
-# Modular angularjs boilerplate with grunt
+# TTAGIT Dashboard written in Angularjs with Grunt
 
 ### Prerequisite
 
