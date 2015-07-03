@@ -36,10 +36,6 @@ $ bower install
 ```sh
 $ grunt serve
 ```
-+ Run documentation
-```sh
-$ grunt docs
-```
 + copy all the needed files and folders to **dist** folder.
 ```sh
 $ grunt dist
