@@ -1,0 +1,54 @@
+      <div id="dashboard" ng:controller="dashboardCtrl">
+        <div class="right">
+          <a href="#" class="button tiny"><i class="fa fa-plus"></i> Add reminder</a>
+        </div>
+        <div class="row">
+
+          <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+          <div class="large-12" ng:show="reminders.length">
+            <h4>Your reminders</h4>
+            <hr/>
+            <table>
+              <thead>
+                <tr>
+                  <th width="120">Name</th>
+                  <th width="120">Timezone</th>
+                  <th width="150">Numbers</th>
+                  <th width="150">Email</th>
+                  <th width="150">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Hitesh Joshi</td>
+                  <td>Eastern</td>
+                  <td>9810959556, 01204112269</td>
+                  <td> hitesh@hatchitup.com</td>
+                  <td>
+                    <ul class="button-group">
+                      <li><a href="#" class="button tiny secondary">Edit</a></li>
+                      <li><a href="#" class="button tiny alert">Delete</a></li>
+                    </ul>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Hitesh Joshi</td>
+                  <td>Eastern</td>
+                  <td>9810959556, 01204112269</td>
+                  <td> hitesh@hatchitup.com</td>
+                  <td>
+                    <ul class="button-group">
+                      <li><a href="#" class="button tiny secondary">Edit</a></li>
+                      <li><a href="#" class="button tiny alert">Delete</a></li>
+                    </ul>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>

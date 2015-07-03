@@ -1,0 +1,49 @@
+<div id="billing" ng:controller="accountCtrl">
+  <p class="lead">
+    Your Profile.
+  </p>
+
+  <hr/>
+
+  <form>
+    <h5>Basic details</h5>
+    <hr>
+    <div class="row">
+      <div class="large-6 columns">
+        <label>First name
+          <input type="text" placeholder="Address 1" ng:model="billing_address.address_1"/>
+        </label>
+      </div>
+      <div class="large-6 columns">
+        <label>Last name
+          <input type="text" placeholder="Address 2" ng:model="billing_address.address_2"/>
+        </label>
+      </div>
+    </div>
+    <h5>Contact details</h5>
+    <hr>
+    <div class="row">
+      <div class="large-4 columns">
+        <label>Mobile
+          <input type="text" placeholder="Address 1" ng:model="billing_address.address_1"/>
+        </label>
+      </div>
+      <div class="large-4 columns">
+        <label>Landline
+          <input type="text" placeholder="Address 2" ng:model="billing_address.address_2"/>
+        </label>
+      </div>
+      <div class="large-4 columns">
+        <label>Preferred number
+          <input type="text" placeholder="Address 2" ng:model="billing_address.address_2"/>
+        </label>
+      </div>
+    </div>
+
+  <p ng:show="msg" class="lead">
+    {{msg}}
+  </p>
+  <button type="button" class="button">Update profile</button>
+  <!-- <button type="button" class="button primary" ng:click="showPopup(paypalUrl);" ng:show="paypalUrl">Change plan</button> -->
+</form>
+</div>
