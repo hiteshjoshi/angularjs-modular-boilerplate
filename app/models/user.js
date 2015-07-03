@@ -18,7 +18,7 @@ var careGiver = new Schema({
     last_name : String,
     landline : Number,
     mobile : Number,
-    time_zone:{type:String,default:"Pacific"},
+    timezone:{type:String,default:"pacific"},
     email_address:String,
     preferred_number:Number //1 = mobile or 2= landline
 });

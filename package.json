@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "make test",
-    "start": "NODE_PATH=./config:./app/libs NODE_ENV=production node server.js"
+    "start": "NODE_PATH=./config:./app/libs NODE_ENV=development node server.js"
   },
   "engines": {
     "node": "0.10.x"
@@ -16,6 +16,7 @@
   "author": "Hitesh Joshi <me@hiteshjoshi.com",
   "license": "PRIVATE",
   "dependencies": {
+    "async": "^1.3.0",
     "body-parser": "^1.0.2",
     "campaign": "^1.4.4",
     "connect-mongo": "^0.4.2",

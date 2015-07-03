@@ -14,11 +14,13 @@ var uuid = require('node-uuid');
 var session = require('session');
 var mail = require('mail');
 var jwt = require('jsonwebtoken');
+var _ = require('lodash');
+var async = require('async');
 var paypal = require('paypal-rest-sdk');
 	paypal.configure(config.paypal);
 
 /* the response object for API
-	error : true / false 
+	error : true / false
 	code : contains any error code
 	data : the object or array for data
 	userMessage : the message for user, if any.
@@ -71,45 +73,48 @@ module.exports.controller = function(router) {
 		//.put(session.checkToken,methods.updatePaypal)
 		.post(session.checkToken,methods.checkAdmin,methods.createPaypal)
 		.get(session.checkToken,methods.checkAdmin,methods.getPaypal);
-	
+
 
 	router.route('/users')
 		.post(methods.createUser)
-	
+
 	router.route('/users/:user_id')
 		.get(session.checkToken,methods.getUserProfile)
 		.put(session.checkToken,methods.updateUser)
-	
+
 	router.route('/users/:user_id/billing')
 		.get(session.checkToken,methods.getUserbilling)
-  
+
 	router.route('/users/confirm')
 		.post(methods.confirmEmail)
 
 	router.route('/ping')
 		.get(session.checkToken,methods.getUser)
-	
+
 	router.route('/users/login')
 		.post(methods.userLogin)
 	router.route('/users/logout')
-		  .post(session.checkToken,methods.logout);	
+		  .post(session.checkToken,methods.logout);
 
 	router.route('/users/forgot_password')
 		.post(methods.forgotPassword)
 
 	router.route('/users/create_password')
-		.post(methods.createPassword)	
+		.post(methods.createPassword)
 
 	router.route('/invite')
 		.post(session.checkToken,methods.inviteUser)
 
 
-	router.route('/networks')
+	router.route('/users/:user_id/networks')
+		.get(session.checkToken,methods.getNetwork)
 		.post(session.checkToken,methods.addNetwork)
-	router.route('/networks/:member_id')
-		.delete(session.checkToken,methods.removeNetwork)
 
-	
+	router.route('/users/:user_id/networks/:member_id')
+		.delete(session.checkToken,methods.removeNetwork)
+		.put(session.checkToken,methods.updateNetwork)
+
+
 
 	router.route('/reminders')
 		.get(session.checkToken,methods.getReminders)
@@ -124,8 +129,13 @@ module.exports.controller = function(router) {
 
 
 	router.route('/plans')
-		.get(methods.getPlans);
-	
+			.get(methods.getPlans);
+
+	router.route('/paypal/payments')
+			.get(methods.confirmPaypalSubscription);
+
+
+
 	router.param('reminderId', function (req, res, next, id) {
 		//@TODO : Add mongoose _id regex validation.
 	  Reminder.findOne({_id:id}).lean().exec(function(err,reminder){
@@ -137,18 +147,12 @@ module.exports.controller = function(router) {
 	  	  return (SendResponse(res));
 	  	}
 	  	else{
-	  		if(reminder.user !== req.user._id){
-	  			response.error = true;
-	  			response.code = 10804;
-	  			response.userMessage = 'Reminder not found.'
-	  			return (SendResponse(res));
-	  		}
-	  		else{
-	  			req.reminder = reminder;
-	  			return next();
-	  		}
+	  		
+  			req.reminder = reminder;
+  			return next();
+  		
 	  	}
-	  	
+
 	  });
 
 	});
@@ -167,11 +171,11 @@ module.exports.controller = function(router) {
   			req.profile = user;
   			return next();
 	  	}
-	  	
+
 	  });
 
 	});
-	
+
 
 	router.param('plan_id', function (req, res, next, id) {
 		//@TODO : Add mongoose _id regex validation.
@@ -187,11 +191,41 @@ module.exports.controller = function(router) {
   			req.plan = plan;
   			return next();
 	  	}
-	  	
+
 	  });
 
 	});
-	
+
+
+	router.param('member_id', function (req, res, next, id) {
+		
+		//@TODO : Add mongoose _id regex validation.
+	  User.findOne({_id:req.profile._id,'care_giver._id':id}).lean().exec(function(err,user){
+
+	  	if(err){
+	  	  response.error = true;
+	  	  response.code = 10901;
+	  	  response.userMessage = 'There was a problem with the request, please try again.'
+	  	  return (SendResponse(res));
+	  	}
+	  	else{
+	  		if(!user){
+	  			response.error = true;
+	  			response.userMessage = 'Network user not found.'
+	  			return (SendResponse(res));
+	  		}
+	  		else{
+	  			req.network_user = user;
+	  			req.network_id = id;
+  				return next();	
+	  		}
+  			
+	  	}
+
+	  });
+
+	});
+
 
 
 };
@@ -208,6 +242,32 @@ methods.checkAdmin = function(req,res,next){
 		else
 			next();
 }
+
+
+/*===========================================
+***   Payment confirmation for paypal  ***
+=============================================*/
+
+methods.confirmPaypalSubscription = function(req,res){
+	//console.log(req.body,req.query);
+	var paymentToken = req.query.token;
+
+	paypal.billingAgreement.execute(paymentToken, {}, function (error, billingAgreement) {
+	    if (error) {
+	    	response.userMessage = 'Error using paypal payments';
+	    	response.error = true;
+	        return SendResponse(res);
+	    } else {
+	        console.log("Billing Agreement Execute Response");
+	        console.log(JSON.stringify(billingAgreement));
+	        response.data = billingAgreement
+	        return SendResponse(res);
+	    }
+	});
+};
+
+/*-----  End of confirmPaypalSubscription  ------*/
+
 
 /*========================================
 ***   Get user billing information  ***
@@ -257,7 +317,7 @@ methods.paypalSubscribe = function(req,res){
 		else{
 			var startDate = new Date();
 			startDate = new Date(startDate.getTime() + 60*1000);
-			
+
 			function pad(n){return n<10 ? '0'+n : n}
 
 			User.findOneAndUpdate({_id:req.user._id},{billing_details:req.body}).lean().exec();
@@ -311,7 +371,7 @@ methods.paypalSubscribe = function(req,res){
 			});
 		}
 	})
-	
+
 }
 
 /*-----  End of paypalSubscribe  ------*/
@@ -322,9 +382,19 @@ methods.paypalSubscribe = function(req,res){
 ========================================*/
 
 methods.deleteReminder = function(req,res){
-	Reminder.findAndRemove({_id:req.reminder._id}).exec();
-	response.userMessage = "Reminder deleted";
-	return (SendResponse(res));
+	
+	if(String(req.reminder.user) !== String(req.user._id)){
+		response.userMessage = "Not authorized";
+		response.error = true;
+		return (SendResponse(res));
+	}
+	else
+	{
+		Reminder.findOneAndRemove({_id:req.reminder._id}).exec();
+		response.userMessage = "Reminder deleted";
+		return (SendResponse(res));
+	}
+	
 };
 
 /*-----  End of deleteReminder  ------*/
@@ -338,7 +408,7 @@ methods.getReminders = function(req,res){
 	Reminder.find({user:req.user._id})
 	.sort('schedule_date')
 	.lean()
-	.exec(function(err,r){
+	.exec(function(err,reminders){
 		if(err) {
 			response.error = true;
 			response.code = 10901;
@@ -348,9 +418,25 @@ methods.getReminders = function(req,res){
 			return (SendResponse(res));
   		}
   		else{
-  			response.data = {reminders : r};
-  			return (SendResponse(res));
-  		}		
+  			User.findOne({_id:req.user._id},{care_giver:1}).lean()
+  			.exec(function(err,user){
+
+  				var care_givers = {};
+  				async.mapSeries(user.care_giver,
+
+  					function(care_giver,cb){
+  						care_givers[care_giver._id] = care_giver;
+  						cb(false,care_giver);
+  					},
+
+  					function(err){
+
+  						response.data = {reminders : reminders,network:care_givers || {}};
+  						return (SendResponse(res));
+
+  				});
+  			});
+  		}
 	});
 }
 
@@ -366,8 +452,9 @@ methods.addReminder = function(req,res){
 	req.checkBody('title', 'Title is required.').notEmpty();
 	req.checkBody('recipients', 'Recipients are required.').notEmpty();
 	req.checkBody('schedule_date', 'Schedule date is required.').notEmpty();
-	req.checkBody('schedule_time', 'Schedule time is required.').notEmpty();
+	//req.checkBody('schedule_time', 'Schedule time is required.').notEmpty();
 
+	
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -382,18 +469,17 @@ methods.addReminder = function(req,res){
 			user:req.user._id,
 			title : req.param('title'),
 			notify_by:{
-				email:req.param('notify_by_email')=='true'?true:false,
-				text:req.param('notify_by_text')=='true'?true:false,
-				voice:req.param('notify_by_voice')=='true'?true:false
+				email:req.param('notify_by_email'),
+				text:req.param('notify_by_text'),
+				voice:req.param('notify_by_voice')
 			},
 			recipients:req.param('recipients'),
 			text_sms : req.param('text_sms'),
 			email : req.param('email'),
 			number_voice_recording:req.param('number_voice_recording'),
-			schedule_date : new Date(req.param('schedule_date').slice(0,10)+req.param('schedule_time').slice(10,req.param('schedule_time').length)),
-			start:new Date(req.param('schedule_date').slice(0,10)+req.param('schedule_time').slice(10,req.param('schedule_time').length)),
-			schedule_time : req.param('schedule_time'),
-			recurring : req.param('recurring')=='true'?true:false
+			schedule_date : new Date(req.param('schedule_date')),
+			recurring : req.param('recurring'),
+			recurring_frequency : req.param('recurring_frequency')
 		};
 
 		var newReminder = new Reminder(reminder_fields);
@@ -419,20 +505,47 @@ methods.addReminder = function(req,res){
 
 /*-----  End of addReminder  ------*/
 
+
+/*==========================================
+***   Return care givers of the user  ***
+============================================*/
+
+methods.getNetwork = function(req,res){
+	User.findOne({_id:req.user._id}).lean()
+	.exec(function(err,user){
+		if(err) {
+			response.error = true;
+			response.code = 10901;
+			response.userMessage = 'There was a problem with the request, please try again'
+			response.data = null;
+			response.errors = null;
+			return res.send(SendResponse(res));
+  		}
+  		else{
+  			response.data = {
+  				members : user.care_giver
+  			};
+  			return (SendResponse(res));
+  		}		
+	});
+}
+
+/*-----  End of getNetwork  ------*/
+
 /*==============================================================
 ***   User adds people to their network, care_giver list  ***
 ================================================================*/
 
 methods.addNetwork = function(req,res){
 	//Check for POST request errors.
-	
-	req.checkBody('firstName','firstName is required.').notEmpty();
-	req.checkBody('lastName','lastName is required.').notEmpty();
-	req.checkBody('landline','landline is required.').notEmpty();
-	req.checkBody('mobile','mobile is required.').notEmpty();
-	req.checkBody('timezone','timezone is required.').notEmpty();
+
+	req.checkBody('first_name','First name is required.').notEmpty();
+	req.checkBody('last_name','Last name is required.').notEmpty();
+	req.checkBody('landline','Landline is required.').notEmpty();
+	req.checkBody('mobile','Mobile is required.').notEmpty();
+	req.checkBody('timezone','Timezone is required.').notEmpty();
 	req.checkBody('email_address','Eamil is required.').notEmpty();
-	req.checkBody('preferred_number','preferred number is required.').notEmpty();
+	req.checkBody('preferred_number','Preferred number is required.').notEmpty();
 
 	var errors = req.validationErrors(true);
 	if(errors){
@@ -443,66 +556,69 @@ methods.addNetwork = function(req,res){
 	    return (SendResponse(res));
 	}
 	else{
+
 		//Database functions here
 		var newNetwork = {
-			first_name : req.param('firstName'),
-		    last_name : req.param('lastName'),
+			first_name : req.param('first_name'),
+		    last_name : req.param('last_name'),
 		    landline : req.param('landline'),
 		    mobile : req.param('mobile'),
 		    time_zone:req.param('timezone'),
 		    email_address:req.param('email_address'),
 		    preferred_number:req.param('preferred_number')//1 = mobile or 2= landline
 		};
-	PlanUsage.findOne({user_id:req.user._id}).populate('plan_id').lean()
-	.exec(function(err,plandata){
-		if(err) {
-			response.error = true;
-			response.code = 10901;
-			response.userMessage = 'There was a problem with the request, please try again'
-			response.data = null;
-			response.errors = null;
-			return (SendResponse(res));
-  		}
-  		else{
-			
-			if(plandata.members < plandata.plan_id.members) //if added members are less than allowed
-			{
-				User.findOneAndUpdate({_id:req.user._id},{$push:{care_giver:newNetwork}}).lean()
-				.exec(function(err,data){
+		PlanUsage.findOne({user_id:req.user._id}).populate('plan_id').lean()
+		.exec(function(err,plandata){
 
-					if(err) {
-						response.error = true;
-						response.code = 10901;
-						response.userMessage = 'There was a problem with the request, please try again'
-						response.data = null;
-						response.errors = null;
-						return (SendResponse(res));
-			  		}
-			  		else{
-			  			
-			  			PlanUsage.findOneAndUpdate({user_id:req.user._id},{$inc:{members:1}})
-			  			.lean().exec(function(err,plandata){
-							response.data = {
-								members:data.care_giver,
-								total:data.care_giver.length,
-								allowed:plandata.members
-							};
-							return (SendResponse(res));
-						});
-			  		}
-					
-				});
-			}
-			else
-			{
+			if(err) {
+				response.error = true;
+				response.code = 10901;
+				response.userMessage = 'There was a problem with the request, please try again'
 				response.data = null;
-				response.err = true;
-				response.userMessage = 'You network is full. Please delete some or upgrade to higher plan';
+				response.errors = null;
 				return (SendResponse(res));
-			}
-  			
-  		}		
-	});
+	  		}
+	  		else{
+
+				if(plandata.members < plandata.plan_id.members) //if added members are less than allowed
+				{
+					User.findOneAndUpdate({_id:req.user._id},{$push:{care_giver:newNetwork}})
+					.exec(function(err,data){
+						
+						if(err) {
+							response.error = true;
+							response.code = 10901;
+							response.userMessage = 'There was a problem with the request, please try again'
+							response.data = null;
+							response.errors = null;
+							return (SendResponse(res));
+				  		}
+				  		else{
+
+				  			PlanUsage.findOneAndUpdate({user_id:req.user._id},{$inc:{members:1}})
+				  			.populate('user_id','care_giver')
+				  			.lean().exec(function(err,plandata){
+								response.data = {
+									members:plandata.user_id.care_giver,
+									total:plandata.user_id.care_giver.length,
+									allowed:plandata.plan_id.members
+								};
+								return (SendResponse(res));
+							});
+				  		}
+
+					});
+				}
+				else
+				{
+					response.data = null;
+					response.err = true;
+					response.userMessage = 'You network is full. Please delete some or upgrade to higher plan';
+					return (SendResponse(res));
+				}
+
+	  		}
+		});
 	}
 }
 
@@ -510,13 +626,20 @@ methods.addNetwork = function(req,res){
 
 
 
-/*===============================================
-***   Remove a member from user's network  ***
-=================================================*/
+/*====================================
+***   Updating of user network  ***
+======================================*/
 
-methods.removeNetwork = function(req,res){
-	//Check for POST request errors.
-	req.checkBody('member_id', 'Validation code is required.').notEmpty();
+methods.updateNetwork = function(req,res){
+
+	req.checkBody('first_name','First name is required.').notEmpty();
+	req.checkBody('last_name','Last name is required.').notEmpty();
+	req.checkBody('landline','Landline is required.').notEmpty();
+	req.checkBody('mobile','Mobile is required.').notEmpty();
+	req.checkBody('timezone','Timezone is required.').notEmpty();
+	req.checkBody('email_address','Eamil is required.').isEmail().notEmpty();
+	req.checkBody('preferred_number','Preferred number is required.').notEmpty();
+
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -525,25 +648,70 @@ methods.removeNetwork = function(req,res){
 	    response.userMessage = 'Validation errors';
 	    return (SendResponse(res));
 	}
+
 	else{
-		//Database functions here
-		User.findOneAndUpdate({_id:req.user._id},{
-			$pull:{care_giver:{_id:req.param('member_id')}}
+		User.findOneAndUpdate(
+			{
+				_id:req.user._id,
+				'care_giver._id':req.network_id
+			},
+			{
+				'care_giver.$.first_name' : req.param('first_name'),
+				'care_giver.$.last_name' : req.param('last_name'),
+				'care_giver.$.landline' : req.param('landline'),
+				'care_giver.$.mobile' : req.param('mobile'),
+				'care_giver.$.email_address' : req.param('email_address'),
+				'care_giver.$.time_zone' : req.param('time_zone'),
+				'care_giver.$.preferred_number' : req.param('preferred_number')
+			})
+		.exec(function(err,user){
+			if(err) {
+				response.error = true;
+				response.code = 10901;
+				response.userMessage = 'There was a problem with the request, please try again'
+				response.data = null;
+				response.errors = null;
+				return res.send(SendResponse(res));
+	  		}
+	  		else{
+	  			response.userMessage = 'User network updated';
+	  			response.data = {
+	  				members : user.care_giver
+	  			}
+	  			return res.send(SendResponse(res));
+	  		}		
 		})
-		.lean().exec(function(err,data){
-			
-			PlanUsage.findOneAndUpdate({user_id:req.user._id},{members:data.care_giver.length}).lean()
-			.exec(function(err,plandata){
-				response.error = false;
-				response.data = {
-					members:data.care_giver,
-					total:data.care_giver.length,
-					allowed:plandata.members
-				};
-				return (SendResponse(res));
-			});
-		});
 	}
+
+}
+
+/*-----  End of updateNetwork  ------*/
+
+/*===============================================
+***   Remove a member from user's network  ***
+=================================================*/
+
+methods.removeNetwork = function(req,res){
+	
+	//Database functions here
+	User.findOneAndUpdate({_id:req.user._id},{
+		$pull:{care_giver:{_id:req.param('member_id')}}
+	})
+	.exec(function(err,data){
+		console.log(data);
+
+		PlanUsage.findOneAndUpdate({user_id:req.user._id},{members:data.care_giver.length}).lean()
+		.exec(function(err,plandata){
+			response.error = false;
+			response.data = {
+				members:data.care_giver,
+				total:data.care_giver.length,
+				allowed:plandata.members
+			};
+			return (SendResponse(res));
+		});
+	});
+
 }
 
 /*-----  End of removeNetwork  ------*/
@@ -660,8 +828,8 @@ methods.createAdmin = function(req,res){
 	            mail.sendMail(req.body.email,'Care to call Admin','This email is to verify you as admin, your verification code is '+user.unique_code,false);
 				return (SendResponse(res));
 			}
-			
-			
+
+
 		});
 	}
 }
@@ -674,7 +842,7 @@ methods.createAdmin = function(req,res){
 
 methods.createPlans = function(req,res){
 	//Check for POST request errors.
-	
+
 	req.checkBody('name', 'Plan name is required').notEmpty();
 	req.checkBody('description', 'Plan description is required').notEmpty();
 	req.checkBody('emails', 'Number of emails are required.').notEmpty();
@@ -725,7 +893,7 @@ methods.createPlans = function(req,res){
 	  			};
 	  			response.userMessage = 'Plan added successfully.';
 	  			return (SendResponse(res));
-	  		}		
+	  		}
 		});
 	}
 }
@@ -769,7 +937,7 @@ methods.createPaypal = function(req,res){
 
 		Plan.findOne({_id:req.param('plan_id')}).lean()
 		.exec(function(err,plan){
-			
+
 			if(err) {
 				response.error = true;
 				response.code = 10901;
@@ -785,10 +953,10 @@ methods.createPaypal = function(req,res){
 				    "description": req.param('description'),
 				    "merchant_preferences": {
 				        "auto_bill_amount": "yes",
-				        "cancel_url": "http://care.demo.hatchitup.com/#/payment_cancelled",
+				        "cancel_url": "http://localhost:8000/#/paypalConfirm",
 				        "initial_fail_amount_action": "continue",
 				        "max_fail_attempts": "1",
-				        "return_url": "http://care.demo.hatchitup.com/#/payment_success",
+				        "return_url": "http://localhost:8000/#/paypalCancel",
 				        "setup_fee": {
 				            "currency": "USD",
 				            "value": "1"
@@ -812,7 +980,7 @@ methods.createPaypal = function(req,res){
 				};
 
 
-				paypal.billingPlan.create(billingPlanAttributes, 
+				paypal.billingPlan.create(billingPlanAttributes,
 					function (error, billingPlan) {
 						console.log(error,billingPlan);
 						if (error) {
@@ -861,10 +1029,10 @@ methods.createPaypal = function(req,res){
 					        });
 					    }
 					});
-	  		}		
+	  		}
 		});
 
-		
+
 	}
 }
 
@@ -876,7 +1044,7 @@ methods.createPaypal = function(req,res){
 ========================================*/
 
 methods.getPaypal = function(req,res){
-	
+
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -901,7 +1069,7 @@ methods.getPaypal = function(req,res){
 				  		else{
 				  			response.data = {paypal:paypal};
 				  			return (SendResponse(res));
-				  		}	
+				  		}
 		});
 	}
 }
@@ -917,7 +1085,7 @@ methods.getPaypal = function(req,res){
 ===================================================================*/
 
 methods.getAdminPlans = function(req,res){
-	
+
 	Plan.find({}).lean()
 	.exec(function(err,plans){
 					if(err) {
@@ -942,7 +1110,7 @@ methods.getAdminPlans = function(req,res){
 	When a user is invited to company.
 *********************/
 methods.inviteUser = function(req,res){
-  
+
   req.checkBody('email', 'Valid Email address is required.').notEmpty().isEmail();
   req.checkBody('first_name', 'First name cannot be empty.').notEmpty();
   req.checkBody('last_name', 'Last name cannot be empty.').notEmpty();
@@ -984,8 +1152,8 @@ methods.inviteUser = function(req,res){
         response.userMessage = "Thanks!";
         return (SendResponse(res));
       }
-      
-      
+
+
     });
   }
 };
@@ -1042,7 +1210,7 @@ methods.updateUser = function(req,res){
 	req.checkBody('postal','Postal is required.').notEmpty()
 	req.checkBody('country_code','Country is required.').notEmpty()
 	req.checkBody('timezone','Timezone is required.').notEmpty()
-	  
+
 
 	var errors = req.validationErrors(true);
 	if(errors){
@@ -1083,7 +1251,7 @@ methods.updateUser = function(req,res){
 	  		else{
 	  			response.userMessage = 'Profile updated.';
 	  			return (SendResponse(res));
-	  		}		
+	  		}
 		});
 	}
 }
@@ -1095,12 +1263,12 @@ methods.updateUser = function(req,res){
 	Create new user profile and send verification email.
 *********************/
 methods.createUser = function(req,res){
-	
+
 	//Check for any errors.
 	req.checkBody('email', 'Valid Email address is required.').notEmpty().isEmail();
 	req.checkBody('password', 'Password is required, and should be between 8 to 80 haracters.').notEmpty().len(8, 80);
 	req.checkBody('plan_id', 'Plan id cannot be empty.').notEmpty();
-	
+
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -1160,8 +1328,8 @@ methods.createUser = function(req,res){
 	            mail.sendMail(req.body.email,'Care to call Validation email','verification code : '+user.unique_code,false);
 				return (SendResponse(res));
 			}
-			
-			
+
+
 		});
 	}
 };
@@ -1170,10 +1338,10 @@ methods.createUser = function(req,res){
 	Create new user profile and send verification email.
 *********************/
 methods.confirmEmail = function(req,res){
-	
+
 	//Check for any errors.
 	req.checkBody('validation_code', 'Validation code is required.').notEmpty();
-	
+
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -1230,7 +1398,7 @@ methods.confirmEmail = function(req,res){
 						return (SendResponse(res));
 	  				}
 
-		  				
+
 	  			}
 	  			else{
 	  				response.error = true;
@@ -1240,7 +1408,7 @@ methods.confirmEmail = function(req,res){
 	  				return (SendResponse(res));
 	  			}
 
-		  			
+
 	  		}
 		});
 	}
@@ -1250,7 +1418,7 @@ methods.confirmEmail = function(req,res){
   Create user login and send session info
 ***************************************/
 methods.userLogin = function(req,res,next){
-  
+
   //Check for any errors.
   req.checkBody('email', 'Valid Email address is required.').notEmpty().isEmail();
   req.checkBody('password', 'Password is required, and should be between 8 to 80 haracters.').notEmpty().len(8, 80);
@@ -1266,7 +1434,7 @@ methods.userLogin = function(req,res,next){
   }
   else{
 	  	passport.authenticate('local',function(err,user,info){
-	  		
+
  			if(err){
  				response.error = true;
 				response.code = 10901;
@@ -1310,7 +1478,7 @@ methods.userLogin = function(req,res,next){
   Send new password for user to login.
 ***************************************/
 methods.forgotPassword = function(req,res){
-  
+
   //Check for any errors.
   req.checkBody('email', 'Valid Email address is required.').notEmpty().isEmail();
 
@@ -1347,7 +1515,7 @@ methods.forgotPassword = function(req,res){
     			return (SendResponse(res));
     		}
     	}
-    	
+
     });
   }
 };
@@ -1363,7 +1531,7 @@ methods.forgotPassword = function(req,res){
   User can create new password form the unique code sent in his email
 **********************************************************************/
 methods.createPassword = function(req,res){
-  
+
   //Check for any errors.
   req.checkBody('unique_code', 'The unique code is missing!').notEmpty();
   req.checkBody('email', 'Valid Email address is required.').notEmpty().isEmail();
@@ -1411,11 +1579,11 @@ methods.createPassword = function(req,res){
     				  response.userMessage = 'Awesome! You may now login with your new credentials.'
     				  return (SendResponse(res));
     				}
-    				
+
     			});
     		}
     	}
-    	
+
     });
   }
 };

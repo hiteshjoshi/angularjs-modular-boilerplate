@@ -9,26 +9,8 @@ var Plan = mongoose.model('Plan');
 var log = console.log;
 module.exports = function(app,callback){
 
-var planId = null;
 
-Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
-  if(!plan){
-    var newPlan = new Plan({
-      paypalId: 'P-4GX207377T9451908IQEYLUI',
-      active: true,
-      plan_type: 1,
-      users: 0,
-      price: '20',
-      members: 10,
-      reminder: { voice: 10, emails: 10 },
-      description: 'asdf',
-      name: 'This is amazing new plan',
-    });
-    newPlan.save();
-    planId = newPlan._id;
-  }
-})
-  
+
 
   //Check if we have someone as admin.
   Admin.findOne({is_admin:true}).exec(function(error,data){
@@ -60,7 +42,7 @@ Plan.findOne({paypalId:'P-4GX207377T9451908IQEYLUI'}).exec(function(err,plan){
           callback(false);
         }
       });
-      
+
     }
   })
 }
