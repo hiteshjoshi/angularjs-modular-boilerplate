@@ -2,7 +2,7 @@
 
 module.exports = function (path) {
   return {
-    dist: {
+    app: {
       files: {
         'src/assets/styles/app.css': 'src/assets/styles/sass/app.scss'
       }

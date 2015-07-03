@@ -57,7 +57,8 @@ module.exports = function (grunt) {
    */
   grunt.registerTask('serve', [
     'jshint',
-    'sass',//This can be changed to 'sass' as well
+    'sass',
+    //'less',
     'clean:bundles',
     'webpack:src',
     'connect:src',
