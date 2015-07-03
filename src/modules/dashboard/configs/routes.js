@@ -25,7 +25,7 @@ module.exports = function (module) {
       module.value      = $provide.value;
 
       /** setup routes */
-      $stateProvider.state('minimal.dashboard', {
+      $stateProvider.state('default.dashboard', {
         url: '/dashboard',
         templateUrl: 'modules/dashboard/views/dashboard.html',
         resolve: {
