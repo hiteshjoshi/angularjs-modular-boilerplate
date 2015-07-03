@@ -22,6 +22,14 @@ $ bower install
 + Then you can run the Command Line Instruction available in gruntfile.js . Just make sure that you **cd** to the folder.
 
 
+### SASS OR LESS
++ If you plan to use SASS make sure you have ruby install and sass gem installed. If not install it
+```gem install sass
+
++ You can use both LESS and SASS or just one. Make sure to update your Grunt tasks accordingly,
++ ![Grunt configuration](http://i.imgur.com/0RFGub0.png)
+
+
 ### Command Line Instruction
 
 + Build temporary web server and enable auto reload. Good for development purpose
