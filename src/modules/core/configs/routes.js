@@ -25,18 +25,18 @@ module.exports = function (module) {
       module.value      = $provide.value;
       
       /** default route */
-      $urlRouterProvider.otherwise('dashboard');
+      $urlRouterProvider.otherwise('/');
 
       /** parent route */
-      $stateProvider.state('default', {
+      $stateProvider.state('dashboard', {
         abstract: true,
         url: '',
         templateUrl: 'modules/core/views/layouts/default.html'
       })
-      .state('minimal', {
+      .state('homepage', {
         abstract: true,
         url: '',
-        templateUrl: 'modules/core/views/layouts/minimal.html'
+        templateUrl: 'modules/core/views/layouts/homepage.html'
       });
     }
   ]);

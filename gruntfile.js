@@ -20,6 +20,9 @@ module.exports = function (grunt) {
     /** JShint task */
     jshint: require('./grunt/jshint')(path),
 
+    /** Autoprefixer task */
+    autoprefixer: require('./grunt/autoprefixer')(path),
+
     /** Webpack task */
     webpack: require('./grunt/webpack')(path, webpack),
 

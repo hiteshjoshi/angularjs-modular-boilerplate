@@ -13,6 +13,7 @@ webpackJsonp([0],[
 	  'app.core',
 
 	  /** others modules */
+	  'app.homepage',
 	  'app.dashboard',
 	]);
 
@@ -21,6 +22,7 @@ webpackJsonp([0],[
 	 */
 	__webpack_require__(1);
 	__webpack_require__(8);
+	__webpack_require__(11);
 
 	/**
 	 * bootstrap our App
@@ -150,18 +152,18 @@ webpackJsonp([0],[
 	      module.value      = $provide.value;
 	      
 	      /** default route */
-	      $urlRouterProvider.otherwise('dashboard');
+	      $urlRouterProvider.otherwise('/');
 
 	      /** parent route */
-	      $stateProvider.state('default', {
+	      $stateProvider.state('dashboard', {
 	        abstract: true,
 	        url: '',
 	        templateUrl: 'modules/core/views/layouts/default.html'
 	      })
-	      .state('minimal', {
+	      .state('homepage', {
 	        abstract: true,
 	        url: '',
-	        templateUrl: 'modules/core/views/layouts/minimal.html'
+	        templateUrl: 'modules/core/views/layouts/homepage.html'
 	      });
 	    }
 	  ]);
@@ -328,7 +330,7 @@ webpackJsonp([0],[
 	      module.value      = $provide.value;
 
 	      /** setup routes */
-	      $stateProvider.state('default.dashboard', {
+	      $stateProvider.state('dashboard.index', {
 	        url: '/dashboard',
 	        templateUrl: 'modules/dashboard/views/dashboard.html',
 	        resolve: {
@@ -341,6 +343,73 @@ webpackJsonp([0],[
 
 	              deferred.resolve();
 	            });
+
+	            return deferred.promise;
+	          }]
+	        }
+	      });
+	    }
+	  ]);
+	};
+
+/***/ },
+/* 10 */,
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Homepage module
+	 * @desc:
+	 */
+	var appDashboard = angular.module('app.homepage', []);
+
+	/** routes configs */
+	__webpack_require__(12)(appDashboard);
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Dashboard routes
+	 * @module: app.dashboard
+	 */
+	module.exports = function (module) {
+	  module.config([
+	    '$locationProvider',
+	    '$urlRouterProvider',
+	    '$stateProvider',
+	    '$controllerProvider',
+	    '$compileProvider',
+	    '$filterProvider',
+	    '$provide',
+	    function ($locationProvider, $urlRouterProvider, $stateProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
+	      /** store a reference to various provider functions */
+	      module.controller = $controllerProvider.register;
+	      module.directive  = $compileProvider.directive;
+	      module.filter     = $filterProvider.register;
+	      module.factory    = $provide.factory;
+	      module.provider   = $provide.provider;
+	      module.service    = $provide.service;
+	      module.constant   = $provide.constant;
+	      module.value      = $provide.value;
+
+	      /** setup routes */
+	      $stateProvider.state('homepage.index', {
+	        url: '/',
+	        templateUrl: 'modules/homepage/views/index.html',
+	        resolve: {
+	          load: ['$q', '$rootScope', function ($q, $rootScope) {
+	            var deferred = $q.defer();
+
+	            !/* require.ensure */(function () {
+	              
+	              deferred.resolve();
+	            }(__webpack_require__));
 
 	            return deferred.promise;
 	          }]

@@ -24,6 +24,16 @@ module.exports = function (path) {
         livereload: true
       }
     },
+    sass: {
+      files: [
+        'src/assets/styles/sass/**/*.scss',
+        'src/components/**/*.scss',
+      ],
+      tasks: ['sass', 'autoprefixer', 'clean:bundles', 'webpack:src'],
+      options: {
+        livereload: true
+      }
+    },
     livereload: {
       options: {
         livereload: true

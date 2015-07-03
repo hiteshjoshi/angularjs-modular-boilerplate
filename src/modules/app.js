@@ -9,6 +9,7 @@ var app = angular.module('app', [
   'app.core',
 
   /** others modules */
+  'app.homepage',
   'app.dashboard',
 ]);
 
@@ -17,6 +18,7 @@ var app = angular.module('app', [
  */
 require('moduleDir/core/core');
 require('moduleDir/dashboard/dashboard');
+require('moduleDir/homepage/homepage');
 
 /**
  * bootstrap our App
