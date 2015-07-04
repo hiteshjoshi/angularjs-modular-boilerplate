@@ -39074,7 +39074,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.4.0
+	 * @license AngularJS v1.4.1
 	 * (c) 2010-2015 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -39123,7 +39123,7 @@
 	     *   or a Date object indicating the exact date/time this cookie will expire.
 	     * - **secure** - `{boolean}` - The cookie will be available only in secured connection.
 	     *
-	     * Note: by default the address that appears in your <base> tag will be used as path.
+	     * Note: by default the address that appears in your `<base>` tag will be used as path.
 	     * This is import so that cookies will be visible for all routes in case html5mode is enabled
 	     *
 	     **/

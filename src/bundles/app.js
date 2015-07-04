@@ -158,7 +158,7 @@ webpackJsonp([0],[
 	      $stateProvider.state('dashboard', {
 	        abstract: true,
 	        url: '',
-	        templateUrl: 'modules/core/views/layouts/default.html'
+	        templateUrl: 'modules/core/views/layouts/dashboard.html'
 	      })
 	      .state('homepage', {
 	        abstract: true,
