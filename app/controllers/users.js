@@ -452,6 +452,7 @@ methods.addReminder = function(req,res){
 	req.checkBody('recipients', 'Recipients are required.').notEmpty();
 	req.checkBody('schedule_date', 'Schedule date is required.').notEmpty();
 	//req.checkBody('schedule_time', 'Schedule time is required.').notEmpty();
+	req.checkBody('number_voice_recording','A valid 10 digits mobile number is required.').phone();
 
 	
 	var errors = req.validationErrors(true);
@@ -540,12 +541,13 @@ methods.addNetwork = function(req,res){
 
 	req.checkBody('first_name','First name is required.').notEmpty();
 	req.checkBody('last_name','Last name is required.').notEmpty();
-	req.checkBody('landline','Landline is required.').notEmpty();
-	req.checkBody('mobile','Mobile is required.').notEmpty();
+	req.checkBody('landline','A valid 10 digits landline number is required.').phone().notEmpty();
+	req.checkBody('mobile','A valid 10 digits mobile number is required.').phone().notEmpty();
 	req.checkBody('timezone','Timezone is required.').notEmpty();
 	req.checkBody('email_address','Eamil is required.').notEmpty();
 	req.checkBody('preferred_number','Preferred number is required.').notEmpty();
 
+	
 	var errors = req.validationErrors(true);
 	if(errors){
 		response.error = true;
@@ -655,8 +657,8 @@ methods.updateNetwork = function(req,res){
 
 	req.checkBody('first_name','First name is required.').notEmpty();
 	req.checkBody('last_name','Last name is required.').notEmpty();
-	req.checkBody('landline','Landline is required.').notEmpty();
-	req.checkBody('mobile','Mobile is required.').notEmpty();
+	req.checkBody('landline','A valid 10 digits landline number is required.').phone().notEmpty();
+	req.checkBody('mobile','A valid 10 digits mobile number is required.').phone().notEmpty();
 	req.checkBody('timezone','Timezone is required.').notEmpty();
 	req.checkBody('email_address','Eamil is required.').isEmail().notEmpty();
 	req.checkBody('preferred_number','Preferred number is required.').notEmpty();
@@ -1222,8 +1224,8 @@ methods.updateUser = function(req,res){
 	//Check for POST request errors.
 	req.checkBody('first_name', 'First name is required.').notEmpty();
 	req.checkBody('last_name', 'First name is required.').notEmpty();
-	req.checkBody('landline', 'Landline number is required.').notEmpty();
-	req.checkBody('mobile', 'Mobile number is required.').notEmpty();
+	req.checkBody('landline','A valid 10 digits landline number is required.').phone().notEmpty();
+	req.checkBody('mobile','A valid 10 digits mobile number is required.').phone().notEmpty();
 	req.checkBody('preferred_number', 'preferred number is required.').notEmpty();
 
 	req.checkBody('address_1','Address is required.').notEmpty()

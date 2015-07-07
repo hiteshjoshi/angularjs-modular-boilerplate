@@ -72,7 +72,22 @@ module.exports = function (app, passport) {
   // bodyParser should be above methodOverride
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(expressValidator());
+
+
+  app.use(expressValidator({
+    customValidators: {
+        phone: function(value) {
+          var number_format = "(999)999-9999|999-999-9999|9999999999";
+          var number_regex = RegExp("^(" +
+                         formats
+                           .replace(/([\(\)])/g, "\\$1")
+                           .replace(/9/g,"\\d") +
+                         ")$");
+
+            return number_regex.test(value);
+        }
+     }
+    }));
 
   app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
