@@ -22,3 +22,4 @@ require('angular-moment');
 require('angularSanitize');
 require('select2');
 require('angular-ui-select2');
+require('angular-ui-tinymce');

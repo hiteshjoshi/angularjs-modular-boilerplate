@@ -17,6 +17,7 @@ webpackJsonp([0],[
 	  'angularMoment',
 	  'ngSanitize',
 	  'ui.select2',
+	  'ui.tinymce',
 	  /** core modules */
 	  'app.core',
 	  /** others modules */
@@ -479,8 +480,8 @@ webpackJsonp([0],[
 	//
 	module.exports = function (module) {
 		module.factory('api', ['$rootScope','$http', function ($rootScope,$http) {
-			var parseUrl = 'http://localhost:8080';
-			//var parseUrl = 'http://careapi.demo.hatchitup.com';
+			//var parseUrl = 'http://localhost:8080';
+			var parseUrl = 'http://careapi.demo.hatchitup.com';
 
 			var parseHeaders = {}; //set Headers for JWTTOKEN
 
@@ -572,7 +573,6 @@ webpackJsonp([0],[
 			};
 	  	}]);
 	};
-
 
 /***/ },
 /* 11 */

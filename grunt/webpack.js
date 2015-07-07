@@ -38,7 +38,9 @@ module.exports = function (path, webpack) {
           'datetimepicker' : path.resolve(__dirname,'../bower_components/datetimepicker/jquery.datetimepicker'),
           'ng-tags-input' : path.resolve(__dirname,'../bower_components/ng-tags-input/ng-tags-input'),
           'select2':              path.resolve(__dirname, '../bower_components/select2/dist/js/select2'),
-          'angular-ui-select2':              path.resolve(__dirname, '../bower_components/angular-ui-select2/src/select2')
+          'tinymce-dist':              path.resolve(__dirname, '../bower_components/tinymce-dist/tinymce'),
+          'angular-ui-select2':              path.resolve(__dirname, '../bower_components/angular-ui-select2/src/select2'),
+          'angular-ui-tinymce':              path.resolve(__dirname, '../bower_components/angular-ui-tinymce/src/tinymce')
         },
         extensions: ['', '.js', '.json']
       },

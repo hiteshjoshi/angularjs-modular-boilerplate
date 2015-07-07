@@ -13,6 +13,7 @@ var app = angular.module('app', [
   'angularMoment',
   'ngSanitize',
   'ui.select2',
+  'ui.tinymce',
   /** core modules */
   'app.core',
   /** others modules */

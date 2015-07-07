@@ -6,7 +6,7 @@
  * @desc: Show some activity feed
  */
 module.exports = function (module) {
-  module.controller('remindersCtrl', ['$scope', 'api','moment','$modal', function ($scope, api,moment,$modal) {
+  module.controller('remindersCtrl', ['$scope', 'api','moment','$modal','lodash', function ($scope, api,moment,$modal,_) {
     $scope.alerts = [];
     $scope.reminders = [];
     $scope.show_form = false;
@@ -105,15 +105,34 @@ module.exports = function (module) {
 
     $scope.addReminder = function () {
       api.post('reminders',false,$scope.newReminder,function (err,response){
-        $scope.reminders.push(response.data.reminder);
-        $scope.show_form = false;
+        if(err){
+
+        }else{
+          if(response.error){
+            _.forEach(response.errors,function(item){
+              $scope.alerts.push({type:'error',msg:item.msg});
+            });
+          }
+          else{
+            $scope.reminders.push(response.data.reminder);
+            $scope.show_form = false;
+          }
+        }
       });
     };
 
     $scope.updateReminder = function (index) {
 
       api.put('reminders',$scope.reminders[index]._id,false,{},function (err,response){
+        if(err){
 
+        }else{
+          if(response.error){
+            _.forEach(response.errors,function(item){
+              $scope.alerts.push({type:'error',msg:item.msg});
+            });
+          }
+        }
       });
     };
 
@@ -135,8 +154,18 @@ module.exports = function (module) {
 
     $scope.removeReminder = function (index) {
       api.delete('reminders',$scope.reminders[index]._id,false,function (err,response){
-        if(!err && !response.error){
-          $scope.reminders.splice(index,1);
+        if(err){
+
+        }else{
+          if(response.error){
+            _.forEach(response.errors,function(item){
+              $scope.alerts.push({type:'error',msg:item.msg});
+            });
+          }
+          else
+          {
+            $scope.reminders.splice(index,1);
+          }
         }
       });
 

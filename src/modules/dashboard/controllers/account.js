@@ -37,8 +37,6 @@ module.exports = function (module) {
       $scope.alerts.splice(index, 1);
     };
 
-    
-
   	$scope.updateAccount = function () {
   		api.put('users',$scope.user._id,false,$scope.updateUser,function (err,response) {
         if(err){

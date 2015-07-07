@@ -20,47 +20,26 @@ module.exports = function (module) {
   		}
   		else{
   			$scope.alerts.push({type:'info',msg:'Your billing is pending. Please visit billing page and fix this.'});
-        //$state.go('dashboard.billing');
   		}
+      // if(response.data.plan.user_id.care_giver && response.data.plan.user_id.care_giver.length>0){
+      //   $scope.alerts.push({type:'info',msg:'You have no member in your network, you won\'t be able to add reminders.'});
+      // }
   	});
 
-	$scope.closeAlert = function(index) {
-		$scope.alerts.splice(index, 1);
-	};
+  	$scope.closeAlert = function(index) {
+  		$scope.alerts.splice(index, 1);
+  	};
 
   	api.get('reminders',false,false,false,function (err,response){
+      console.log(err,response);
   		if(err){
 
   		}
-  		if(response.data && response.data.length>0) {
-  			$scope.reminders = response.data;
-  		}
-  		else{
-  			$scope.alerts.push({type:'info',msg:'You do not have any reminders set. Please set reminders.'});
+  		if(response.data) {
+  			$scope.reminders = response.data.reminders || [];
+        $scope.network = response.data.network || [];
   		}
   	});
-
-  	$scope.addReminder = function () {
-  		api.post('reminders',false,false,function (err,response){
-
-  		});
-  	};
-
-  	$scope.updateReminder = function (index) {
-
-  		api.put('reminders',$scope.reminders[index]._id,false,{},function (err,response){
-
-  		});
-
-  	};
-
-  	$scope.deleteReminder = function (index) {
-  		api.delete('reminders',$scope.reminders[index]._id,false,function (err,response){
-
-  		});
-
-  	};
-
 
   }]);
 };

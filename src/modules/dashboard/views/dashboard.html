@@ -1,7 +1,4 @@
       <div id="dashboard" ng:controller="dashboardCtrl">
-        <div class="right">
-          <a href="#" class="button tiny"><i class="fa fa-plus"></i> Add reminder</a>
-        </div>
         <div class="row">
 
           <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -12,42 +9,36 @@
             <table>
               <thead>
                 <tr>
-                  <th width="120">Name</th>
-                  <th width="120">Timezone</th>
-                  <th width="150">Numbers</th>
-                  <th width="150">Email</th>
-                  <th width="150">Action</th>
+                  <th width="260">Network users</th>
+                    <th width="240">Alert type</th>
+                    <th width="300">Next scheduled</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Hitesh Joshi</td>
-                  <td>Eastern</td>
-                  <td>9810959556, 01204112269</td>
-                  <td> hitesh@hatchitup.com</td>
+                <tr ng:repeat="reminder in reminders">
                   <td>
-                    <ul class="button-group">
-                      <li><a href="#" class="button tiny secondary">Edit</a></li>
-                      <li><a href="#" class="button tiny alert">Delete</a></li>
+                    <ul>
+                      <li ng:repeat="recipient in reminder.recipients">
+                        {{network[recipient].first_name}} {{network[recipient].last_name}}
+                      </li>
                     </ul>
                   </td>
-                </tr>
-
-                <tr>
-                  <td>Hitesh Joshi</td>
-                  <td>Eastern</td>
-                  <td>9810959556, 01204112269</td>
-                  <td> hitesh@hatchitup.com</td>
                   <td>
-                    <ul class="button-group">
-                      <li><a href="#" class="button tiny secondary">Edit</a></li>
-                      <li><a href="#" class="button tiny alert">Delete</a></li>
-                    </ul>
+                    <span ng:show="reminder.notify_by.text">text , </span><span ng:show="reminder.notify_by.email">email</span><span ng:show="reminder.notify_by.voice"> <span ng:show="reminder.notify_by.email">, </span>call</span>
+                  </td>
+                  <td>
+                    {{reminder.schedule_date | date:'MMM d, y @ h:mm a'}}
                   </td>
                 </tr>
-
               </tbody>
             </table>
+          </div>          
+
+          <div class="large-12" ng:show="plan.user_id.care_giver.length==0">
+            <h5>You do not have any members in your network, please add some.</h5>
+          </div>
+          <div class="large-12" ng:show="!reminders.length">
+            <h5>No reminders, please add some. Visit <a ui-sref="dashboard.reminders"> Reminder</a> page.</h5>
           </div>
         </div>
 
