@@ -9,7 +9,7 @@ module.exports = function (path) {
         'src/modules/**/*.js',
         'src/components/**/*.js'
       ],
-      tasks: ['jshint', 'clean:bundles', 'webpack:src'],
+      tasks: ['jshint','clean:bundles', 'webpack:src'],
       options: {
         livereload: true
       }

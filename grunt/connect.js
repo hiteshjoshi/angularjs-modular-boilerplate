@@ -12,13 +12,6 @@ module.exports = function (path) {
       options: {
         open: true
       }
-    },
-    docs: {
-      options: {
-        open: {
-          target: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>/docs'
-        }
-      }
     }
   };
 };

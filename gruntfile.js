@@ -10,6 +10,7 @@ module.exports = function (grunt) {
   require('time-grunt')(grunt);
 
   grunt.initConfig({
+
     /** JShint task */
     jshint: require('./grunt/jshint')(path),
 

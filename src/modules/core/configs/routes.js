@@ -13,7 +13,9 @@ module.exports = function (module) {
     '$compileProvider',
     '$filterProvider',
     '$provide',
-    function ($locationProvider, $urlRouterProvider, $stateProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
+    'sessionProvider',
+
+    function ($locationProvider, $urlRouterProvider, $stateProvider, $controllerProvider, $compileProvider, $filterProvider, $provide,session) {
       /** store a reference to various provider functions */
       module.controller = $controllerProvider.register;
       module.directive  = $compileProvider.directive;
@@ -23,21 +25,25 @@ module.exports = function (module) {
       module.service    = $provide.service;
       module.constant   = $provide.constant;
       module.value      = $provide.value;
-      
+
       /** default route */
-      $urlRouterProvider.otherwise('dashboard');
+      console.log(session.$get().exists(),session.$get().is_admin,session.$get().url);
+      $urlRouterProvider.otherwise(session.$get().url);
 
       /** parent route */
-      $stateProvider.state('default', {
+      $stateProvider
+      .state('default', {
         abstract: true,
         url: '',
         templateUrl: 'modules/core/views/layouts/default.html'
       })
-      .state('minimal', {
+      .state('dashboard', {
         abstract: true,
         url: '',
-        templateUrl: 'modules/core/views/layouts/minimal.html'
+        templateUrl: 'modules/core/views/layouts/dashboard.html'
       });
+
+
     }
   ]);
 };

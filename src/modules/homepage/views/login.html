@@ -1,0 +1,30 @@
+<div class="row" data-ng-controller="loginCtrl">
+  <div class="large-6 large-centered columns">
+    <div class="login-box">
+    <h5> Login to your account </h5>
+      <div class="row">
+        <div class="large-12 columns">
+          <form ng:submit="login()">
+            <small class="error" ng:show="errors">{{errorMessage}}</small>
+            <small class="success" ng:show="success">{{successMessage}}</small>
+             <div class="row">
+               <div class="large-12 columns">
+                   <input type="text" ng:model="email" name="username" placeholder="Email address" />
+               </div>
+             </div>
+            <div class="row">
+               <div class="large-12 columns">
+                   <input type="password" ng:model="password" name="password" placeholder="Password" />
+               </div>
+            </div>
+            <div class="row">
+              <div class="large-12 large-centered columns">
+                <input type="submit" class="button expand" value="Log In"/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

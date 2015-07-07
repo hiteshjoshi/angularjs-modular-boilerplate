@@ -1,140 +1,97 @@
-<!-- start: navbar-nocollapse -->
-<div class="navbar-nocollapse clearfix">
-  <!-- start: left nav -->
-  <ul class="nav navbar-nav navbar-left">
-    <li class="visible-xs">
-      <a href="" data-ng-click="core.settings.sidebarLeftOpen = !core.settings.sidebarLeftOpen">
-        <i class="ai ai-menu fs-24 pos-t-5"></i>
-      </a>
-    </li>
-    <li class="hidden-xs">
-      <a href="" data-ng-click="core.settings.sidebarLeftCollapse = !core.settings.sidebarLeftCollapse">
-        <i class="ai fs-24 pos-t-5" ng-class="{'ai-arrow-forward':core.settings.sidebarLeftCollapse || core.screen.sm, 'ai-arrow-back':!core.settings.sidebarLeftCollapse || !core.screen.sm}"></i>
-      </a>
-    </li>
-  </ul>
-  <!--/ end: left nav -->
-
-  <!-- start: navbar form -->
-  <form class="navbar-form navbar-left" name="form-search" data-ng-class="{'open':core.settings.headerSearchForm}">
-    <div class="form-group">
-      <div class="form-control-icon form-control-icon-right">
-        <input type="search" class="form-control" placeholder="Search application...">
-        <span class="the-icon ai ai-search fs-18" data-ng-hide="core.screen.xs"></span>
-        <a href="" class="the-icon ai ai-cancel fs-18" data-ng-show="core.screen.xs" data-ng-click="core.settings.headerSearchForm = !core.settings.headerSearchForm"></a>
-      </div>
-    </div>
-  </form>
-  <!--/ end: navbar form -->
-
-  <!-- start: right nav -->
-  <ul class="nav navbar-nav navbar-right">
-    <li class="hidden-sm hidden-xs">
-      <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Create New</button>
-    </li>
-    <li class="hidden-xs">
-      <a href="" full-screen>
-        <i class="ai fs-24 pos-t-5" data-ng-class="{'ai-fullscreen-exit':core.settings.fullScreen, 'ai-fullscreen':!core.settings.fullScreen}"></i>
-      </a>
-    </li>
-    <li class="dropdown dropdown-custom">
-      <a href="#" class="dropdown-toggle">
-        <span class="bullet bullet-danger"></span>
-        <span class="ai ai-notifications fs-22 pos-t-4"></span>
-      </a>
-      <div class="dropdown-menu np">
-        <!--<div class="box-layout pa-md bdr-b bg-gray-50">
-          <div class="col-xs-8 va-m"><h5 class="fw-sb text-muted">1 Unread Notification</h5></div>
-          <div class="col-xs-4 va-m text-right"><a href="" title="Clear all"><i class="ai ai-clear-all fs-24 pos-t-2"></i></a></div>
-        </div>-->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">1 new notification</h4>
-          </div>
-          <div class="scroll-content" style="height:250px" slim-scroll="{height:'250px'}">
-            <!-- media list -->
-            <ul class="media-list">
-              <li class="media">
-                <div class="media-left text-muted">
-                  <i class="ai ai-receipt fs-24 pos-t-4 text-success"></i>
-                </div>
-                <div class="media-body">
-                  <span class="fs-10 text-muted pull-right">35M</span>
-                  <h5 class="media-heading mb-2 fw-sb"><a href="">You've receive a receipt</a></h5>
-                  <p class="mb-0"><span class="text-muted">Google has sent your monthly payment receipt...</span></p>
-                </div>
-              </li>
-              <li class="media">
-                <div class="media-left text-warning">
-                  <i class="ai ai-note-add fs-24 pos-t-4"></i>
-                </div>
-                <div class="media-body">
-                  <span class="fs-10 text-muted pull-right">2H</span>
-                  <h5 class="media-heading mb-2 fw-sb"><a href="">Readme.md added!</a></h5>
-                  <p class="mb-0"><span class="text-muted">Your Github readme file is successfuly added...</span></p>
-                </div>
-              </li>
-              <li class="media">
-                <a href="" class="media-left pt-xs">
-                  <span class="img-wrapper img-rounded">
-                    <img src="assets/images/avatar/avatar9.jpg">
-                  </span>
-                </a>
-                <div class="media-body">
-                  <span class="fs-10 text-muted pull-right">1H</span>
-                  <h5 class="media-heading mb-2 fw-sb"><a href="">Lunch together?</a></h5>
-                  <p class="mb-0">Ashton Cooley - <span class="text-muted">Nam porttitor scelerisque neque. Nullam nisl...</span></p>
-                </div>
-              </li>
-              <li class="media media-new">
-                <a href="" class="media-left pt-xs">
-                  <span class="img-wrapper img-rounded">
-                    <img src="assets/images/avatar/avatar7.jpg">
-                  </span>
-                </a>
-                <div class="media-body">
-                  <span class="fs-10 text-muted pull-right">5H</span>
-                  <h5 class="media-heading mb-2 fw-sb"><a href=""><span class="bullet bullet-success"></span> Angular is awesome</a></h5>
-                  <p class="mb-0">Brendan Dickerson - <span class="text-muted">Cras pellente. Sed dictum. Proin eget odio...</span></p>
-                </div>
-              </li>
-              <li class="media">
-                <a href="" class="media-left pt-xs">
-                  <span class="img-wrapper img-rounded">
-                    <img src="assets/images/avatar/avatar6.jpg">
-                  </span>
-                </a>
-                <div class="media-body">
-                  <span class="fs-10 text-muted pull-right">1D</span>
-                  <h5 class="media-heading mb-2 fw-sb"><a href="">Another job offer</a></h5>
-                  <p class="mb-0">Joel Bowen - <span class="text-muted">Donec egestas. Duis ac arcu. Nunc mauris...</span></p>
-                </div>
-              </li>
-            </ul>
-            <!--/ media list -->
-          </div>
-        </div>
-      </div>
-    </li>
-    <li class="visible-xs">
-      <a href="" class="dropdown-toggle" data-ng-click="core.settings.headerSearchForm = !core.settings.headerSearchForm">
-        <i class="ai ai-search fs-22 pos-t-4"></i>
-      </a>
-    </li>
-    <li class="dropdown">
-      <a href="" class="dropdown-toggle">
-        <span class="img-wrapper img-rounded"><img src="assets/images/avatar/avatar2.jpg" alt=""></span>
-        <span class="text fw-sb ml-xs hidden-xs">Andrew</span>
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a ui-sref="default.setting.profile"><i class="ai ai-person fs-16 pos-t-1 mr-xs"></i> Profile</a></li>
-        <li><a href=""><i class="ai ai-info-outline fs-16 pos-t-1 mr-xs"></i> Help</a></li>
-        <li class="divider"></li>
-        <li><a ui-sref="minimal.page.signin"><i class="ai ai-lock fs-16 pos-t-1 mr-xs"></i> Logout</a></li>
+<div class="contain-to-grid sticky">
+    <top-bar data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li toggle-top-bar class="menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
-    </li>
-  </ul>
-  <!--/ end: right nav -->
+
+      <top-bar-section>
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="icons"><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-instagram"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-youtube"></i></a></li>
+
+          <li has-dropdown  ng:show="!user">
+            <a ui-sref="default.login">LogIn</a>
+            <ul top-bar-dropdown>
+              <li><a ui-sref="default.signup">SignUp</a></li>
+            </ul>
+          </li>
+          
+          <li has-dropdown  ng:show="user">
+            <a ui-sref="dashboard.index">Dashboard</a>
+            <ul top-bar-dropdown>
+              <li><a ui-sref="default.signup">Reminders</a></li>
+              <li><a ui-sref="default.signup">Members</a></li>
+              <li><a ui-sref="default.signup">E Cards</a></li>
+              <li><a ui-sref="default.signup">Account</a></li>
+              <li><a ui-sref="default.signup">Billing</a></li>
+              <li><a ui-sref="default.signup">Logout</a></li>
+            </ul>
+          </li>
+          
+          <li class="">
+            <a href="#"><i class="fa fa-phone"></i>
+            (877) 502-1062
+            </a>
+          </li>
+          <li class="">
+            <a href="#"><i class="fa fa-inbox"></i>
+            info@caretocall.com
+            </a>
+          </li>
+        </ul>
+      </top-bar-section>
+    </top-bar>
 </div>
-<!--/ end: navbar-nocollapse -->
+
+  <div class="row top_margin">
+    <div class="large-4 columns">
+      <a ui-sref="default.homepage">
+        <img src="assets/images/logo-caretocall.png" id="logo">
+      </a>
+    </div>
+    <div class="large-8 columns">
+
+      <ul class="inline-list right sub_nav">
+        <li><a ui-sref="default.homepage">Home</a></li>
+
+        <li class="active new-dropdown">
+          <a href="#" class="n-dropdown" dropdown-toggle="#about" data-options="is_hover:true" aria-controls="about" aria-expanded="false">About</a>
+          <ul id="about" class="f-dropdown" role="menu" aria-hidden="false" tabindex="-1">
+            <li><a ui-sref="default.who">Who is using CareToCall?</a></li>
+            <li><a ui-sref="default.testimonials">Testimonials</a></li>
+            <li><a href="#">Senior care facts</a></li>
+            <li><a href="#">Affiliate Information (b2b)</a></li>
+          </ul>
+        </li>
+        
+        <li class="new-dropdown">
+          <a href="#" class="n-dropdown" dropdown-toggle="#services" data-options="is_hover:true" aria-controls="services" aria-expanded="false">Services</a>
+          <ul id="services" data-dropdown-content class="f-dropdown" role="menu" aria-hidden="false" tabindex="-1">
+            <li><a ui-sref="default.voice">Live Voice Messages</a></li>
+            <li><a ui-sref="default.medication">Medication Management</a></li>
+            <li><a ui-sref="default.text">Text Messaging</a></li>
+            <li><a ui-sref="default.phone">Reassurance Phone Calls</a></li>
+            <li><a ui-sref="default.private">Personal Private Network</a></li>
+            <li><a ui-sref="default.personalized">Calendar Reminders</a></li>
+          </ul>
+
+        </li>
+        <li><a ui-sref="default.signup">Pricing</a></li>
+        <li><a ui-sref="default.resources">Resources</a></li>
+        <li><a ui-sref="default.faq">FAQ</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a ui-sref="default.contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+

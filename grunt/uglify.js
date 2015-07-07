@@ -9,14 +9,6 @@ module.exports = function (path) {
         src: '*.js',
         dest: 'dist/bundles/'
       }]
-    },
-    docs: {
-      files: [{
-        expand: true,
-        cwd: 'docs/bundles/',
-        src: '*.js',
-        dest: 'docs/bundles/'
-      }]
     }
   };
 };

@@ -12,10 +12,13 @@ module.exports = function (module) {
     '$timeout',
     '$cookies',
     'viewport',
-    function ($scope, $rootScope, $window, $timeout, $cookies, viewport) {
+    '$state',
+    'session',
+    '$urlRouter',    
+    function ($scope, $rootScope, $window, $timeout, $cookies, viewport,$state,session,$urlRouter) {
       /** App Initial Settings */
       $scope.core = {
-        name: 'Application',
+        name: 'CareToCall',
         version: '0.0.1',
         settings: {
           fullScreen: false,
@@ -37,15 +40,61 @@ module.exports = function (module) {
       };
 
       /** hide sidebar and show loading indicator */
-      $rootScope.$on('$stateChangeStart', function () {
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //console.log(toState.name, fromState.name);
+        // if(toState.name === fromState.name){
+        //   console.log('HELP');
+        //   return true;
+        // }
+
+        // $rootScope.title = 'Loading...';
+        
+        // var allowedState = session.allowedState;
+
+        // if(session.exists() === false){
+
+        //   if((allowedState.indexOf(toState.name) > -1)){//current state is allowed to be used;
+
+        //   }
+        //   else{
+        //     event.preventDefault();
+        //     $urlRouter.sync();
+            
+        //     $timeout(function(){
+        //       console.log(session.state,1);
+        //       $state.transitionTo(session.state,{},{
+        //         reload: true, inherit: false, notify: true
+        //       });
+
+        //     });
+        //   }  
+          
+        // }
+        // else{ // if session exists, dont let them go to allowed state
+        //   if((allowedState.indexOf(toState.name) > -1) && (toState.name !== fromState.name) ){//current state is allowed to be used;
+        //     event.preventDefault();
+        //     $urlRouter.sync();
+            
+        //     $timeout(function(){
+        //       console.log(session.state,2);
+        //       $state.transitionTo(session.state,{},{
+        //         reload: true, inherit: false, notify: true
+        //       });
+
+        //     });
+        //   }
+        // }
+
         $scope.core.settings.sidebarLeftOpen = false;
         $scope.core.settings.pageLoading = true;
       });
 
       /** show loading indicator */
-      $rootScope.$on('$stateChangeSuccess', function () {
+      $rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
         $scope.core.settings.pageLoading = false;
+        $rootScope.title = current.title;
       });
+
 
       /** On resize, update viewport variable */
       angular.element($window).on('resize', function () {

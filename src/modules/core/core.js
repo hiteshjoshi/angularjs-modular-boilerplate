@@ -8,9 +8,8 @@ var appCore = angular.module('app.core', [
   'ngCookies',
   'ngAnimate',
   'ngTouch',
-  'ui.bootstrap',
   'ui.router',
-  'ui.jq'
+  'base64'
 ]);
 
 /** routes and run configs */
@@ -22,9 +21,13 @@ require('moduleDir/core/controllers/appsetting')(appCore);
 
 /** directives */
 require('moduleDir/core/directives/indicator/indicator')(appCore);
+require('moduleDir/core/directives/slider/slider')(appCore);
+require('moduleDir/core/directives/datetimepicker/datetimepicker')(appCore);
 
 /** filters */
 require('moduleDir/core/filters/capitalize')(appCore);
 
 /** factories */
 require('moduleDir/core/services/viewport')(appCore);
+require('moduleDir/core/services/restful')(appCore);
+require('moduleDir/core/services/sessionCheck')(appCore);

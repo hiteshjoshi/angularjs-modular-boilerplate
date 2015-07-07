@@ -1,0 +1,55 @@
+<div id="billing" ng:controller="billingCtrl">
+  <p ng:show="!plan.paid">
+    You current do not have any payment method. Please fill the details and use paypal to subscribe.
+  </p>
+
+  <hr/>
+
+  <form>
+  <div class="row">
+    <div class="large-6 columns">
+      <label>Address 1
+        <input type="text" placeholder="Address 1" ng:model="billing_address.address_1"/>
+      </label>
+    </div>
+    <div class="large-6 columns">
+      <label>Address 2
+        <input type="text" placeholder="Address 2" ng:model="billing_address.address_2"/>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns">
+      <label>City
+        <input type="text" placeholder="City" ng:model="billing_address.city"/>
+      </label>
+    </div>
+    <div class="large-4 columns">
+      <label>State
+        <input type="text" placeholder="State" ng:model="billing_address.state"/>
+      </label>
+    </div>
+    <div class="large-4 columns">
+      <label>Postal code
+        <input type="text" placeholder="Postal code" ng:model="billing_address.postal"/>
+      </label>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="large-6 columns">
+      <label>Country
+        <select ng:model="billing_address.country_code">
+          <option value="CA">Canada</option>
+          <option value="US">USA</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <p ng:show="msg" class="lead">
+    {{msg}}
+  </p>
+  <button type="button" class="button secondary" ng:click="addPaypal();" ng:hide="paypalUrl">Subcribe using PayPal</button>
+  <button type="button" class="button primary" ng:click="showPopup(paypalUrl);" ng:show="paypalUrl">Click here to subscribe</button>
+</form>
+</div>

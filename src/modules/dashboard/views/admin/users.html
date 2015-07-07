@@ -1,0 +1,84 @@
+      <div id="dashboard" ng:controller="adminCtrl">
+        <div class="right" ng:init="getUsers();">
+          <a ng:click="show_form=true" class="button tiny" ng:hide="show_form"><i class="fa fa-plus"></i> Add admin</a>
+          <a ng:click="show_form=false" class="button tiny" ng:show="show_form"><i class="fa fa-minus"></i> Show users</a>
+        </div>
+
+        <div class="row">
+
+          <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+          <div class="large-12" ng:show="show_form">
+            <h4>Add new member</h4>
+            <hr>
+            <form ng:submit="addUser()">
+              <div class="row">
+                <div class="large-6 columns">
+                  <label>First name
+                    <input type="text" ng:model="newUser.first_name" placeholder="First name">
+                  </label>
+                </div>
+                <div class="large-6 columns">
+                  <label>Last name
+                    <input type="text" ng:model="newUser.last_name" placeholder="Last name">
+                  </label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="large-6 columns">
+                  <label>Email address
+                    <input type="text" ng:model="newUser.email" placeholder="Email address">
+                  </label>
+                </div>
+
+                <div class="large-6 columns">
+                  <label>Password
+                    <input type="password" ng:model="newUser.password" placeholder="A secure password.">
+                  </label>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="large-12 columns">
+                  <label>
+                    <button class="button right expand"> Save</button>
+                  </label>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="large-12" ng:show="users.length" ng:hide="show_form">
+            <h4>All your users</h4>
+            <hr/>
+            <table>
+              <thead>
+                <tr>
+                  <th width="120">Name</th>
+                  <th width="100">Email</th>
+                  <th width="120">Plan</th>
+                  <th width="100">Type</th>
+                  <th width="200">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng:repeat="user in users">
+                  <td>{{user.firstName}} {{user.lastName}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.plan.name}}</td>
+                  <td>{{user.is_admin?'Admin':'General'}}</td>
+                  <td>
+                    <ul class="button-group">
+                      <li><a ng:click="viewUser(user._id);" class="button tiny secondary">View</a></li>
+                      <li><a ng:click="disableUser(user._id);" class="button tiny alert">Disable</a></li>
+                    </ul>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>

@@ -1,0 +1,71 @@
+<div ria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <div class="row">
+      <div class="large-10 columns large-centered">
+        <form ng:submit="addPlan()">
+          <div class="row">
+            <div class="large-12 columns">
+              <label>Name
+                <input type="text" ng:model="newPlan.name" placeholder="Plan name" />
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <label>Description
+                <textarea name="name" ng:model="newPlan.description" rows="2" cols="10" placeholder="Plan description"></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="large-3 columns">
+              <label>Allowed emails
+                <input type="text" ng:model="newPlan.emails" placeholder="Number of allowed emails" />
+              </label>
+            </div>
+            <div class="large-3 columns">
+              <label>Allowed texts
+                <input type="text" ng:model="newPlan.text" placeholder="Number of allowed texts" />
+              </label>
+            </div>
+            <div class="large-3 columns">
+              <label>Allowed Voice calls
+                <input type="text" ng:model="newPlan.voice" placeholder="Number of allowed calls" />
+              </label>
+            </div>
+            <div class="large-3 columns">
+              <label>Allowed Members
+                <input type="text" ng:model="newPlan.members" placeholder="Number of allowed members" />
+              </label>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="large-6 columns">
+              <label>
+                Plan price
+                <input type="text" name="price" ng:model="newPlan.price"  placeholder="Plan price in USD">
+              </label>
+            </div>
+            <div class="large-6 columns">
+              <label>Plan payment type
+                <select ng:model="newPlan.plan_type">
+                  <option value="1">Monthly</option>
+                  <option value="2">Yearly</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <button type="button" class="button small" ng:hide="activateButtonShow" ng:click="addPlan();">Create Paypal plan</button>
+              <button type="button" class="button small" ng:show="activateButtonShow" ng:click="activatePlan();">Activate this plan</button>
+            </div>
+            {{msg}}
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<a class="close-reveal-modal" ng:click="cancel()">&#215;</a>
