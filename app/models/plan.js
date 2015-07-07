@@ -56,15 +56,15 @@ var Reminder = new Schema({
       text:{ type: Boolean, default: true },
       voice:{ type: Boolean, default: true }
     },
-    recipients:{type:[],default:[]},//Schema.ObjectId
-    text_sms : { type: String, default: '' },
-    email : { type: String, default: '' },
-    number_voice_recording:{ type: Number, default: '' },
-    schedule_date : { type: Date},
-    //start: { type: Date},
-    //schedule_time : { type: String, default: '' },
-    recurring : { type: Boolean, default: true },
-    recurring_frequency : { type: Number, default: 1 } //1=weekly, 2=monthly
+  recipients:{type:[],default:[]},//Schema.ObjectId
+  text_sms : { type: String, default: '' },
+  email : { type: String, default: '' },
+  number_voice_recording:{ type: Number, default: '' },
+  schedule_date : { type: Date},
+  //start: { type: Date},
+  //schedule_time : { type: String, default: '' },
+  recurring : { type: Boolean, default: true },
+  recurring_frequency : { type: Number, default: 1 } //1=weekly, 2=monthly
 });
 
 

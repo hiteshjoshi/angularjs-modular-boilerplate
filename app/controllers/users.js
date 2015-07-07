@@ -114,8 +114,6 @@ module.exports.controller = function(router) {
 		.delete(session.checkToken,methods.removeNetwork)
 		.put(session.checkToken,methods.updateNetwork)
 
-
-
 	router.route('/reminders')
 		.get(session.checkToken,methods.getReminders)
 		.post(session.checkToken,methods.addReminder);
@@ -405,7 +403,8 @@ methods.deleteReminder = function(req,res){
 =============================================*/
 
 methods.getReminders = function(req,res){
-	Reminder.find({user:req.user._id})
+	var date = new Date();
+	Reminder.find({user:req.user._id,schedule_date:{"$gte":date}})
 	.sort('schedule_date')
 	.lean()
 	.exec(function(err,reminders){
@@ -557,6 +556,7 @@ methods.addNetwork = function(req,res){
 	}
 	else{
 
+
 		//Database functions here
 		var newNetwork = {
 			first_name : req.param('first_name'),
@@ -567,7 +567,7 @@ methods.addNetwork = function(req,res){
 		    email_address:req.param('email_address'),
 		    preferred_number:req.param('preferred_number')//1 = mobile or 2= landline
 		};
-		PlanUsage.findOne({user_id:req.user._id}).populate('plan_id').lean()
+		PlanUsage.findOne({user_id:req.user._id}).populate('plan_id').populate('user_id','care_giver').lean()
 		.exec(function(err,plandata){
 
 			if(err) {
@@ -580,43 +580,64 @@ methods.addNetwork = function(req,res){
 	  		}
 	  		else{
 
-				if(plandata.members < plandata.plan_id.members) //if added members are less than allowed
-				{
-					User.findOneAndUpdate({_id:req.user._id},{$push:{care_giver:newNetwork}})
-					.exec(function(err,data){
-						
-						if(err) {
-							response.error = true;
-							response.code = 10901;
-							response.userMessage = 'There was a problem with the request, please try again'
+	  			var already_registered =false;
+
+	  			async.mapSeries(plandata.user_id.care_giver,
+	  				function(item,cb){
+	  					if(item.email_address == req.param('email_address'))
+	  						already_registered = true;
+	  					cb(false,false);
+	  				},
+
+	  				function(err,results){
+	  					if(already_registered){
+			  				response.error = true;
+							response.code = 10401;
+							response.userMessage = 'Email already exists in your network';
 							response.data = null;
 							response.errors = null;
 							return (SendResponse(res));
-				  		}
-				  		else{
+			  			}
+			  			else{
 
-				  			PlanUsage.findOneAndUpdate({user_id:req.user._id},{$inc:{members:1}})
-				  			.populate('user_id','care_giver')
-				  			.lean().exec(function(err,plandata){
-								response.data = {
-									members:plandata.user_id.care_giver,
-									total:plandata.user_id.care_giver.length,
-									allowed:plandata.plan_id.members
-								};
+							if(plandata.members < plandata.plan_id.members) //if added members are less than allowed
+							{
+								User.findOneAndUpdate({_id:req.user._id},{$push:{care_giver:newNetwork}})
+								.exec(function(err,data){
+									
+									if(err) {
+										response.error = true;
+										response.code = 10901;
+										response.userMessage = 'There was a problem with the request, please try again'
+										response.data = null;
+										response.errors = null;
+										return (SendResponse(res));
+							  		}
+							  		else{
+
+							  			PlanUsage.findOneAndUpdate({user_id:req.user._id},{$inc:{members:1}})
+							  			.populate('user_id','care_giver')
+							  			.lean().exec(function(err,plandata){
+											response.data = {
+												members:plandata.user_id.care_giver,
+												total:plandata.user_id.care_giver.length,
+												allowed:plandata.plan_id.members
+											};
+											return (SendResponse(res));
+										});
+							  		}
+
+								});
+							}
+							else
+							{
+								response.data = null;
+								response.err = true;
+								response.userMessage = 'You network is full. Please delete some or upgrade to higher plan';
 								return (SendResponse(res));
-							});
-				  		}
-
-					});
-				}
-				else
-				{
-					response.data = null;
-					response.err = true;
-					response.userMessage = 'You network is full. Please delete some or upgrade to higher plan';
-					return (SendResponse(res));
-				}
-
+							}
+						}
+	  				});
 	  		}
 		});
 	}
