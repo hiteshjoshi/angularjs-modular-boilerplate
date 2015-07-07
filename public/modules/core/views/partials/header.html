@@ -28,12 +28,12 @@
           <li has-dropdown  ng:show="user">
             <a ui-sref="dashboard.index">Dashboard</a>
             <ul top-bar-dropdown>
-              <li><a ui-sref="default.signup">Reminders</a></li>
-              <li><a ui-sref="default.signup">Members</a></li>
-              <li><a ui-sref="default.signup">E Cards</a></li>
-              <li><a ui-sref="default.signup">Account</a></li>
-              <li><a ui-sref="default.signup">Billing</a></li>
-              <li><a ui-sref="default.signup">Logout</a></li>
+              <li><a ui-sref="dashboard.reminders">Reminders</a></li>
+              <li><a ui-sref="dashboard.members">Members</a></li>
+              <li><a ui-sref="dashboard.ecards">E Cards</a></li>
+              <li><a ui-sref="dashboard.account">Account</a></li>
+              <li><a ui-sref="dashboard.billing">Billing</a></li>
+              <li><a ui-sref="default.logout" ng:click="logout()">Logout</a></li>
             </ul>
           </li>
           
