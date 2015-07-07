@@ -277,7 +277,7 @@ methods.getUserbilling = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
 	.populate('plan_id','paypalId price paid members name processed')
-	.populate('user_id','firstName lastName email_verified name email billing_details')
+	.populate('user_id','firstName mobile landline preferred_number lastName email_verified name email billing_details')
 	.lean()
 	.exec(function(err,plan){
 		if(err) {
@@ -1169,10 +1169,11 @@ methods.getUser = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
 	.populate('plan_id','paypalId price paid members name processed')
-	.populate('user_id','firstName lastName email_verified name email billing_details')
+	.populate('user_id','firstName lastName landline mobile preferred_number email_verified email billing_details')
 	.lean()
 	.exec(function(err,plan){
 		if(err) {
+			console.log(err);
 			response.error = true;
 			response.code = 10901;
 			response.userMessage = 'There was a problem with the request, please try again'
@@ -1235,8 +1236,8 @@ methods.updateUser = function(req,res){
 			},
 			firstName : req.param('first_name'),
 			lastName : req.param('last_name'),
-			landline : parseInt(req.param('landline')),
-			mobile : parseInt(req.param('mobile')),
+			landline : (req.param('landline')),
+			mobile : (req.param('mobile')),
 			preferred_number : parseInt(req.param('preferred_number'))
 		})
 		.exec(function(err,user){
