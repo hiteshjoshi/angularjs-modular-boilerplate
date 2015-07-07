@@ -1169,7 +1169,7 @@ methods.getUser = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
 	.populate('plan_id','paypalId price paid members name processed')
-	.populate('user_id','firstName lastName landline mobile preferred_number email_verified email billing_details')
+	.populate('user_id','firstName lastName landline mobile preferred_number care_giver email_verified email billing_details')
 	.lean()
 	.exec(function(err,plan){
 		if(err) {
