@@ -1,4 +1,6 @@
-@import "bootstrap-mincer";
-@import "bootstrap";
-//custom CSS for ttagit.
-@import "custom";
+//pureio sass https://github.com/fourseven/pure-sass
+@import "pure/all";
+//custom CSS.
+//use compass css3
+@import "compass";
+@import "custom/all";

@@ -4,7 +4,7 @@ module.exports = function (path) {
   return {
     app: {
       files: {
-        'src/assets/styles/app.css': 'src/assets/styles/less/app.less'
+        'src/assets/styles/app.css': 'src/assets/styles/less/semantic.less'
       }
     },
 

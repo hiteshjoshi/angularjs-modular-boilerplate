@@ -1,0 +1,147 @@
+//enjoycss.com
+
+.primary {
+  display: inline-block;
+  @include box-sizing(content-box);
+  cursor: pointer;
+  margin: 0 11px 11px 0;
+  padding: 13px 6%;
+  border: none;
+  @include border-radius(4px);
+  font: normal 17px/normal "Lato", Helvetica, sans-serif;
+  color: rgba(255,255,255,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  @include background(#2980b9);
+  @include box-shadow(1px 1px 3px 1px rgba(0,0,0,0.2) );
+  @include text-shadow(-1px -1px 0 rgba(15,73,168,0.66) );
+  @include transition(all 300ms cubic-bezier(0.42, 0, 0.58, 1));
+}
+
+.primary:hover {
+  @include background(#3498db);
+}
+
+
+.primary:active {
+  @include background(linear-gradient(180deg, #3498db 0, #5ca8db 100%));
+  background-position: 50% 50%;
+  @include background-origin(padding-box);
+  @include background-clip(border-box);
+  @include background-size(auto auto);
+}
+
+.dark {
+  display: inline-block;
+  @include box-sizing(content-box);
+  cursor: pointer;
+  margin: 0 11px 11px 0;
+  padding: 13px 6%;
+  border: none;
+  @include border-radius(4px);
+  font: normal 17px/normal "Lato", Helvetica, sans-serif;
+  color: rgba(255,255,255,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  @include background(#2c3e50);
+  @include box-shadow(1px 1px 3px 1px rgba(0,0,0,0.2) );
+  @include text-shadow(0 0 0 rgba(15,73,168,0.66) );
+  @include transition(all 300ms cubic-bezier(0.42, 0, 0.58, 1));
+}
+
+
+.dark:hover {
+  @include background(#34495e);
+  @include text-shadow(-1px -1px 0 rgba(15,73,168,0.66) );
+}
+
+
+.dark:active {
+  @include background(linear-gradient(180deg, #34495e 0, #45596d 100%));
+  background-position: 50% 50%;
+  @include background-origin(padding-box);
+  @include background-clip(border-box);
+  @include background-size(auto auto);
+}
+
+
+.success {
+  display: inline-block;
+  @include box-sizing(content-box);
+  cursor: pointer;
+  margin: 0 11px 11px 0;
+  padding: 13px 6%;
+  border: none;
+  @include border-radius(4px);
+  font: normal 17px/normal "Lato", Helvetica, sans-serif;
+  color: rgba(255,255,255,0.9);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  @include background(#16a085);
+  @include box-shadow(1px 1px 3px 1px rgba(0,0,0,0.2) );
+  @include text-shadow(0 0 0 rgba(15,73,168,0.66) );
+  @include transition(all 300ms cubic-bezier(0.42, 0, 0.58, 1));
+}
+
+
+.success:hover {
+  @include background(#1abc9c);
+  @include text-shadow(-1px -1px 0 rgba(15,73,168,0.66) );
+}
+
+
+.success:active {
+  @include background(linear-gradient(180deg, #1abc9c 0, #3ed8b9 100%));
+  background-position: 50% 50%;
+  @include background-origin(padding-box);
+  @include background-clip(border-box);
+  @include background-size(auto auto);
+}
+
+
+
+.input {
+  display: inline-block;
+  @include box-sizing(content-box);
+  padding: 10px 20px;
+  border: 1px solid #d9dadb;
+  @include border-radius(4px);
+  font: normal 16px/normal "Lato", Helvetica, sans-serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  @include box-shadow(0 0 0 0 rgba(0,0,0,0.2) inset);
+  @include text-shadow(1px 1px 0 rgba(255,255,255,0.66) );
+  @include transition(all 200ms cubic-bezier(0.42, 0, 0.58, 1));
+}
+
+
+.input:hover {
+  border: 1px solid rgba(170,170,170,1);
+  @include background(rgba(239,239,239,0.05));
+}
+
+
+.input:focus {
+  border: 1px solid rgba(109,109,109,1);
+  @include background(rgb(255,255,255));
+}
+
+
+.well {
+  display: inline-block;
+  @include box-sizing(content-box);
+  padding: 16px 20px;
+  border: 1px solid #d9dadb;
+  @include border-radius(4px);
+  font: normal 15px/normal "Open Sans", Helvetica, sans-serif;
+  color: rgba(58,58,58,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  @include background(rgb(255,255,255));
+  @include box-shadow(0 0 0 0 rgba(0,0,0,0.2) inset);
+  @include text-shadow(1px 1px 0 rgba(255,255,255,0.66) );
+  @include transition(all 200ms cubic-bezier(0.42, 0, 0.58, 1));
+}

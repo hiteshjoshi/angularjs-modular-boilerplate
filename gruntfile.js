@@ -41,9 +41,6 @@ module.exports = function (grunt) {
     /** Cssmin task */
     cssmin: require('./grunt/cssmin')(path),
 
-    /** ngAnnotate task */
-    ngAnnotate: require('./grunt/ngannotate')(path),
-
     /** uglify task */
     uglify: require('./grunt/uglify')(path),
 
@@ -60,13 +57,21 @@ module.exports = function (grunt) {
    */
   grunt.registerTask('serve', [
     'jshint',
-    'sass',
-    //'less',
+    'less',
     'clean:bundles',
     'webpack:src',
     'connect:src',
     'watch'
   ]);
+  
+  grunt.registerTask('build-css', [
+    'less',
+    'clean:dist',
+    'copy:dist',
+    'copy:distCss',
+    'cssmin:dist'
+  ]);
+  
 
   /**
    * dist task
@@ -78,7 +83,7 @@ module.exports = function (grunt) {
 
   /** if --min flag is present */
   if(argv.min) {
-    distTask.push('cssmin:dist', 'ngAnnotate:dist', 'uglify:dist', 'imagemin');
+    distTask.push('cssmin:dist', 'uglify:dist', 'imagemin');
   }
 
   grunt.registerTask('dist', distTask);
