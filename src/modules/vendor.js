@@ -8,4 +8,4 @@ require('lodash');
 require('expose?jQuery!expose?$!jquery');
 require('imports?this=>window!modernizr');
 require('componentDir/semantic');
-require('expose?mithril!expose?m!mithril');
+//require('expose?m!mithril');

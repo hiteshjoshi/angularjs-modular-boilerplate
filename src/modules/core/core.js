@@ -6,4 +6,5 @@
  */
 
 /** routes configs */
-require('moduleDir/core/routes')(m);
+var m = require('mithril');
+require('./routes')(m);

@@ -17,6 +17,9 @@ module.exports = function (grunt) {
     /** Less task */
     less: require('./grunt/less')(path),
 
+    /** msx task */
+    msx: require('./grunt/msx')(path),
+
     /** JShint task */
     jshint: require('./grunt/jshint')(path),
 
@@ -56,6 +59,7 @@ module.exports = function (grunt) {
    * @usage: grunt serve
    */
   grunt.registerTask('serve', [
+    'msx:app',
     'jshint',
     'less',
     'clean:bundles',
