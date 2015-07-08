@@ -21,6 +21,7 @@
   "globals": {
     "jQuery": true,
     "angular": true,
+    "m": true,
     "define": true,
     "google": true,
     "screenfull": true,

@@ -25,6 +25,14 @@ module.exports = function (path) {
       ],
       dest: 'dist/'
     },
+    distCss: {
+      expand: false,
+      cwd: 'src/',
+      src: [
+        '!**/*.less'
+      ],
+      dest: 'dist/'
+    },
     docs: {
       expand: true,
       cwd: 'src/',
