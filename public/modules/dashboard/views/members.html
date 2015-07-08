@@ -3,7 +3,7 @@
     <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add member</a>
     <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show members</a>
   </div>
-
+  
   <div class="row">
     <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
   </div>

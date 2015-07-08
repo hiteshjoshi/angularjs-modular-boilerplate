@@ -452,7 +452,12 @@ methods.addReminder = function(req,res){
 	req.checkBody('recipients', 'Recipients are required.').notEmpty();
 	req.checkBody('schedule_date', 'Schedule date is required.').notEmpty();
 	//req.checkBody('schedule_time', 'Schedule time is required.').notEmpty();
-	req.checkBody('number_voice_recording','A valid 10 digits mobile number is required.').phone();
+	if(req.param('notify_by_voice'))
+		req.checkBody('number_voice_recording','A valid 10 digits mobile number is required.').phone();
+	if(req.param('notify_by_text'))
+		req.checkBody('text_sms','A 255 character text message is required.').notEmpty();
+	if(req.param('notify_by_email'))
+		req.checkBody('email','Email message is required.').notEmpty();
 
 	
 	var errors = req.validationErrors(true);
@@ -597,7 +602,12 @@ methods.addNetwork = function(req,res){
 							response.code = 10401;
 							response.userMessage = 'Email already exists in your network';
 							response.data = null;
-							response.errors = null;
+							response.errors = {
+								email:{
+									msg : "Email address "+req.param('email_address')+" already exists in your network",
+									param:"email"
+								}
+							};
 							return (SendResponse(res));
 			  			}
 			  			else{

@@ -79,7 +79,7 @@ module.exports = function (app, passport) {
         phone: function(value) {
           var number_format = "(999)999-9999|999-999-9999|9999999999";
           var number_regex = RegExp("^(" +
-                         formats
+                         number_format
                            .replace(/([\(\)])/g, "\\$1")
                            .replace(/9/g,"\\d") +
                          ")$");
