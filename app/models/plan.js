@@ -42,7 +42,9 @@ var PlanUsage = new Schema({
 	},
 	members : {type:Number,default:1},
 	paid:{type:Boolean,default:false},
-  processed:{type:Boolean,default:false}
+  processed:{type:Boolean,default:false},
+  hash:{type:String,default:''},
+  hex:{type:String,default:''}
 });
 
 

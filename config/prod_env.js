@@ -36,6 +36,9 @@ module.exports = {
     'host': 'api.paypal.com',
     'port': '',
     'client_id': 'AYEuHDPWGFsj6hfct5W-ikizJ-MMqRIjoB4r8Drfo1fWZyvSHXW4Lzh5rH1BBcA1eip9s_ZBkQKDl0SP',
-    'client_secret': 'EFXv3BgirJiuynXRLYZDkn0dfA7Hv4mJ4osqPjps_Ua0a5y31ghh1MezT9cFnBMdYpAM_f8TXjbulVBS'
+    'client_secret': 'EFXv3BgirJiuynXRLYZDkn0dfA7Hv4mJ4osqPjps_Ua0a5y31ghh1MezT9cFnBMdYpAM_f8TXjbulVBS',
+    'username':'lorna_api1.caretocall.com',
+    'password':'BELNK7NC2STDUNHN',
+    'signature':'AFcWxV21C7fd0v3bYYYRCpSSRl31ApGwpTUvSNOBYVqdlcujjVrvKx12'
   }
 };

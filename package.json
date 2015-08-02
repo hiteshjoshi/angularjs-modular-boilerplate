@@ -39,6 +39,7 @@
     "passport": "^0.2.1",
     "passport-facebook": "^1.0.3",
     "passport-local": "^1.0.0",
+    "paypal-recurring2": "^1.1.5",
     "paypal-rest-sdk": "^1.5.2",
     "smtp-connection": "^1.1.0",
     "time": "^0.11.2",

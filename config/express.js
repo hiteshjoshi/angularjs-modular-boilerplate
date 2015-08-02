@@ -87,7 +87,7 @@ module.exports = function (app, passport) {
             return number_regex.test(value);
         }
      }
-    }));
+  }));
 
   app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {

@@ -16,8 +16,9 @@ var mail = require('mail');
 var jwt = require('jsonwebtoken');
 var _ = require('lodash');
 var async = require('async');
-var paypal = require('paypal-rest-sdk');
-	paypal.configure(config.paypal);
+var crypto = require('crypto');
+var Paypal = require('paypal-recurring2');
+	paypal = new Paypal(config.paypal,true);
 
 /* the response object for API
 	error : true / false
@@ -129,8 +130,11 @@ module.exports.controller = function(router) {
 	router.route('/plans')
 			.get(methods.getPlans);
 
-	router.route('/paypal/payments')
-			.get(methods.confirmPaypalSubscription);
+	router.route('/plans/:plan_usage_id/:salt/:hex/paypal/success')
+			.get(methods.paypalSuccess)
+
+	router.route('/plans/:plan_usage_id/:salt/:hex/paypal/fail')
+			.get(methods.paypalFail)
 
 
 
@@ -148,6 +152,35 @@ module.exports.controller = function(router) {
 	  		
   			req.reminder = reminder;
   			return next();
+  		
+	  	}
+
+	  });
+
+	});
+
+	router.param('plan_usage_id', function (req, res, next, id) {
+		//@TODO : Add mongoose _id regex validation.
+	  PlanUsage.findOne({_id:id}).populate('plan_id').lean().exec(function(err,plan){
+
+	  	if(err){
+	  	  response.error = true;
+	  	  response.code = 10901;
+	  	  response.userMessage = 'There was a problem with the request, please try again.'
+	  	  return res.send(response.userMessage);
+	  	}
+	  	else{
+	  		
+	  		if(plan.hex == req.params.hex && plan.salt == req.params.hash){
+	  			req.PlanUsage = plan;
+	  			return next();
+	  		}
+	  		else{
+	  			response.error = true;
+				response.code = 10903;
+				response.userMessage = 'There was a problem with the request, please try again.'
+				return res.send(response.userMessage);
+	  		}
   		
 	  	}
 
@@ -242,29 +275,38 @@ methods.checkAdmin = function(req,res,next){
 }
 
 
-/*===========================================
-***   Payment confirmation for paypal  ***
-=============================================*/
+/*==============================================
+***   When paypal returns successful url  ***
+================================================*/
 
-methods.confirmPaypalSubscription = function(req,res){
-	//console.log(req.body,req.query);
-	var paymentToken = req.query.token;
-
-	paypal.billingAgreement.execute(paymentToken, {}, function (error, billingAgreement) {
-	    if (error) {
-	    	response.userMessage = 'Error using paypal payments';
-	    	response.error = true;
-	        return SendResponse(res);
-	    } else {
-	        console.log("Billing Agreement Execute Response");
-	        console.log(JSON.stringify(billingAgreement));
-	        response.data = billingAgreement
-	        return SendResponse(res);
-	    }
+methods.paypalSuccess = function(req,res){
+	var params, payerid, startdate, token, _ref, _ref2;
+	token = (_ref = req.query.token) != null ? _ref : false;
+	payerid = (_ref2 = req.query['PayerID']) != null ? _ref2 : false;
+	if (!token || !payerid) {
+		return res.send("Invalid request.", 500);
+	}
+	startdate = new Date();
+	startdate.setMonth(startdate.getMonth() + 1);
+	params = {
+		AMT: req.PlanUsage.plan_id.price,
+		DESC: req.PlanUsage.plan_id.description,
+		BILLINGPERIOD: "Month",
+		BILLINGFREQUENCY: 1,
+		PROFILESTARTDATE: startdate
+	};
+	return paypal.createSubscription(token, payerid, params, function(error, data) {
+	if (!error) {
+		PlanUsage.findOneAndUpdate({_id:req.PlanUsage._id},{paid:true}).exec(function(err,plan){
+			return res.send('<strong>Thanks for subscribing to our service!</strong><br/><br/>\
+		  	<p>You may now close this window.</p>');
+		});
+		} else {
+		  return res.send(error + "<br/>Please come back later");
+		}
 	});
-};
+}
 
-/*-----  End of confirmPaypalSubscription  ------*/
 
 
 /*========================================
@@ -298,6 +340,22 @@ methods.getUserbilling = function(req,res){
 
 /*-----  End of getUserbilling  ------*/
 
+
+/*==============================================
+***   Method where user subsribes paypal  ***
+================================================*/
+
+methods.paypalFail = function(req,res){
+	var token = (req.query.token || null);
+	if (!token) {
+		return res.send("Invalid request.", 500);
+	}
+	else
+		return res.send("Seems like there was an error. Please close this window and try again.");
+}
+
+/*-----  End of paypalFail  ------*/
+
 /*========================================
 ***   Let user subscribe to paypal  ***
 ==========================================*/
@@ -306,7 +364,7 @@ methods.paypalSubscribe = function(req,res){
 
 	PlanUsage
 	.findOne({user_id:req.user._id})
-	.populate('plan_id','name paypalId description')
+	.populate('plan_id','name paypalId description price')
 	.exec(function(err,plan){
 		if(plan.paid){
 			response.userMessage = 'You are already subscribed';
@@ -319,53 +377,59 @@ methods.paypalSubscribe = function(req,res){
 			function pad(n){return n<10 ? '0'+n : n}
 
 			User.findOneAndUpdate({_id:req.user._id},{billing_details:req.body}).lean().exec();
+			var salt = Math.round((new Date().valueOf() * Math.random())) + '';
+			plan.hash = salt
 
-			var billingAgreementAttributes = {
-			    "name": "Agreement for "+ plan.plan_id.name,
-			    "description": plan.plan_id.description,
-			    "start_date": startDate.getUTCFullYear()+'-'
-						      + pad(startDate.getUTCMonth()+1)+'-'
-						      + pad(startDate.getUTCDate())+'T'
-						      + pad(startDate.getUTCHours())+':'
-						      + pad(startDate.getUTCMinutes())+':'
-						      + pad(startDate.getUTCSeconds())+'Z',
-			    "plan": {
-			        "id": plan.plan_id.paypalId
-			    },
-			    "payer": {
-			        "payment_method": "paypal"
-			    },
-			    "shipping_address": {
-			        "line1": req.body.address_1,
-			        "line2": req.body.address_2,
-			        "city": req.body.city,
-			        "state": req.body.state,
-			        "postal_code": req.body.postal,
-			        "country_code": req.body.country_code
-			    }
+			var hexcode = crypto
+	        .createHmac('sha1', salt)
+	        .update(String(req.user._id))
+	        .digest('hex');
+
+	        plan.hex = hexcode;
+
+			// var billingAgreementAttributes = {
+			//     "name": "Agreement for "+ plan.plan_id.name,
+			//     "description": plan.plan_id.description,
+			//     "start_date": startDate.getUTCFullYear()+'-'
+			// 			      + pad(startDate.getUTCMonth()+1)+'-'
+			// 			      + pad(startDate.getUTCDate())+'T'
+			// 			      + pad(startDate.getUTCHours())+':'
+			// 			      + pad(startDate.getUTCMinutes())+':'
+			// 			      + pad(startDate.getUTCSeconds())+'Z',
+			//     "plan": {
+			//         "id": plan.plan_id.paypalId
+			//     },
+			//     "payer": {
+			//         "payment_method": "paypal"
+			//     },
+			//     "shipping_address": {
+			//         "line1": req.body.address_1,
+			//         "line2": req.body.address_2,
+			//         "city": req.body.city,
+			//         "state": req.body.state,
+			//         "postal_code": req.body.postal,
+			//         "country_code": req.body.country_code
+			//     }
+			// };
+
+			var params;
+			params = {
+				"RETURNURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/success",
+				"CANCELURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/fail",
+				"L_BILLINGAGREEMENTDESCRIPTION0": plan.plan_id.description,
+				"PAYMENTREQUEST_0_AMT": plan.plan_id.price
 			};
-			paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement) {
-				console.log(error,billingAgreement,billingAgreementAttributes);
+			paypal.authenticate(params, function(error, data, url) {
 				if (error) {
-                    //console.log(error.response.message);
-                    //throw error;
                     response.error = true;
                     response.userMessage = error.response.message;
                     return (SendResponse(res));
                 } else {
-                    for (var index = 0; index < billingAgreement.links.length; index++) {
-                        if (billingAgreement.links[index].rel === 'approval_url') {
-                            var approval_url = billingAgreement.links[index].href;
-                            //res.redirect(approval_url);
-
-                            response.data = approval_url;
-                            plan.processed = true;
-                            plan.save();
-                            return (SendResponse(res));
-                        }
-                    }
+                	response.data = url;
+                    plan.processed = true;
+                    plan.save();
+                    return (SendResponse(res));
                 }
-
 			});
 		}
 	})
