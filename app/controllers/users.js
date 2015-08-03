@@ -423,8 +423,8 @@ methods.paypalSubscribe = function(req,res){
 
 			var params;
 			params = {
-				"RETURNURL": "http://careapi.demo.hatchitup.com/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/success",
-				"CANCELURL": "http://careapi.demo.hatchitup.com/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/fail",
+				"RETURNURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/success",
+				"CANCELURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/fail",
 				"L_BILLINGAGREEMENTDESCRIPTION0": plan.plan_id.description,
 				"PAYMENTREQUEST_0_AMT": plan.plan_id.price
 			};
