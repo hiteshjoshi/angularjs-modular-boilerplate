@@ -44,7 +44,8 @@ var PlanUsage = new Schema({
 	paid:{type:Boolean,default:false},
   processed:{type:Boolean,default:false},
   hash:{type:String,default:''},
-  hex:{type:String,default:''}
+  hex:{type:String,default:''},
+  paypalId:{type:String,default:''}
 });
 
 

@@ -20,6 +20,9 @@ var crypto = require('crypto');
 var Paypal = require('paypal-recurring2');
 	paypal = new Paypal(config.paypal,true);
 
+
+
+
 /* the response object for API
 	error : true / false
 	code : contains any error code
@@ -296,8 +299,9 @@ methods.paypalSuccess = function(req,res){
 		PROFILESTARTDATE: startdate
 	};
 	return paypal.createSubscription(token, payerid, params, function(error, data) {
+		console.log(data);
 	if (!error) {
-		PlanUsage.findOneAndUpdate({_id:req.PlanUsage._id},{paid:true}).exec(function(err,plan){
+		PlanUsage.findOneAndUpdate({_id:req.PlanUsage._id},{paid:true,paypalId:data["PROFILEID"]}).exec(function(err,plan){
 			return res.send('<strong>Thanks for subscribing to our service!</strong><br/><br/>\
 		  	<p>You may now close this window.</p>');
 		});
@@ -316,7 +320,7 @@ methods.paypalSuccess = function(req,res){
 methods.getUserbilling = function(req,res){
 	PlanUsage
 	.findOne({user_id:req.user._id})
-	.populate('plan_id','paypalId price paid members name processed')
+	.populate('plan_id','paypalId price paid members name processed reminder')
 	.populate('user_id','firstName mobile landline preferred_number lastName email_verified name email billing_details')
 	.lean()
 	.exec(function(err,plan){
@@ -329,11 +333,16 @@ methods.getUserbilling = function(req,res){
 			return (SendResponse(res));
   		}
   		else{
-  			response.data = {
-  				user:req.user,
-  				plan:plan
-  			};
-  			return (SendResponse(res));
+  			console.log(plan);
+  			paypal.getSubscription(plan.paypalId,function(error,data){
+  				console.log(error);
+  				response.data = {
+	  				user:req.user,
+	  				plan:plan,
+	  				paypal:data
+	  			};
+	  			return (SendResponse(res));
+  			})
   		}
 	});
 }
@@ -414,8 +423,8 @@ methods.paypalSubscribe = function(req,res){
 
 			var params;
 			params = {
-				"RETURNURL": "http://careapi.demo.hatchitup.com/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/success",
-				"CANCELURL": "http://careapi.demo.hatchitup.com/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/fail",
+				"RETURNURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/success",
+				"CANCELURL": "http://localhost:8080/plans/"+plan._id+"/"+salt+"/"+hexcode+"/paypal/fail",
 				"L_BILLINGAGREEMENTDESCRIPTION0": plan.plan_id.description,
 				"PAYMENTREQUEST_0_AMT": plan.plan_id.price
 			};
@@ -533,42 +542,104 @@ methods.addReminder = function(req,res){
 	    return (SendResponse(res));
 	}
 	else{
-		//Database functions here
-		var reminder_fields = {
-			user:req.user._id,
-			title : req.param('title'),
-			notify_by:{
-				email:req.param('notify_by_email'),
-				text:req.param('notify_by_text'),
-				voice:req.param('notify_by_voice')
-			},
-			recipients:req.param('recipients'),
-			text_sms : req.param('text_sms'),
-			email : req.param('email'),
-			number_voice_recording:req.param('number_voice_recording'),
-			schedule_date : new Date(req.param('schedule_date')),
-			recurring : req.param('recurring'),
-			recurring_frequency : req.param('recurring_frequency')
-		};
+		var addNewReminder = function(){
+			var reminder_fields = {
+				user:req.user._id,
+				title : req.param('title'),
+				notify_by:{
+					email:req.param('notify_by_email'),
+					text:req.param('notify_by_text'),
+					voice:req.param('notify_by_voice')
+				},
+				recipients:req.param('recipients'),
+				text_sms : req.param('text_sms'),
+				email : req.param('email'),
+				number_voice_recording:req.param('number_voice_recording'),
+				schedule_date : new Date(req.param('schedule_date')),
+				recurring : req.param('recurring'),
+				recurring_frequency : req.param('recurring_frequency')
+			};
 
-		var newReminder = new Reminder(reminder_fields);
-		newReminder.save(function(err,reminder){
-			if(err) {
+			var newReminder = new Reminder(reminder_fields);
+			newReminder.save(function(err,reminder){
+				if(err) {
+					response.error = true;
+					response.code = 10901;
+					response.userMessage = 'There was a problem with the request, please try again'
+					response.data = null;
+					response.errors = null;
+					return (SendResponse(res));
+		  		}
+		  		else{
+		  			
+		  			var incJson = {};
+		  			if(reminder_fields.notify_by.email)
+		  				incJson['used.emails']=1
+		  			if(reminder_fields.notify_by.text)
+		  				incJson['used.text']=1
+		  			if(reminder_fields.notify_by.voice)
+		  				incJson['used.voice']=1
+
+
+
+		  			PlanUsage.findOneAndUpdate({user_id:req.user._id},{$inc:incJson}).lean()
+		  			.exec(function(err,plan){
+		  				console.log(err,plan);
+		  			})
+
+		  			response.data = {
+		  				reminder : reminder
+		  			};
+		  			response.userMessage = 'New reminder added.';
+		  			return (SendResponse(res));
+		  		}
+			});
+		}		
+		PlanUsage.findOne({user_id:req.user._id}).populate('plan_id')
+		.exec(function(err,PlanUsage){
+			if( parseInt(PlanUsage.plan_id.reminder.emails - PlanUsage.used.emails) < 1){
 				response.error = true;
-				response.code = 10901;
-				response.userMessage = 'There was a problem with the request, please try again'
-				response.data = null;
-				response.errors = null;
+				response.code = 10802;
+				response.errors = {
+					emails: {
+						msg : "You have used all your allowed email reminders"}
+				}
+				response.userMessage = "You have used all your allowed email reminders";
 				return (SendResponse(res));
-	  		}
-	  		else{
-	  			response.data = {
-	  				reminder : reminder
-	  			};
-	  			response.userMessage = 'New reminder added.';
-	  			return (SendResponse(res));
-	  		}
-		});
+			}
+			else{
+				if( parseInt(PlanUsage.plan_id.reminder.text - PlanUsage.used.text) < 1){
+					response.error = true;
+					response.code = 10802;
+					response.errors = {
+						text:{
+						msg :  "You have used all your allowed text reminders"}
+					}
+					response.userMessage = "You have used all your allowed text reminders";
+					return (SendResponse(res));
+				}
+				else{
+					if( parseInt(PlanUsage.plan_id.reminder.voice - PlanUsage.used.voice) < 1){
+						response.error = true;
+						response.code = 10802;
+						response.errors = {
+							voice:{
+							msg :  "You have used all your allowed call reminders"}
+						}
+						response.userMessage = "You have used all your allowed call reminders";
+						return (SendResponse(res));
+					}
+					else{
+						addNewReminder();
+					}
+				}
+			}
+
+			
+		})
+
+
+
 	}
 }
 
@@ -1265,7 +1336,7 @@ methods.getUser = function(req,res){
 
 	PlanUsage
 	.findOne({user_id:req.user._id})
-	.populate('plan_id','paypalId price paid members name processed')
+	.populate('plan_id','paypalId price paid members name processed reminder')
 	.populate('user_id','firstName lastName landline mobile preferred_number care_giver email_verified email billing_details')
 	.lean()
 	.exec(function(err,plan){
@@ -1283,6 +1354,7 @@ methods.getUser = function(req,res){
   				user:req.user,
   				plan:plan
   			};
+  			console.log(response.data.plan.plan_id);
   			return (SendResponse(res));
   		}
 	});
