@@ -17,13 +17,6 @@
           </blockquote>
           <a  class="ls-l button tiny" style="top: 67%; left: 10%;" href="#">Know more</a>
       </div>
-      <div class="ls-slide" data-ls="slidedelay: 4000;">
-   
-          <img class="ls-bg" src="assets/images/lorna.png">
-          <div class="ls-l" data-ls="offsetxin: 0; offsetyin: 0;">
-              <div my-iframe height="600" width="1200" src="http://player.vimeo.com/video/122998389?color=ff9933"frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></div>
-          </div>
-      </div>
    
       <!-- second slide -->
       <div class="ls-slide" data-ls="slidedelay: 4000;">
@@ -84,10 +77,10 @@
       </div>
   	</div>
 
-    <div class="row">
+    <div class="row" data-ng-controller="homeCtrl">
       <div class="large-4 medium-5 small-9 columns large-centered medium-centered small-centered">
         <ul class="button-group">
-          <li><a href="#" class="button secondary">Quick demo</a></li>
+          <li><a ng:click="quickDemo()" class="button secondary">Quick demo</a></li>
           <li><a ui-sref="default.signup" class="button">Sign up</a></li>
         </ul>
       </div>
