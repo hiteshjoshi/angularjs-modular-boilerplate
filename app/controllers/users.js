@@ -593,21 +593,21 @@ methods.addReminder = function(req,res){
 		  			response.userMessage = 'New reminder added.';
 
 
-		  			if(reminder.recurring){
-	  					switch(reminder.recurring_frequency){
-	  						case 1 : //weekly
-	  							job.startWeekly(String(reminder._id),reminder.schedule_date)
-	  						break;
-	  						case 2 : //monthly
-	  							job.startMonthly(String(reminder._id),reminder.schedule_date)
-	  						break;
-	  						case 3 : //daily
-	  							job.startDaily(String(reminder._id),reminder.schedule_date)
-	  						break;
-	  					}
-	  				}else{
-	  					job.oneTime(String(reminder._id),reminder.schedule_date)
-	  				}
+		  			// if(reminder.recurring){
+	  				// 	switch(reminder.recurring_frequency){
+	  				// 		case 1 : //weekly
+	  				// 			job.startWeekly(String(reminder._id),reminder.schedule_date)
+	  				// 		break;
+	  				// 		case 2 : //monthly
+	  				// 			job.startMonthly(String(reminder._id),reminder.schedule_date)
+	  				// 		break;
+	  				// 		case 3 : //daily
+	  				// 			job.startDaily(String(reminder._id),reminder.schedule_date)
+	  				// 		break;
+	  				// 	}
+	  				// }else{
+	  				// 	job.oneTime(String(reminder._id),reminder.schedule_date)
+	  				// }
 	  				console.log(job);
 
 		  			return (SendResponse(res));
