@@ -17,6 +17,7 @@ m._findAttendees = function(reminder,callback){
 	.populate('user')
 	.lean()
 	.exec(function(err,reminder){
+		console.log(err,reminder,"HEREIAMBOLLSDFDSF");
 		var attendees = reminder.recipients
 
 		async.mapSeries(reminder.user.care_giver,
