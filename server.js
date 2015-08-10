@@ -14,9 +14,6 @@ var connect = function () {
 };
 connect();
 
-var Agenda = require('agenda');
-var agendaUI = require('agenda-ui');
-var agenda = new Agenda(config.db+"_agenda")
 
 mongoose.connection.on('error', console.log);
 mongoose.connection.on('disconnected', connect);
@@ -25,7 +22,6 @@ mongoose.connection.on('disconnected', connect);
 fs.readdirSync(__dirname + '/app/models').forEach(function (file) {
   if (~file.indexOf('.js')) require(__dirname + '/app/models/' + file);
 });
-app.use('/agenda',agendaUI(agenda, {poll: 1000}))
 // Bootstrap passport config
 require('./config/passport')(passport, config);
 
