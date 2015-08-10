@@ -17,7 +17,7 @@ var jwt = require('jsonwebtoken');
 var _ = require('lodash');
 var async = require('async');
 var crypto = require('crypto');
-var job = require('job');
+var job = require('job').job;
 var Paypal = require('paypal-recurring2');
 	paypal = new Paypal(config.paypal,true);
 
