@@ -77,10 +77,10 @@
       </div>
   	</div>
 
-    <div class="row">
+    <div class="row" data-ng-controller="homeCtrl">
       <div class="large-4 medium-5 small-9 columns large-centered medium-centered small-centered">
         <ul class="button-group">
-          <li><a href="#" class="button secondary">Quick demo</a></li>
+          <li><a ng:click="quickDemo()" class="button secondary">Quick demo</a></li>
           <li><a ui-sref="default.signup" class="button">Sign up</a></li>
         </ul>
       </div>
@@ -179,7 +179,7 @@
 
 
 
-    <div id="plans" parallax-background style="background:url(assets/images/8789714539_639e3a1571_h.png);background-size:cover;" parallax-ratio="0.1">
+    <div id="plans" parallax-background style="background:url(assets/images/care-dad-d.jpg);background-size:cover;" parallax-ratio="-0.1">
       <div class="row">
         <div class="columns large-7 medium-7">
           <h4>
@@ -247,50 +247,4 @@
       </div>
     </div>
 
-    <div class="" style="margin-bottom:0px;" data-ng-controller="signUpCtrl">
-      <div class="row">
-        
-            <div class="columns large-4">
-              <ul class="pricing-table">
-                <li class="title">Basic</li>
-                <li class="price">$20</li>
-                <li class="description">
-                  Need only voice and emails? Awesome plan to start with.
-                </li>
-                <li class="bullet-item">31 Emails</li>
-                <li class="bullet-item">31 Voice messages</li>
-                <li class="bullet-item">5 Members</li>
-                <li class="cta-button"><button class="button" data-ng-click="open()">Sign up</button></li>
-              </ul>
-            </div>
-            
-            <div class="columns large-4">
-              <ul class="pricing-table">
-                <li class="title">Platinum</li>
-                <li class="price">$30</li>
-                <li class="description">
-                  Stay relax and free. Enough alerts to cover every day.
-                </li>
-                <li class="bullet-item">90 Emails</li>
-                <li class="bullet-item">90 Voice & text messages</li>
-                <li class="bullet-item">90 Members</li>
-                <li class="cta-button"><button class="button" data-ng-click="open()">Sign up</button></li>
-              </ul>
-            </div>
-            <div class="columns large-4">
-              <ul class="pricing-table">
-                <li class="title">Platinum plus (yearly)</li>
-                <li class="price">$300</li>
-                <li class="description">
-                  Have bigger family circle? This yearly plan is for you.
-                </li>
-                <li class="bullet-item">Unlimited Emails</li>
-                <li class="bullet-item">900 Voice & text messages</li>
-                <li class="bullet-item">Unlimited Members</li>
-                <li class="cta-button"><button class="button" data-ng-click="open()">Sign up</button></li>
-              </ul>
-            </div>
-            
-        
-      </div>
-    </div>
+    <section class="" style="margin-bottom:0px;" data-ng-include src="'modules/homepage/views/signup.html'"></section>

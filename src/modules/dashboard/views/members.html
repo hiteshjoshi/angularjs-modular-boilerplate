@@ -3,13 +3,31 @@
     <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add member</a>
     <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show members</a>
   </div>
-
+  
   <div class="row">
     <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
   </div>
+  
 
   <div class="row" ng:hide="show_form">
     <div class="large-12">
+
+    <p>
+      This is the Caregiver information page, or we like to call it your Private Social Network page. All those people you want to surround the Care Receiver can be listed on this page. For example they could include parents, grandchildren, grandparents, neighbors, doctors, family and friends.<br/>
+    </p> 
+
+      <p>
+      <b>Private Social Networks explained : </b> they are similar to Facebook or Twitter social sites except and this is a big difference they are Private Social Networks and only available to people that are invited to join your group. This keeps your information only available to those you have invited and shared your access information with, including account ID and password. 
+      </p> 
+
+      <p>
+
+      In order to use CareToCall’s optional Reassurance Phone Calls service it is necessary to fill in at least one Caregiver’s contact information on this page.<br/>
+
+      You can choose to skip this step and enter the information later after your account has been created, through Edit Profile on My Account page.<br/>
+
+      You can update all the information with-in your account anytime by clicking on the Edit Profile tab on your account page.
+    </p>
 
       <h4>Your private network</h4>
       <hr>

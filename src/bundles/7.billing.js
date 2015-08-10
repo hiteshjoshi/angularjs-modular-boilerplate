@@ -37,7 +37,9 @@ webpackJsonp([7],{
 	 */
 	module.exports = function (module) {
 	  module.controller('billingCtrl', ['$scope', 'api','$window','$interval', function ($scope, api,$window,$interval) {
-	    $scope.plan = null;
+	    $scope.plan = {
+	      paid:true
+	    };
 	    $scope.profile = null;
 	    $scope.billing_address = {
 	      address_1 : '',
@@ -47,13 +49,16 @@ webpackJsonp([7],{
 	      postal : '',
 	      country_code : 'CA',
 	    };
+	    $scope.loading = true;
 	  	api.get('users',$scope.user._id,'billing',false,function (err,response){
+	      $scope.loading = false;
 	  		if(err){
 
 	  		}
 	  		if(response.data.plan) {
 	  			$scope.plan = response.data.plan;
 	        $scope.profile = response.data.plan.user_id;
+	        $scope.paypal = response.data.paypal;
 	        if($scope.profile.billing_details){
 	          $scope.billing_address =  $scope.profile.billing_details;
 
@@ -63,8 +68,13 @@ webpackJsonp([7],{
 	  	});
 
 
+	    $scope.getBillingDetails = function(){
+	      //api.get
+	    };
+
+
 	    $scope.showPopup = function showPopup(url){
-	      var placement = 'top=' + (screen.height/2 - 250) + ',left=' + (screen.width/2 - 200) + ',width=400,height=500';
+	      var placement = 'top=' + (screen.height/2 - 250) + ',left=' + (screen.width/2 - 200) + ',width=800,height=700';
 	      var interval = 1000;
 	      var popup = $window.open(url, '', placement);
 
@@ -86,7 +96,7 @@ webpackJsonp([7],{
 
 	  	$scope.addPaypal = function () {
 	      $scope.msg = 'Please wait while we generate your secure paypal request';
-	  		api.post('billing','paypal/subscribe',$scope.billing_address,function (err,response) {
+	  		api.post('billing','paypal/subscribe',false,function (err,response) {
 	        //console.log(err,response);
 	        $scope.msg = 'Done! Please click the button to subscribe';
 	        $scope.paypalUrl = response.data;

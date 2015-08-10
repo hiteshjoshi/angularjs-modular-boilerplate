@@ -15,6 +15,7 @@ module.exports = function (module) {
   		if(err){
 
   		}
+      console.log(response);
   		if(response.data && response.data.plan.paid) {
   			$scope.plan = response.data;
   		}
@@ -31,7 +32,7 @@ module.exports = function (module) {
   	};
 
   	api.get('reminders',false,false,false,function (err,response){
-      console.log(err,response);
+      
   		if(err){
 
   		}

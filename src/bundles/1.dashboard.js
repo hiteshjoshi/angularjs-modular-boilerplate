@@ -45,6 +45,7 @@ webpackJsonp([1],{
 	  		if(err){
 
 	  		}
+	      console.log(response);
 	  		if(response.data && response.data.plan.paid) {
 	  			$scope.plan = response.data;
 	  		}
@@ -61,7 +62,7 @@ webpackJsonp([1],{
 	  	};
 
 	  	api.get('reminders',false,false,false,function (err,response){
-	      console.log(err,response);
+	      
 	  		if(err){
 
 	  		}

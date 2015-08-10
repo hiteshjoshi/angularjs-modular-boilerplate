@@ -36,10 +36,11 @@ webpackJsonp([3],{
 	 * @desc: Show some activity feed
 	 */
 	module.exports = function (module) {
-	  module.controller('membersCtrl', ['$scope', 'api', function ($scope, api) {
+	  module.controller('membersCtrl', ['$scope', 'api','lodash', function ($scope, api,_) {
 
 	    $scope.show_form = false;
 	    $scope.edit_form = false;
+	    $scope.alerts = [];
 	    $scope.newMember = {
 	      first_name : '',
 	      last_name : '',
@@ -48,6 +49,9 @@ webpackJsonp([3],{
 	      preferred_number:'1',
 	      mobile : '',
 	      landline:''
+	    };
+	    $scope.closeAlert = function(index) {
+	      $scope.alerts.splice(index, 1);
 	    };
 
 	  	api.get('users',$scope.user._id,'networks',false,function (err,response){
@@ -66,13 +70,21 @@ webpackJsonp([3],{
 	        if(err){
 
 	        }else {
+	        
+	          
 	          if(response.error){
-
-	          }else {
+	            $scope.alerts = [];
+	            _.forEach(response.errors,function(item){
+	              $scope.alerts.push({type:'error',msg:item.msg});
+	            });
+	          }
+	          else{
 	            $scope.members = response.data.members;
 	            $scope.show_form = false;
 	            $scope.edit_form = false;
 	          }
+	            
+	          
 	        }
 	  		});
 	  	};

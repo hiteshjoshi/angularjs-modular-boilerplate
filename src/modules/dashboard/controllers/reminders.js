@@ -16,7 +16,7 @@ module.exports = function (module) {
 
 
     $scope.newReminder = {
-      schedule_date : '',
+      schedule_date : new Date(),
       recipients: [],
       title : '',
       notify_by_email : true,
@@ -109,6 +109,7 @@ module.exports = function (module) {
 
         }else{
           if(response.error){
+            $scope.alerts = [];
             _.forEach(response.errors,function(item){
               $scope.alerts.push({type:'error',msg:item.msg});
             });
@@ -128,6 +129,7 @@ module.exports = function (module) {
 
         }else{
           if(response.error){
+            $scope.alerts = [];
             _.forEach(response.errors,function(item){
               $scope.alerts.push({type:'error',msg:item.msg});
             });
@@ -158,6 +160,7 @@ module.exports = function (module) {
 
         }else{
           if(response.error){
+            $scope.alerts = [];
             _.forEach(response.errors,function(item){
               $scope.alerts.push({type:'error',msg:item.msg});
             });
