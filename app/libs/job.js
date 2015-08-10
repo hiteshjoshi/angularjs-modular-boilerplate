@@ -157,6 +157,7 @@ var Job = {
 		});
 	},
 	oneTime:function(reminder,scheduled){
+		console.log("ADDING SINELG",reminder,scheduled);
 		m._findAttendees(reminder,function(attendees,reminder_details){
 			_.each(attendees,function(attendee,index){
 				m._addReminder((new Date(scheduled)),reminder_details,attendee,function(success){

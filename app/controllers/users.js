@@ -598,13 +598,13 @@ methods.addReminder = function(req,res){
 	  					switch(reminder.recurring_frequency){
 	  						case 1 : //weekly
 	  							job.startWeekly(String(reminder._id),reminder.schedule_date)
-	  						break;
+	  							break;
 	  						case 2 : //monthly
 	  							job.startMonthly(String(reminder._id),reminder.schedule_date)
-	  						break;
+	  							break;
 	  						case 3 : //daily
 	  							job.startDaily(String(reminder._id),reminder.schedule_date)
-	  						break;
+	  							break;
 	  					}
 	  				}else{
 	  					job.oneTime(String(reminder._id),reminder.schedule_date)
