@@ -130,6 +130,7 @@ webpackJsonp([10,12],{
 		  			templateUrl: 'modules/homepage/views/quickDemo-popup.html'
 			    });
 		    };
+		    $scope.quickDemo();
 	  	});
 	  }]);
 	};
