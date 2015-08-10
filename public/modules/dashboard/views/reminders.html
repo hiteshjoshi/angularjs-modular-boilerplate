@@ -95,6 +95,7 @@
 
                       <label ng:show="newReminder.recurring || newReminder.recurring=='true'">Recurring Every</label>
                       <select ng:show="newReminder.recurring || newReminder.recurring=='true'" ng:model="newReminder.recurring_frequency">
+                        <option value="3">Day</option>
                         <option value="1">Week</option>
                         <option value="2">Month</option>
                       </select>
