@@ -608,6 +608,7 @@ methods.addReminder = function(req,res){
 	  				}else{
 	  					job.oneTime(String(reminder._id),reminder.schedule_date)
 	  				}
+	  				console.log(job);
 
 		  			return (SendResponse(res));
 		  		}
