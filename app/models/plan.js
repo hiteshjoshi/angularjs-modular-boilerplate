@@ -48,17 +48,15 @@ var PlanUsage = new Schema({
   paypalId:{type:String,default:''}
 });
 
-
-
 var Reminder = new Schema({
   user : {type : Schema.ObjectId, ref : 'User',index:true},
   created : {type:Date,default:Date.now},
   title : { type: String, default: '' },
-    notify_by:{
-      email:{ type: Boolean, default: true },
-      text:{ type: Boolean, default: true },
-      voice:{ type: Boolean, default: true }
-    },
+  notify_by:{
+    email:{ type: Boolean, default: true },
+    text:{ type: Boolean, default: true },
+    voice:{ type: Boolean, default: true }
+  },
   recipients:{type:[],default:[]},//Schema.ObjectId
   text_sms : { type: String, default: '' },
   email : { type: String, default: '' },
@@ -67,7 +65,7 @@ var Reminder = new Schema({
   //start: { type: Date},
   //schedule_time : { type: String, default: '' },
   recurring : { type: Boolean, default: true },
-  recurring_frequency : { type: Number, default: 1 } //1=weekly, 2=monthly
+  recurring_frequency : { type: Number, default: 1 } //1=weekly, 2=monthly, 3= daily
 });
 
 

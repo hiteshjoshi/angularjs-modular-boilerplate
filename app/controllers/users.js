@@ -17,6 +17,7 @@ var jwt = require('jsonwebtoken');
 var _ = require('lodash');
 var async = require('async');
 var crypto = require('crypto');
+var job = require('job');
 var Paypal = require('paypal-recurring2');
 	paypal = new Paypal(config.paypal,true);
 
@@ -58,7 +59,6 @@ var passport = require('passport');
 Routings/controller goes here
 */
 module.exports.controller = function(router) {
-
 
 
 	// --------- ADMIN --------- //
@@ -591,6 +591,24 @@ methods.addReminder = function(req,res){
 		  				reminder : reminder
 		  			};
 		  			response.userMessage = 'New reminder added.';
+
+
+		  			if(reminder.recurring){
+	  					switch(reminder.recurring_frequency){
+	  						case 1 : //weekly
+	  							job.startWeekly(String(reminder._id),reminder.schedule_date)
+	  						break;
+	  						case 2 : //monthly
+	  							job.startMonthly(String(reminder._id),reminder.schedule_date)
+	  						break;
+	  						case 3 : //daily
+	  							job.startDaily(String(reminder._id),reminder.schedule_date)
+	  						break;
+	  					}
+	  				}else{
+	  					job.oneTime(String(reminder._id),reminder.schedule_date)
+	  				}
+
 		  			return (SendResponse(res));
 		  		}
 			});

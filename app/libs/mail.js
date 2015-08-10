@@ -6,11 +6,11 @@ var _ = require('lodash');
 
 var mandrill = require('node-mandrill')(config.mail.mandrillKey);
 
-mail.sendMail = function (to,subject,body,from) {
+mail.sendMail = function (to,subject,body,from,name) {
 	//send an e-mail to jim rubenstein
 	mandrill('/messages/send', {
 	    message: {
-	        to: [{email: to, name: 'Grady Flinn'}],
+	        to: [{email: to, name: name || 'C2C User'}],
 	        from_email: from || config.mail.from,
 	        subject: subject,
 	        text: body
