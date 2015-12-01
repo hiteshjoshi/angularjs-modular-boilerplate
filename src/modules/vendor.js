@@ -4,6 +4,7 @@
  * Vendors
  * @desc: Load up application needed script
  */
+<<<<<<< HEAD
 require('expose?jQuery!expose?$!jquery');
 require('imports?this=>window!modernizr');
 require('angular');
@@ -23,3 +24,10 @@ require('angularSanitize');
 require('select2');
 require('angular-ui-select2');
 require('angular-ui-tinymce');
+=======
+require('lodash');
+require('expose?jQuery!expose?$!jquery');
+require('imports?this=>window!modernizr');
+require('componentDir/semantic');
+//require('expose?m!mithril');
+>>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc

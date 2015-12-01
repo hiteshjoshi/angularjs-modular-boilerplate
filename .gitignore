@@ -13,3 +13,8 @@ docs
 mockup
 composer.lock
 composer.phar
+<<<<<<< HEAD
+=======
+src/components/*/**.css
+src/assets/styles/*.css
+>>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc

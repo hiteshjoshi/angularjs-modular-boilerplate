@@ -48,7 +48,6 @@ module.exports = function (path, webpack) {
       plugins: [
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
       ],
-
       module: {
         loaders: [
           { test: /\.css$/, loader: 'style-loader!css-loader' },

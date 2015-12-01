@@ -21,6 +21,7 @@
   "globals": {
     "jQuery": true,
     "angular": true,
+    "m": true,
     "define": true,
     "google": true,
     "screenfull": true,
@@ -28,6 +29,7 @@
     "TweenMax": true,
     "velocity": true,
     "prettyPrintOne": true,
-    "prompt":true
+    "prompt":true,
+    "prettyPrintOne": true
   }
 }

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "angular-boilder",
   "description": "",
   "version": "0.0.1",
@@ -30,5 +31,13 @@
     "summernote": "~0.6.9",
     "angular-ui-select2": "~0.0.5",
     "angular-ui-tinymce": "~0.0.9"
+=======
+  "name": "Mithril-based-dashboard",
+  "description": "Yet another Mithril grunt boiler",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "^2.1.1",
+    "modernizr": "^2.8.3"
+>>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc
   }
 }

@@ -24,6 +24,23 @@ module.exports = function (path) {
         '!modules/**/*.js'
       ],
       dest: 'dist/'
+    },
+    distCss: {
+      expand: false,
+      cwd: 'src/',
+      src: [
+        '!**/*.less'
+      ],
+      dest: 'dist/'
+    },
+    docs: {
+      expand: true,
+      cwd: 'src/',
+      src: [
+        'assets/fonts/**',
+        'assets/styles/**/*.css'
+      ],
+      dest: 'docs/'
     }
   };
 };

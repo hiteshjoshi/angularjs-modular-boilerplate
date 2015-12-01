@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Modular angularjs boilerplate with grunt
 
 ### Prerequisite
@@ -40,3 +41,6 @@ $ grunt dist
 ```sh
 $ grunt dist --min
 ```
+=======
+# Mithil based dashboard
+>>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc
