@@ -1,0 +1,62 @@
+<div ria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <div class="row">
+      <div class="large-6 columns large-centered">
+        <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <div ng:switch="showConfirm">
+          <div ng:switch-default>
+            <h2 id="modalTitle">Awesome!</h2>
+            <p class="lead">Just one step away. Enter your email and lets start.</p>
+          </div>
+
+          <div ng:switch-when="true">
+            <h2 id="modalTitle">Cool!</h2>
+            <p class="lead">Check your Inbox. And enter validation code below.</p>
+          </div>
+        </div>
+
+        <div ng:switch="showConfirm">
+          <div ng:switch-default>
+            <form ng:submit="signup()">
+              <div class="row collapse">
+                <div class="small-5 columns">
+                  <input data-ng-model="newUser.email" type="text" placeholder="Email address">
+                </div>
+                <div class="small-5 columns">
+                  <input data-ng-model="newUser.password" type="password" placeholder="Choose a password">
+                </div>
+
+                <div class="small-2 columns">
+                  <button type="submit" class="button postfix">Go</button>
+                </div>
+              </div>
+            </form>
+            <hr/>
+            <p>
+              Already got verification code?
+            </p>
+            <button type="button" class="button tiny" ng:click="enterVerification()">Enter validation code</button>
+          </div>
+
+          <div ng:switch-when="true">
+            <form ng:submit="confirm(validation_code)">
+              <div class="row collapse">
+                <div class="small-9 columns">
+                  <input ng:model="validation_code" type="text" placeholder="Email verification code">
+                </div>
+                <div class="small-3 columns">
+                  <button type="submit" class="button postfix">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <a class="close-reveal-modal" ng-click="cancel()">&#215;</a>
+</div>

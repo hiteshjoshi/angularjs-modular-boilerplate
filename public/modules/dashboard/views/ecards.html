@@ -1,0 +1,36 @@
+<div id="ecards" ng:controller="ecardsCtrl">
+  <div class="row">
+    <div class="large-12">
+      <h4>Send ECards to anyone.</h4>
+      <hr>
+      <form ng:submit="updateMember()">
+        <div class="row">
+          <div class="large-6 columns">
+            <label>First name
+              <input type="text" ng:model="editMember.first_name" placeholder="First name">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Last name
+              <input type="text" ng:model="editMember.last_name" placeholder="Last name">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Email
+              <input type="text" ng:model="editMember.landline" placeholder="Landline">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Mobile
+              <input type="text" ng:model="editMember.mobile" placeholder="Mobile">
+            </label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

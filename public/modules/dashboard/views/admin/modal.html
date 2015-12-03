@@ -1,0 +1,22 @@
+<div ria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <div class="row">
+      <div class="large-6 columns large-centered">
+          <h2 id="modalTitle">Profile of {{profile.firstName}} {{profile.lastName}}</h2>
+
+          <p class="lead">
+            Email : {{profile.email}}
+          </p>
+          
+          <ul ng:show="profile.caregiver.length>0">
+            <li ng:repeat="cg in profile.caregiver">
+              Name : {{cg.first_name}} {{cg.last_name}} <br/>
+              Numbers : {{cg.mobile}} , {{cg.landline}} <br/>
+              Timezone : {{cg.time_zone}} <br/>
+              Email : {{cg.email_address}}
+            </li>
+          </ul>
+      </div>
+    </div>
+</div>
+
+<a class="close-reveal-modal" ng:click="cancel()">&#215;</a>

@@ -1,0 +1,45 @@
+<div ria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <div class="row">
+      <div class="large-10 columns large-centered">
+        <p class="lead">
+          {{reminder.title}}
+        </p>
+        Is next scheduled for {{reminder.schedule_date | date:'MMM d, y @ h:mm a'}}
+        <span ng:show="reminder.recurring">and will recur every {{reminder.recurring_frequency}} after that.</span>
+
+        <p>
+          Your network member's
+          <span ng:repeat="recipient in reminder.recipients">
+            <b><i>  <span ng:show="$index>0">and</span> {{network[recipient].first_name}} {{network[recipient].last_name}}</i></b>
+          </span> will get alerts through <b><i> <span ng:show="reminder.notify_by.text">text , </span><span ng:show="reminder.notify_by.email">email</span><span ng:show="reminder.notify_by.voice"> <span ng:show="reminder.notify_by.email">and </span>call</span> </b></i>
+        </p>
+
+        <h4>Reminder details</h4>
+        <p ng:repeat="recipient in reminder.recipients">
+
+          {{network[recipient].first_name}} {{network[recipient].last_name}}
+          will receive the text on the mobile number {{network[recipient].mobile}}. <br/>
+          And an Email at {{network[recipient].email_address}} , along with a voice call at {{network[recipient].landline}},{{network[recipient].mobile}}
+
+        </p>
+
+
+        <h4>Messages</h4>
+        <p>
+            The following text message will be sent :
+            <br/>
+            <b>{{reminder.text_sms}}</b>
+        </p>
+        <p>
+            The following Email will be sent :
+            <br/>
+            <b>{{reminder.email}}</b>
+        </p>
+
+
+
+      </div>
+    </div>
+</div>
+
+<a class="close-reveal-modal" ng:click="cancel()">&#215;</a>

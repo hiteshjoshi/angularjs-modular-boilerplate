@@ -1,0 +1,46 @@
+<div id="billing" ng:controller="billingCtrl">
+  
+  <div ng:switch="loading">
+    <div ng:switch:when="true">
+      <p>Loading.. please wait.</p>
+    </div>
+    <div ng:switch:when="false">
+      <div ng:switch="plan.paid">
+      <p ng:switch:when="false">
+        You current do not have any payment method. Please fill the details and use paypal to subscribe.
+      </p>
+      <p ng:switch:when="true">
+        You are subscribed to paypal billing.
+        <br/>
+        Next billing date : {{paypal["NEXTBILLINGDATE"] | date:'MMM d, y'}}
+      </p>
+    </div>
+
+    <hr/>  
+    <div ng:switch="plan.paid">
+      <div ng:switch:when="false">
+        <p ng:show="msg">
+          {{msg}}
+        </p>
+        <button type="button" class="button secondary" ng:click="addPaypal();" ng:hide="paypalUrl">Subcribe using PayPal</button>
+        
+        <button type="button" class="button primary" ng:click="showPopup(paypalUrl);" ng:show="paypalUrl">Click here to subscribe</button>
+      </div>
+      <div ng:switch:when="true">
+
+      <p>
+        <b>Plan name : </b> {{plan.plan_id.name}} <br/>
+        <b>Amount per month : </b> ${{plan.plan_id.price}} <br/>
+        <b>Allowed network members : </b> {{plan.plan_id.members}} <br/> 
+      </p>
+
+        <button type="button" ng:click="cancelSubcription();" class="button secondary">Cancel subcription</button>
+        <p>Warning : This will cancel all your subscription with CaretoCall.com</p>
+      </div>
+    </div>
+    </div>
+
+  </div>
+    
+
+</div>

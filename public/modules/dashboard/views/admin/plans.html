@@ -1,0 +1,53 @@
+      <div id="dashboard" ng:controller="adminCtrl">
+        <div class="right" ng:init="getPlans()">
+          <a class="button tiny" ng:click="addPlan()"><i class="fa fa-plus"></i> Add Plan</a>
+        </div>
+        <div class="row">
+
+          <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+          <h4>Edit your plans</h4>
+            <hr/>
+          <div class="large-12">
+
+
+            <div class="row" ng:repeat="plan in plans">
+              <div class="columns large-6">
+                <ul class="pricing-table">
+                  <li class="title">{{plan.name}}</li>
+                  <li class="price">${{plan.price}}</li>
+                  <li class="description">
+                    {{plan.description}}
+
+                  </li>
+                  <li class="bullet-item">{{plan.reminder.emails}} Emails</li>
+                  <li class="bullet-item">{{plan.reminder.voice}} Voice messages</li>
+                  <li class="bullet-item">{{plan.reminder.text}} Text messages</li>
+                  <li class="bullet-item">{{plan.members}} Members</li>
+                </ul>
+              </div>
+
+              <div class="columns large-6">
+                <p class="lead" ng:hide="plan.paypalId">
+                  The paypal plan is not configured for this plan.
+                  <button class="button tiny" ng:click="createPaypal();">create</button>
+                  <hr/ ng:hide="plan.paypalId">
+                </p>
+
+                <button class="button" ng:click="deactivatePlan(plan._id,$index);"> {{plan.active ? 'Deactivate' : 'Activate'}}</button>
+              </div>
+              <hr/>
+            </div>
+
+
+
+
+
+
+
+
+          </div>
+
+        </div>
+
+      </div>

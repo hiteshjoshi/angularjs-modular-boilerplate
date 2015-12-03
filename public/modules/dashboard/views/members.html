@@ -1,0 +1,201 @@
+<div id="members" ng:controller="membersCtrl">
+  <div class="row">
+    <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add member</a>
+    <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show members</a>
+  </div>
+  
+  <div class="row">
+    <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+  </div>
+  
+
+  <div class="row" ng:hide="show_form">
+    <div class="large-12">
+
+    <p>
+      This is the Caregiver information page, or we like to call it your Private Social Network page. All those people you want to surround the Care Receiver can be listed on this page. For example they could include parents, grandchildren, grandparents, neighbors, doctors, family and friends.<br/>
+    </p> 
+
+      <p>
+      <b>Private Social Networks explained : </b> they are similar to Facebook or Twitter social sites except and this is a big difference they are Private Social Networks and only available to people that are invited to join your group. This keeps your information only available to those you have invited and shared your access information with, including account ID and password. 
+      </p> 
+
+      <p>
+
+      In order to use CareToCall’s optional Reassurance Phone Calls service it is necessary to fill in at least one Caregiver’s contact information on this page.<br/>
+
+      You can choose to skip this step and enter the information later after your account has been created, through Edit Profile on My Account page.<br/>
+
+      You can update all the information with-in your account anytime by clicking on the Edit Profile tab on your account page.
+    </p>
+
+      <h4>Your private network</h4>
+      <hr>
+
+      <table ng:show="members.length">
+        <thead>
+          <tr>
+            <th width="120">Name</th>
+            <th width="120">Timezone</th>
+            <th width="150">Numbers</th>
+            <th width="150">Email</th>
+            <th width="150">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr ng:repeat="member in members">
+            <td>{{member.first_name}} {{member.last_name}}</td>
+            <td>{{member.timezone}}</td>
+            <td>{{member.mobile}}, {{member.landline}}</td>
+            <td> {{member.email_address}}</td>
+            <td>
+              <ul class="button-group">
+                <li><a class="button tiny secondary" ng:click="showEditForm($index);">Edit</a></li>
+                <li><a class="button tiny alert" ng:click="removeMember($index,member._id);">Delete</a></li>
+              </ul>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+      <p ng:hide="members.length">
+        You do not have any member in your network. Please add some.
+      </p>
+    </div>
+  </div>
+  <div class="row" ng:show="show_form">
+    <div class="large-12">
+      <h4>Add new member</h4>
+      <hr>
+      <form ng:submit="addMember()">
+        <div class="row">
+          <div class="large-6 columns">
+            <label>First name
+              <input type="text" ng:model="newMember.first_name" placeholder="First name">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Last name
+              <input type="text" ng:model="newMember.last_name" placeholder="Last name">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Landline
+              <input type="text" ng:model="newMember.landline" placeholder="Landline">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Mobile
+              <input type="text" ng:model="newMember.mobile" placeholder="Mobile">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Preferred Voice Alert Number</label>
+            <input type="radio" ng:model="newMember.preferred_number"  name="preferred_number" value="1" id="mobile"><label for="mobile">Mobile</label>
+            <input type="radio" ng:model="newMember.preferred_number" name="preferred_number" value="2" id="landline"><label for="landline">Landline</label>
+          </div>
+          <div class="large-6 columns">
+            <label>Timezone</label>
+            <select ng:model="newMember.timezone">
+              <option value="eastern">Eastern</option>
+              <option value="central">Central</option>
+              <option value="mountain">Mountain</option>
+              <option selected="selected" value="pacific">Pacific</option>
+              <option value="alaska">Alaska</option>
+              <option value="hawaii">Hawaii</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Email address
+              <input type="text" ng:model="newMember.email_address" placeholder="Email address">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>
+              <button class="button right expand"> Save</button>
+            </label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="row" ng:show="edit_form">
+    <div class="large-12">
+      <h4>Edit {{editMember.first_name}} {{editMember.last_name}}</h4>
+      <hr>
+      <form ng:submit="updateMember()">
+        <div class="row">
+          <div class="large-6 columns">
+            <label>First name
+              <input type="text" ng:model="editMember.first_name" placeholder="First name">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Last name
+              <input type="text" ng:model="editMember.last_name" placeholder="Last name">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Landline
+              <input type="text" ng:model="editMember.landline" placeholder="Landline">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>Mobile
+              <input type="text" ng:model="editMember.mobile" placeholder="Mobile">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Preferred Voice Alert Number</label>
+            <input type="radio" ng:model="editMember.preferred_number"  name="preferred_number" value="1" id="mobile"><label for="mobile">Mobile</label>
+            <input type="radio" ng:model="editMember.preferred_number" name="preferred_number" value="2" id="landline"><label for="landline">Landline</label>
+          </div>
+          <div class="large-6 columns">
+            <label>Timezone</label>
+            <select ng:model="editMember.timezone">
+              <option value="eastern">Eastern</option>
+              <option value="central">Central</option>
+              <option value="mountain">Mountain</option>
+              <option selected="selected" value="pacific">Pacific</option>
+              <option value="alaska">Alaska</option>
+              <option value="hawaii">Hawaii</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 columns">
+            <label>Email address
+              <input type="text" ng:model="editMember.email_address" placeholder="Email address">
+            </label>
+          </div>
+          <div class="large-6 columns">
+            <label>
+              <button class="button right expand"> Save</button>
+            </label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+
+</div>

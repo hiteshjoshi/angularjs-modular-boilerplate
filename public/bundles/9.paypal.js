@@ -1,0 +1,1 @@
+webpackJsonp([9],{23:function(a,b){"use strict";a.exports=function(a){a.controller("paypalCtrl",["$scope","api","$location",function(a,b,c){a.alerts=[],a.closeAlert=function(b){a.alerts.splice(b,1)},b.get("/paypal","payments",!1,{token:c.search().token},function(b,c){b?a.paypal="Some error! Please close this window and try again.":a.paypal=c.userMessage})}])}}});

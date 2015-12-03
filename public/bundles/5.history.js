@@ -1,0 +1,1 @@
+webpackJsonp([5],{14:function(a,b){"use strict";a.exports=function(a){a.controller("commonCtrl",["$rootScope","api",function(a,b){}])}},19:function(a,b){"use strict";a.exports=function(a){a.controller("historyCtrl",["$scope","api",function(a,b){b.get("users",a.user._id,"history",!1,function(b,c){c.data.history&&c.data.history.length>0&&(a.history=c.data.history)})}])}}});

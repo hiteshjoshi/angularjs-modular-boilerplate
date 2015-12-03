@@ -1,0 +1,29 @@
+<!-- start: application header -->
+<header data-ng-include src="'modules/core/views/partials/dashboard_header.html'" id="app-header" class="navbar"></header>
+<!-- end: application header -->
+
+<div class="row" id="dashboard">
+    <div class="large-3 columns">
+      <div class="nav-box">
+        <section data-ng-include src="'modules/core/views/partials/dashboard_side_nav.html'"></section>
+      </div>
+    </div>
+    <div class="large-9 columns">
+
+		<!-- start: application content -->
+		<section id="app-content" class="clearfix" data-ng-style="{'min-height':+core.screen.height+'px'}">
+		  <!-- start: indicator -->
+		  <div class="spinner-wrapper"><div data-indicator></div></div>
+		  <!--/ end: indicator -->
+
+		  <!-- start: content-body -->
+		  <div class="content-body slide-down" data-ng-style="{'min-height':+core.screen.height+'px'}" data-ui-view></div>
+		  <!--/ end: content-body -->
+		</section>
+		<!--/ end: application content -->
+
+    </div>
+
+</div>
+
+

@@ -1,0 +1,1 @@
+webpackJsonp([4],{14:function(a,b){"use strict";a.exports=function(a){a.controller("commonCtrl",["$rootScope","api",function(a,b){}])}},18:function(a,b){"use strict";a.exports=function(a){a.controller("ecardsCtrl",["$scope","api",function(a,b){a.sendEcards=function(){b.post("users",a.user._id,"ecard",function(a,b){})}}])}}});

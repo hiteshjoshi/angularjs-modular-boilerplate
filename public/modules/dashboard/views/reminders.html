@@ -1,0 +1,164 @@
+      <div id="dashboard" ng:controller="remindersCtrl">
+        <div >
+          <div ng:hide="members.length">
+            
+            <h5>No Members found in your network. Please add some, before creating reminders. 
+            <br/>Visit <a ui-sref="dashboard.members"> Members</a> page.</h5>
+          
+          </div>
+          <div ng:show="members.length">
+            <div class=" row">
+            <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add reminder</a>
+            <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show reminders</a>
+          </div>
+          
+          <div class="row">
+            <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+          </div>
+            <div class="row" ng:hide="show_form">
+              <div class="large-12 columns">
+                <h4>Your reminders</h4>
+                <hr/>
+                <table ng:show="reminders.length">
+                  <thead>
+                    <tr>
+                      <th width="200">Network users</th>
+                      <th width="180">Alert type</th>
+                      <th width="240">Next scheduled</th>
+                      <th width="180">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng:repeat="reminder in reminders">
+                      <td>
+                        <ul>
+                          <li ng:repeat="recipient in reminder.recipients">
+                            {{network[recipient].first_name}} {{network[recipient].last_name}}
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        <span ng:show="reminder.notify_by.text">text , </span><span ng:show="reminder.notify_by.email">email</span><span ng:show="reminder.notify_by.voice"> <span ng:show="reminder.notify_by.email">, </span>call</span>
+                      </td>
+                      <td>
+                        {{reminder.schedule_date | date:'MMM d, y @ h:mm a'}}
+                      </td>
+                      <td>
+                        <ul class="button-group">
+                          <li><a ng:click="viewReminder($index);" class="button tiny secondary">View</a></li>
+                          <li><a ng:click="removeReminder($index);" class="button tiny alert">Remove</a></li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p ng:hide="reminders.length">
+                  You do not have any reminders. Please add some.
+                </p>
+              </div>
+            </div>
+
+
+            <div class="row" ng:show="show_form">
+              <div class="large-12 columns">
+
+                <h4>Add new reminder</h4>
+                <hr>
+                <form ng:submit="addReminder();">
+                  <div class="row">
+                    <div class="large-6 columns">
+                      <label>Title
+                        <input ng:model="newReminder.title" type="text" placeholder="Reminder title">
+                      </label>
+                    </div>
+                    <div class="large-6 columns">
+                      <label>Notify Reminder By</label>
+                      <input id="voice" ng:model="newReminder.notify_by_voice" type="checkbox"><label for="voice">Voice call</label>
+                      <input id="text" ng:model="newReminder.notify_by_text" type="checkbox"><label for="text">Text</label>
+                      <input id="email" ng:model="newReminder.notify_by_email" type="checkbox"><label for="email">Email</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="large-6 columns">
+                      <label>Select receipts</label>
+                        <select ng:model="newReminder.recipients" multiple="multiple">
+                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
+                        </select>
+                    </div>
+                    <div class="large-6 columns">
+                      <label>
+                        Is Recurring?
+                      </label>
+                      <input id="recurring_yes" ng:model="newReminder.recurring" type="radio" value="true"><label for="recurring_yes">Yes</label>
+                      <input id="recurring_no" ng:model="newReminder.recurring" type="radio" value="false"><label for="recurring_no">No</label>
+
+                      <label ng:show="newReminder.recurring || newReminder.recurring=='true'">Recurring Every</label>
+                      <select ng:show="newReminder.recurring || newReminder.recurring=='true'" ng:model="newReminder.recurring_frequency">
+                        <option value="3">Day</option>
+                        <option value="1">Week</option>
+                        <option value="2">Month</option>
+                      </select>
+
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="large-8 columns">
+                      <label>
+                        Reminder text message (SMS)
+                        <textarea ng:disabled="disable_text" ng:model="newReminder.text_sms" class=""></textarea>
+                      </label>
+                    </div>
+                    <div class="large-4 columns">
+                      <label>
+                        Number to call for voice recording
+                        <input ng:disabled="disable_voice" ng:model="newReminder.number_voice_recording" type="text" placeholder="Your 10 digit mobile number.">
+                      </label>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="large-12 columns">
+                      <label>
+                        Email
+                        <textarea ui-tinymce ng:disabled="disable_email" ng:model="newReminder.email" class=""></textarea>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="large-6 columns">
+                        <h6>Select schedule date and time</h6>
+                        <div class="datetimepicker" datetimepicker ng:model="datetimepickerConfig"></div>
+                    </div>
+                    <div class="large-6 columns">
+                      <h5>Confirm once please</h5>
+                      <hr>
+                      <p >
+                        You are about to create a <i ng:show="newReminder.recurring=='true'">reccuring</i> reminder <span ng:show="newReminder.recipients.length>0">for</span>
+                        <br/>
+
+                        <ul ng:show="newReminder.recipients.length>0">
+                          <li ng:repeat="recipient in newReminder.recipients">
+                               {{network[recipient].first_name}} {{network[recipient].last_name}}
+                          </li>
+                        </ul>
+
+                        <span ng:show="newReminder.schedule_date">
+                            starting {{newReminder.schedule_date | date:'MMM d, y @ h:mm a'}}
+                        </span>
+
+                      </p>
+                      <button class="button right expand"> That's correct. Create it.</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+          
+      </div>
