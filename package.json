@@ -1,60 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "askparrot-api",
-  "main": "server.js",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git@bitbucket.org:hiteshjoshi/askparrot_api.git"
-  },
-  "scripts": {
-    "test": "make test",
-    "start": "NODE_PATH=./config:./app/libs NODE_ENV=development node server.js"
-  },
-  "engines": {
-    "node": "0.10.x"
-  },
-  "author": "Hitesh Joshi <me@hiteshjoshi.com",
-  "license": "PRIVATE",
-  "dependencies": {
-    "async": "^1.3.0",
-    "body-parser": "^1.0.2",
-    "campaign": "^1.4.4",
-    "connect-mongo": "^0.4.2",
-    "cookie-parser": "^1.3.3",
-    "cookie-session": "^1.1.0",
-    "cron": "^1.0.9",
-    "csurf": "^1.6.4",
-    "express": "^4.0.0",
-    "express-session": "^1.9.3",
-    "express-validator": "^2.8.0",
-    "jsonwebtoken": "^3.2.1",
-    "lodash": "^2.4.1",
-    "method-override": "^2.3.1",
-    "mongoose": "^4.0.6",
-    "mongoose-user": "0.0.1",
-    "morgan": "^1.0.1",
-    "node-mandrill": "^1.0.1",
-    "node-uuid": "^1.4.2",
-    "nodemailer": "^1.3.0",
-    "nodemailer-smtp-transport": "^0.1.13",
-    "passport": "^0.2.1",
-    "passport-facebook": "^1.0.3",
-    "passport-local": "^1.0.0",
-    "paypal-recurring2": "^1.1.5",
-    "paypal-rest-sdk": "^1.5.2",
-    "request": "^2.60.0",
-    "smtp-connection": "^1.1.0",
-    "time": "^0.11.2",
-    "winston": "^0.8.3"
-  },
-  "devDependencies": {
-    "mocha": "^2.1.0",
-    "should": "^4.4.1",
-    "supertest": "^0.15.0"
-  }
-}
-=======
   "name": "AngularJS-grunt-boilerplate",
   "description": "Yet another AngularJS grunt boiler",
   "version": "0.0.1",
@@ -94,4 +38,3 @@
     "url-loader": "^0.5.5"
   }
 }
->>>>>>> a0abe39a137cf34980f391e5d5431c028bfce82a

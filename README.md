@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Building a RESTful API in Node and Express
 
 Using the new Express 4.0 Router to build AskParrot API
@@ -18,7 +18,6 @@ Using the new Express 4.0 Router to build AskParrot API
 ## Testing the API
 Test your API using [Postman](https://chrome.google.com/webstore/detail/postman-rest-client-packa/fhbjgbiflinjbdggehcddcbncdddomop)
 =======
-<<<<<<< HEAD
 # Modular angularjs boilerplate with grunt
 
 ### Prerequisite
@@ -63,5 +62,3 @@ $ grunt dist --min
 ```
 =======
 # Mithil based dashboard
->>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc
->>>>>>> a0abe39a137cf34980f391e5d5431c028bfce82a
