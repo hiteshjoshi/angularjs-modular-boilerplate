@@ -125,11 +125,11 @@ webpackJsonp([10,12],{
 	  	api.get('plans',false,false,{},function (err,response) {
 	  	  $scope.plans = response.data.plans;
 
-		    $scope.quickDemo = function (index) {
-		      	$modal.open({
-		  			templateUrl: 'modules/homepage/views/quickDemo-popup.html'
-			    });
-		    };
+		    // $rootScope.quickDemo = function (index) {
+		    //   	$modal.open({
+		  		// 	templateUrl: 'modules/homepage/views/quickDemo-popup.html'
+			   //  });
+		    // };
 		    //$scope.quickDemo();
 	  	});
 	  }]);

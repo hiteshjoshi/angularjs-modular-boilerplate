@@ -6,8 +6,8 @@
  */
 module.exports = function (module) {
   module.controller('coreSettingsCtrl', [
-    '$scope',
     '$rootScope',
+    '$scope',
     '$window',
     '$timeout',
     '$cookies',
@@ -15,7 +15,12 @@ module.exports = function (module) {
     '$state',
     'session',
     '$urlRouter',    
-    function ($scope, $rootScope, $window, $timeout, $cookies, viewport,$state,session,$urlRouter) {
+    function ($rootScope,$scope, $window, $timeout, $cookies, viewport,$state,session,$urlRouter) {
+      $rootScope.quickDemo = function (index) {
+          $modal.open({
+          templateUrl: 'modules/homepage/views/quickDemo-popup.html'
+        });
+      };
       /** App Initial Settings */
       $scope.core = {
         name: 'CareToCall',
