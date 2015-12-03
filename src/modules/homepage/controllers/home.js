@@ -15,7 +15,7 @@ module.exports = function (module) {
 	  			templateUrl: 'modules/homepage/views/quickDemo-popup.html'
 		    });
 	    };
-	    $scope.quickDemo();
+	    //$scope.quickDemo();
   	});
   }]);
 };

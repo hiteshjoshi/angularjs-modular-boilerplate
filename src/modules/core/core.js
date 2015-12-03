@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use strict';
 
 /**
@@ -32,15 +31,3 @@ require('moduleDir/core/filters/capitalize')(appCore);
 require('moduleDir/core/services/viewport')(appCore);
 require('moduleDir/core/services/restful')(appCore);
 require('moduleDir/core/services/sessionCheck')(appCore);
-=======
-'use strict';
-
-/**
- * Core module
- * @desc:
- */
-
-/** routes configs */
-var m = require('mithril');
-require('./routes')(m);
->>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc
