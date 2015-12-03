@@ -257,8 +257,9 @@ webpackJsonp([0],[
 	    'viewport',
 	    '$state',
 	    'session',
-	    '$urlRouter',    
-	    function ($rootScope,$scope, $window, $timeout, $cookies, viewport,$state,session,$urlRouter) {
+	    '$urlRouter', 
+	    '$modal',
+	    function ($rootScope,$scope, $window, $timeout, $cookies, viewport,$state,session,$urlRouter,$modal) {
 	      $rootScope.quickDemo = function (index) {
 	          $modal.open({
 	          templateUrl: 'modules/homepage/views/quickDemo-popup.html'
