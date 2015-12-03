@@ -1,0 +1,122 @@
+<div id="billing" ng:controller="accountCtrl">
+  <p class="lead">
+    Your Profile.
+  </p>
+
+  <p>
+    This page collects information about the Care Recipient. This is the person receiving the scheduled alert. You can update your account anytime if you need more alerts or different alert types than you originally purchased. See My Account page once your account is activated.
+  </p>
+  <p>
+The information here will be used to create your account. You can update your profile anytime once you have created your account. To do so, click on the Customer Login button on CareToCall’s, Home Page, which will take you to My Account page click on Edit Profile tab and follow the steps.
+  </p>
+
+  <hr/>
+
+  <form ng:submit="updateAccount();">
+    <h5>Basic details</h5>
+    <hr>
+    <div class="row">
+      <div class="large-6 columns">
+        <label>First name
+          <input type="text" placeholder="First name" ng:model="updateUser.first_name"/>
+        </label>
+      </div>
+      <div class="large-6 columns">
+        <label>Last name
+          <input type="text" placeholder="Last name" ng:model="updateUser.last_name"/>
+        </label>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-4 columns">
+        <label>Mobile
+          <input type="text" placeholder="Mobile" ng:model="updateUser.mobile"/>
+        </label>
+      </div>
+      <div class="large-4 columns">
+        <label>Landline
+          <input type="text" placeholder="Landline" ng:model="updateUser.landline"/>
+        </label>
+      </div>
+      
+      <div class="large-4 columns">
+        <label>
+          Preferred number
+        </label>
+        <select ng:model="updateUser.preferred_number">
+          <option value="1">Mobile</option>
+          <option value="2">Landline</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-4 columns">
+        <label>
+          Timezone
+        </label>
+        <select ng:model="updateUser.timezone">
+          <option value="eastern">Eastern</option>
+          <option value="central">Central</option>
+          <option value="mountain">Mountain</option>
+          <option selected="selected" value="pacific">Pacific</option>
+          <option value="alaska">Alaska</option>
+          <option value="hawaii">Hawaii</option>
+        </select>
+      </div>
+    </div>
+    
+    
+
+    <h5>Billing details</h5>
+    <hr>
+    <div class="row">
+      <div class="large-12 columns">
+        <label>Address 1
+          <input type="text" placeholder="Address 1" ng:model="updateUser.address_1"/>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <label>Address 2
+          <input type="text" placeholder="Address 2" ng:model="updateUser.address_2"/>
+        </label>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-6 columns">
+        <label>City
+          <input type="text" placeholder="City" ng:model="updateUser.city"/>
+        </label>
+      </div>
+      <div class="large-6 columns">
+        <label>State
+          <input type="text" placeholder="State" ng:model="updateUser.state"/>
+        </label>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-6 columns">
+        <label>Postal code
+          <input type="text" placeholder="Postal code" ng:model="updateUser.postal"/>
+        </label>
+      </div>
+      <div class="large-6 columns">
+        <label>Country
+          <select ng:model="updateUser.country_code">
+            <option value="CA">Canada</option>
+            <option value="US">USA</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+    </div>
+  <button type="submit" class="button">Update profile</button>
+</form>
+</div>

@@ -1,5 +1,28 @@
+<<<<<<< HEAD
 node_modules/*
 node_modules
 logs/*
 logs
 npm*
+=======
+*.pdf
+*.ai
+*.bak
+.tmp
+.sass-cache
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+node_modules
+bower_components
+dist
+docs
+mockup
+composer.lock
+composer.phar
+<<<<<<< HEAD
+=======
+src/components/*/**.css
+src/assets/styles/*.css
+>>>>>>> f8edfb23ff040fa16ba94d217d1f05edc02fd8cc
+>>>>>>> a0abe39a137cf34980f391e5d5431c028bfce82a

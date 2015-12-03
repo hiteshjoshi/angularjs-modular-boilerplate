@@ -1,0 +1,97 @@
+<div class="contain-to-grid sticky">
+    <top-bar data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li toggle-top-bar class="menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+      <top-bar-section>
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li class="icons"><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-instagram"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+          <li class="icons"><a href="#"><i class="fa fa-youtube"></i></a></li>
+
+          <li has-dropdown  ng:show="!user">
+            <a ui-sref="default.login">LogIn</a>
+            <ul top-bar-dropdown>
+              <li><a ui-sref="default.signup">SignUp</a></li>
+            </ul>
+          </li>
+          
+          <li has-dropdown  ng:show="user">
+            <a ui-sref="dashboard.index">Dashboard</a>
+            <ul top-bar-dropdown>
+              <li><a ui-sref="dashboard.reminders">Reminders</a></li>
+              <li><a ui-sref="dashboard.members">Members</a></li>
+              <li><a ui-sref="dashboard.ecards">E Cards</a></li>
+              <li><a ui-sref="dashboard.account">Account</a></li>
+              <li><a ui-sref="dashboard.billing">Billing</a></li>
+              <li><a ui-sref="default.logout" ng:click="logout()">Logout</a></li>
+            </ul>
+          </li>
+          
+          <li class="">
+            <a href="#"><i class="fa fa-phone"></i>
+            (877) 502-1062
+            </a>
+          </li>
+          <li class="">
+            <a href="#"><i class="fa fa-inbox"></i>
+            info@caretocall.com
+            </a>
+          </li>
+        </ul>
+      </top-bar-section>
+    </top-bar>
+</div>
+
+  <div class="row top_margin">
+    <div class="large-4 columns">
+      <a ui-sref="default.homepage">
+        <img src="assets/images/logo-caretocall.png" id="logo">
+      </a>
+    </div>
+    <div class="large-8 columns">
+
+      <ul class="inline-list right sub_nav">
+        <li><a ui-sref="default.homepage">Home</a></li>
+
+        <li class="active new-dropdown">
+          <a href="#" class="n-dropdown" dropdown-toggle="#about" data-options="is_hover:true" aria-controls="about" aria-expanded="false">About</a>
+          <ul id="about" class="f-dropdown" role="menu" aria-hidden="false" tabindex="-1">
+            <li><a ui-sref="default.who">Who is using CareToCall?</a></li>
+            <li><a ui-sref="default.testimonials">Testimonials</a></li>
+            <li><a href="#">Senior care facts</a></li>
+            <li><a href="#">Affiliate Information (b2b)</a></li>
+          </ul>
+        </li>
+        
+        <li class="new-dropdown">
+          <a href="#" class="n-dropdown" dropdown-toggle="#services" data-options="is_hover:true" aria-controls="services" aria-expanded="false">Services</a>
+          <ul id="services" data-dropdown-content class="f-dropdown" role="menu" aria-hidden="false" tabindex="-1">
+            <li><a ui-sref="default.voice">Live Voice Messages</a></li>
+            <li><a ui-sref="default.medication">Medication Management</a></li>
+            <li><a ui-sref="default.text">Text Messaging</a></li>
+            <li><a ui-sref="default.phone">Reassurance Phone Calls</a></li>
+            <li><a ui-sref="default.private">Personal Private Network</a></li>
+            <li><a ui-sref="default.personalized">Calendar Reminders</a></li>
+          </ul>
+
+        </li>
+        <li><a ui-sref="default.signup">Pricing</a></li>
+        <li><a ui-sref="default.resources">Resources</a></li>
+        <li><a ui-sref="default.faq">FAQ</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a ui-sref="default.contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+

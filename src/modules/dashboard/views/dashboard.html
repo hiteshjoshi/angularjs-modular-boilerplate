@@ -1,0 +1,66 @@
+      <div id="dashboard" ng:controller="dashboardCtrl">
+        <div class="row">
+          <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+          <div class="large-12" ng:show="reminders.length">
+            <h4>Your reminders</h4>
+            <hr/>
+            <table>
+              <thead>
+                <tr>
+                  <th width="260">Network users</th>
+                    <th width="240">Alert type</th>
+                    <th width="300">Next scheduled</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng:repeat="reminder in reminders">
+                  <td>
+                    <ul>
+                      <li ng:repeat="recipient in reminder.recipients">
+                        {{network[recipient].first_name}} {{network[recipient].last_name}}
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <span ng:show="reminder.notify_by.text">text , </span><span ng:show="reminder.notify_by.email">email</span><span ng:show="reminder.notify_by.voice"> <span ng:show="reminder.notify_by.email">, </span>call</span>
+                  </td>
+                  <td>
+                    {{reminder.schedule_date | date:'MMM d, y @ h:mm a'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>          
+
+          <div class="large-12">
+            <h5>
+              Usage so far : 
+            </h5>
+            <p>
+              You have used <b>{{plan.plan.used.emails}}</b> email reminders out of 
+              {{plan.plan.plan_id.reminder.emails}}.
+            <br/>
+              You have used <b>{{plan.plan.used.text}}</b> text reminders out of 
+              {{plan.plan.plan_id.reminder.text}}.
+            <br/>
+              You have used <b>{{plan.plan.used.voice}}</b> call based reminders out of 
+              {{plan.plan.plan_id.reminder.voice}}.
+            </p>
+<!-- 
+            Email reminders : {{plan.plan.plan_id.reminder.emails - plan.plan.used.emails}} <br/>
+            Text reminders : {{plan.plan.plan_id.reminder.text - plan.plan.used.text}} <br/>
+            Call based reminders : {{plan.plan.plan_id.reminder.voice - plan.plan.used.voice}} <br/> -->
+          </div>
+
+          <div class="large-12" ng:show="plan.plan.user_id.care_giver.length==0">
+            <h5>You do not have any members in your network, please add some. <br/>
+             Visit <a ui-sref="dashboard.members"> Members</a> page.
+            </h5>
+          </div>
+          <div class="large-12" ng:show="!reminders.length && plan.plan.user_id.care_giver.length!=0">
+            <h5>No reminders, please add some. Visit <a ui-sref="dashboard.reminders"> Reminder</a> page.</h5>
+          </div>
+        </div>
+
+      </div>

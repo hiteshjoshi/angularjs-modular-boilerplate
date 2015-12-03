@@ -1,0 +1,26 @@
+<img src="assets/images/banners/Pricing-Page.jpg"/>
+  <div class="row" data-ng-controller="signUpCtrl">
+    <div class="large-12 columns">
+      <div class="login-box" style="margin-bottom:0px;">
+          <h4> Choose a plan to signup </h4>        
+          <div class="row">
+
+            <div class="columns large-4" ng:repeat="plan in plans">
+              <ul class="pricing-table">
+                <li class="title">{{plan.name}}</li>
+                <li class="price">${{plan.price}}</li>
+                <li class="description">
+                  {{plan.description}}
+                </li>
+                <li class="bullet-item">{{plan.reminder.emails}} Emails</li>
+                <li class="bullet-item">{{plan.reminder.voice}} Voice messages</li>
+                <li class="bullet-item">{{plan.reminder.text}} Text messages</li>
+                <li class="bullet-item">{{plan.members}} Members</li>
+                <li class="cta-button"><button class="button" ng:click="open(plan._id);">Sign up</button></li>
+              </ul>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  </div>
