@@ -1,1 +1,141 @@
-webpackJsonp([10,12],{26:function(a,b){"use strict";a.exports=function(a){a.controller("signUpCtrl",["$scope","$modal","api",function(a,b,c){c.get("plans",!1,!1,{},function(b,c){a.plans=c.data.plans}),a.open=function(a){b.open({templateUrl:"modules/homepage/views/signup-modal.html",controller:"signupModal",resolve:{plan_id:function(){return a}}})}}]),a.controller("signupModal",["$scope","$modalInstance","api","lodash","$cookieStore","plan_id",function(a,b,c,d,e,f){a.showConfirm=!1,a.alerts=[],a.newUser={email:"",password:"",plan_id:f},a.closeAlert=function(b){a.alerts.splice(b,1)},a.enterVerification=function(){a.showConfirm=!0},a.signup=function(){c.post("users",!1,a.newUser,function(b,c){b||(c.error?(a.alerts=[],d.each(c.errors,function(b,c){a.alerts.push({type:"danger",msg:b.msg})})):(a.alerts=[],a.showConfirm=!0))})},a.confirm=function(b){c.post("users","confirm",{validation_code:b},function(b,c){b||(c.error?(a.alerts=[],d.each(c.errors,function(b,c){a.alerts.push({type:"danger",msg:b.msg})})):c.data.token&&(e.put("c2cCookie",c.data.token),window.location.reload()))})},a.ok=function(){b.close(a.selected.item)},a.cancel=function(){b.dismiss("cancel")}}])}},27:function(a,b){"use strict";a.exports=function(a){a.controller("homeCtrl",["$scope","api","$modal",function(a,b,c){b.get("plans",!1,!1,{},function(b,d){a.plans=d.data.plans,a.quickDemo=function(a){c.open({templateUrl:"modules/homepage/views/quickDemo-popup.html"})}})}])}}});
+webpackJsonp([10,12],{
+
+/***/ 26:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.dashboard
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('signUpCtrl', ['$scope', '$modal', 'api', function ($scope, $modal, api) {
+
+	    api.get('plans',false,false,{},function (err,response) {
+	  	  $scope.plans = response.data.plans;
+	  	});
+
+
+	  	$scope.open = function (plan_id) {
+
+	  		var modalInstance = $modal.open({
+	  			templateUrl: 'modules/homepage/views/signup-modal.html',
+	  			controller: 'signupModal',
+	        resolve : {
+	          plan_id: function(){
+
+	            return plan_id;
+	          }
+	        }
+		    });
+
+		 };
+	  }]);
+
+	  module.controller('signupModal', ['$scope','$modalInstance','api','lodash','$cookieStore','plan_id',function ($scope, $modalInstance,api,_,$cookieStore,plan_id) {
+
+		  $scope.showConfirm = false;
+	    $scope.alerts = [];
+	    $scope.newUser = {
+	      email : '',
+	      password:'',
+	      plan_id:plan_id
+	    };
+
+	    $scope.closeAlert = function(index) {
+				$scope.alerts.splice(index, 1);
+			};
+
+	    $scope.enterVerification = function () {
+	      $scope.showConfirm = true;
+	    };
+
+		  $scope.signup = function(){
+
+	      api.post('users',false,$scope.newUser,function(err,response){
+	        if(err){
+
+	        }
+	        else {
+	          if(response.error){
+	            $scope.alerts=[];
+	            _.each(response.errors,function(elem,index){
+		  					$scope.alerts.push({type:'danger',msg:elem.msg});
+		  				});
+	          }
+	          else {
+	              $scope.alerts=[];
+	              $scope.showConfirm = true;
+	          }
+	        }
+	      });
+
+		  };
+
+		  $scope.confirm = function(validation_code){
+	      api.post('users','confirm',{validation_code:validation_code},function(err,response){
+	        if(err){
+
+	        }
+	        else {
+	          if(response.error){
+	            $scope.alerts=[];
+	            _.each(response.errors,function(elem,index){
+	              $scope.alerts.push({type:'danger',msg:elem.msg});
+		  				});
+	          }
+	          else {
+	            if(response.data.token){
+	              $cookieStore.put('c2cCookie',response.data.token);
+	              window.location.reload();
+	            }
+	          }
+	        }
+	      });
+		  };
+
+
+		  $scope.ok = function () {
+		    $modalInstance.close($scope.selected.item);
+		  };
+
+		  $scope.cancel = function () {
+		    $modalInstance.dismiss('cancel');
+		  };
+		}]);
+	};
+
+
+/***/ },
+
+/***/ 27:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.dashboard
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('homeCtrl', ['$scope','api','$modal',function ($scope,api,$modal) {
+	  	api.get('plans',false,false,{},function (err,response) {
+	  	  $scope.plans = response.data.plans;
+
+		    $scope.quickDemo = function (index) {
+		      	$modal.open({
+		  			templateUrl: 'modules/homepage/views/quickDemo-popup.html'
+			    });
+		    };
+		    //$scope.quickDemo();
+	  	});
+	  }]);
+	};
+
+
+/***/ }
+
+});

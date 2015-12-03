@@ -1,1 +1,134 @@
-webpackJsonp([7],{14:function(a,b){"use strict";a.exports=function(a){a.controller("commonCtrl",["$rootScope","api",function(a,b){}])}},21:function(a,b){"use strict";a.exports=function(a){a.controller("billingCtrl",["$scope","api","$window","$interval",function(a,b,c,d){a.plan={paid:!0},a.profile=null,a.billing_address={address_1:"",address_2:"",city:"",state:"",postal:"",country_code:"CA"},a.loading=!0,b.get("users",a.user._id,"billing",!1,function(b,c){a.loading=!1,c.data.plan&&(a.plan=c.data.plan,a.profile=c.data.plan.user_id,a.paypal=c.data.paypal,a.profile.billing_details&&(a.billing_address=a.profile.billing_details))}),a.getBillingDetails=function(){},a.showPopup=function(a){var b="top="+(screen.height/2-250)+",left="+(screen.width/2-200)+",width=800,height=700",e=1e3,f=c.open(a,"",b),g=d(function(){e+=500;try{f.value&&(d.cancel(g),f.close())}catch(a){console.error(a)}},e)},a.paypalUrl=null,a.addPaypal=function(){a.msg="Please wait while we generate your secure paypal request",b.post("billing","paypal/subscribe",!1,function(b,c){a.msg="Done! Please click the button to subscribe",a.paypalUrl=c.data})},a.removePaypal=function(){b["delete"]("billing","paypal/unsubscribe",function(a,b){})},a.addCreditcard=function(){b.post("billing/"+a.plan._id,"creditcard",{},function(a,b){})},a.removeCreditcard=function(){b["delete"]("billing",a.plan._id,"creditcard",function(a,b){})}}])}}});
+webpackJsonp([7],{
+
+/***/ 14:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.dashboard
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('commonCtrl', ['$rootScope', 'api', function ($rootScope, api) {
+	    	
+	    	// $rootScope.logout = function (argument) {
+	    	// 	api.post('logout',false,false,function (err,response){
+	    	// 		console.log(err,response);
+	    	// 	});
+	    	// }
+
+
+	  }]);
+	};
+
+/***/ },
+
+/***/ 21:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.account
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('billingCtrl', ['$scope', 'api','$window','$interval', function ($scope, api,$window,$interval) {
+	    $scope.plan = {
+	      paid:true
+	    };
+	    $scope.profile = null;
+	    $scope.billing_address = {
+	      address_1 : '',
+	      address_2 : '',
+	      city : '',
+	      state : '',
+	      postal : '',
+	      country_code : 'CA',
+	    };
+	    $scope.loading = true;
+	  	api.get('users',$scope.user._id,'billing',false,function (err,response){
+	      $scope.loading = false;
+	  		if(err){
+
+	  		}
+	  		if(response.data.plan) {
+	  			$scope.plan = response.data.plan;
+	        $scope.profile = response.data.plan.user_id;
+	        $scope.paypal = response.data.paypal;
+	        if($scope.profile.billing_details){
+	          $scope.billing_address =  $scope.profile.billing_details;
+
+	        }
+	  		}
+
+	  	});
+
+
+	    $scope.getBillingDetails = function(){
+	      //api.get
+	    };
+
+
+	    $scope.showPopup = function showPopup(url){
+	      var placement = 'top=' + (screen.height/2 - 250) + ',left=' + (screen.width/2 - 200) + ',width=800,height=700';
+	      var interval = 1000;
+	      var popup = $window.open(url, '', placement);
+
+	      var i = $interval(function(){
+	        interval += 500;
+	        try {
+	          // value is the user_id returned from paypal
+	          if (popup.value){
+	            $interval.cancel(i);
+	            popup.close();
+	          }
+	        } catch(e){
+	          console.error(e);
+	        }
+	      }, interval);
+
+	    };
+	    $scope.paypalUrl = null;
+
+	  	$scope.addPaypal = function () {
+	      $scope.msg = 'Please wait while we generate your secure paypal request';
+	  		api.post('billing','paypal/subscribe',false,function (err,response) {
+	        //console.log(err,response);
+	        $scope.msg = 'Done! Please click the button to subscribe';
+	        $scope.paypalUrl = response.data;
+	        //$scope.showPopup();
+	  		});
+	  	};
+
+
+	  	$scope.removePaypal = function () {
+	  		api.delete('billing','paypal/unsubscribe',function (err,response) {
+
+	  		});
+	  	};
+
+	  	$scope.addCreditcard = function () {
+	  		api.post('billing/'+$scope.plan._id,'creditcard',{},function (err,response) {
+
+	  		});
+	  	};
+
+	  	$scope.removeCreditcard = function () {
+	  		api.delete('billing',$scope.plan._id,'creditcard',function (err,response) {
+
+	  		});
+	  	};
+
+
+
+	  }]);
+	};
+
+
+/***/ }
+
+});

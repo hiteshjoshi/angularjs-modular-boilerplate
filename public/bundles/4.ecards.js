@@ -1,1 +1,52 @@
-webpackJsonp([4],{14:function(a,b){"use strict";a.exports=function(a){a.controller("commonCtrl",["$rootScope","api",function(a,b){}])}},18:function(a,b){"use strict";a.exports=function(a){a.controller("ecardsCtrl",["$scope","api",function(a,b){a.sendEcards=function(){b.post("users",a.user._id,"ecard",function(a,b){})}}])}}});
+webpackJsonp([4],{
+
+/***/ 14:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.dashboard
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('commonCtrl', ['$rootScope', 'api', function ($rootScope, api) {
+	    	
+	    	// $rootScope.logout = function (argument) {
+	    	// 	api.post('logout',false,false,function (err,response){
+	    	// 		console.log(err,response);
+	    	// 	});
+	    	// }
+
+
+	  }]);
+	};
+
+/***/ },
+
+/***/ 18:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.account
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('ecardsCtrl', ['$scope', 'api', function ($scope, api) {
+
+	  	$scope.sendEcards = function () {
+	  		api.post('users',$scope.user._id,'ecard',function (err,response){
+
+	  		});
+	  	};
+
+	  }]);
+	};
+
+/***/ }
+
+});

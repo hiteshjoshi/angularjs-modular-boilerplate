@@ -2,7 +2,7 @@
 
 module.exports = function (path) {
   return {
-    dist: ['dist'],
+    dist: ['public'],
     bundles: ['src/bundles'],
     docs: [
       'docs/assets',

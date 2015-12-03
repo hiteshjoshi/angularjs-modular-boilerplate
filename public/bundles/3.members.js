@@ -1,1 +1,139 @@
-webpackJsonp([3],{14:function(a,b){"use strict";a.exports=function(a){a.controller("commonCtrl",["$rootScope","api",function(a,b){}])}},17:function(a,b){"use strict";a.exports=function(a){a.controller("membersCtrl",["$scope","api","lodash",function(a,b,c){a.show_form=!1,a.edit_form=!1,a.alerts=[],a.newMember={first_name:"",last_name:"",email_address:"",timezone:"pacific",preferred_number:"1",mobile:"",landline:""},a.closeAlert=function(b){a.alerts.splice(b,1)},b.get("users",a.user._id,"networks",!1,function(b,c){c.data.members&&c.data.members.length>0&&(a.members=c.data.members)}),a.addMember=function(){b.post("users",a.user._id+"/networks",a.newMember,function(b,d){b||(d.error?(a.alerts=[],c.forEach(d.errors,function(b){a.alerts.push({type:"error",msg:b.msg})})):(a.members=d.data.members,a.show_form=!1,a.edit_form=!1))})},a.removeMember=function(c,d){b["delete"]("users",a.user._id,"networks/"+d,function(b,d){b||d.error||a.members.splice(c,1)})},a.showEditForm=function(b){a.edit_form=!0,a.show_form=!1,a.editMember=a.members[b]},a.updateMember=function(){b.put("users",a.user._id,"networks/"+a.editMember._id,a.editMember,function(b,c){b||c.error||(a.show_form=!1,a.edit_form=!1)})}}])}}});
+webpackJsonp([3],{
+
+/***/ 14:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.dashboard
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('commonCtrl', ['$rootScope', 'api', function ($rootScope, api) {
+	    	
+	    	// $rootScope.logout = function (argument) {
+	    	// 	api.post('logout',false,false,function (err,response){
+	    	// 		console.log(err,response);
+	    	// 	});
+	    	// }
+
+
+	  }]);
+	};
+
+/***/ },
+
+/***/ 17:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Activities feed controller
+	 * @module: app.account
+	 * @desc: Show some activity feed
+	 */
+	module.exports = function (module) {
+	  module.controller('membersCtrl', ['$scope', 'api','lodash', function ($scope, api,_) {
+
+	    $scope.show_form = false;
+	    $scope.edit_form = false;
+	    $scope.alerts = [];
+	    $scope.newMember = {
+	      first_name : '',
+	      last_name : '',
+	      email_address:'',
+	      timezone : 'pacific',
+	      preferred_number:'1',
+	      mobile : '',
+	      landline:''
+	    };
+	    $scope.closeAlert = function(index) {
+	      $scope.alerts.splice(index, 1);
+	    };
+
+	  	api.get('users',$scope.user._id,'networks',false,function (err,response){
+	  		if(err){
+
+	  		}
+	  		if(response.data.members && response.data.members.length>0) {
+	  			$scope.members = response.data.members;
+	  		}
+	  	});
+
+
+
+	  	$scope.addMember = function () {
+	  		api.post('users',$scope.user._id+'/networks',$scope.newMember,function (err,response){
+	        if(err){
+
+	        }else {
+	        
+	          
+	          if(response.error){
+	            $scope.alerts = [];
+	            _.forEach(response.errors,function(item){
+	              $scope.alerts.push({type:'error',msg:item.msg});
+	            });
+	          }
+	          else{
+	            $scope.members = response.data.members;
+	            $scope.show_form = false;
+	            $scope.edit_form = false;
+	          }
+	            
+	          
+	        }
+	  		});
+	  	};
+
+
+	    $scope.removeMember = function (index,_id) {
+	  		api.delete('users',$scope.user._id,'networks/'+_id,function (err,response){
+	        if(err){
+
+	        }else {
+	          if(response.error){
+
+	          }else {
+	            $scope.members.splice(index,1);
+	            //$scope.members = response.data.members;
+	          }
+	        }
+	  		});
+	  	};
+
+
+	    $scope.showEditForm = function (index) {
+	      $scope.edit_form = true;
+	      $scope.show_form = false;
+	      $scope.editMember = $scope.members[index];
+	  	};
+
+	    $scope.updateMember = function () {
+	      api.put('users',$scope.user._id,'networks/'+$scope.editMember._id,$scope.editMember,function (err,response){
+	        if(err){
+
+	        }else{
+	          if(response.error){
+
+	          }else{
+	            $scope.show_form = false;
+	            $scope.edit_form = false;
+	          }
+	        }
+	      });
+	    };
+
+
+
+
+	  }]);
+	};
+
+
+/***/ }
+
+});

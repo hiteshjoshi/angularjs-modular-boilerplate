@@ -23,7 +23,7 @@ module.exports = function (path) {
         '!modules/**/services/**',
         '!modules/**/*.js'
       ],
-      dest: 'dist/'
+      dest: 'public/'
     },
     distCss: {
       expand: false,
@@ -31,7 +31,7 @@ module.exports = function (path) {
       src: [
         '!**/*.less'
       ],
-      dest: 'dist/'
+      dest: 'public/'
     },
     docs: {
       expand: true,
