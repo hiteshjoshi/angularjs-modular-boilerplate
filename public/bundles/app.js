@@ -665,7 +665,7 @@ webpackJsonp([0],[
 				},
 				url : ($rootScope.token && $rootScope.user) ? 'dashboard':'/',
 				is_admin : ($rootScope.token && $rootScope.user && $rootScope.user.is_admin) ? true:false,
-				state : ($rootScope.token && $rootScope.user) ? 'dashboard.index':'default.homepage',
+				state : ($rootScope.token && $rootScope.user) ? 'dashboard.account':'default.homepage',
 				allowedState:['default.homepage','default.login','default.signup','default.resources','default.faq','default.contact'],
 				socket: function() {
 					$rootScope.socket = null;

@@ -1,4 +1,11 @@
 <div id="members" ng:controller="membersCtrl">
+  
+  <div class="button-group">
+    <a class="button secondary" ui-sref="dashboard.account">Step 1<br/> Fill out your profile.</a>
+    <a class="button" ui-sref="dashboard.members">Step 2<br/> Create caregiver contacts.</a>
+    <a class="button secondary" ui-sref="dashboard.reminders">Step 3<br/> Create reminders.</a>
+  </div>
+
   <div class="row">
     <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add member</a>
     <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show members</a>
