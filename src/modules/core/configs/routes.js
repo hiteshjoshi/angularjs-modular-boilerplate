@@ -28,7 +28,7 @@ module.exports = function (module) {
 
       /** default route */
       console.log(session.$get().exists(),session.$get().is_admin,session.$get().url);
-      $urlRouterProvider.otherwise(session.$get().url);
+      $urlRouterProvider.otherwise(session.$get().is_admin ? session.$get().url : ( session.$get().firstName?session.$get().firstName:session.$get().url) );
 
       /** parent route */
       $stateProvider

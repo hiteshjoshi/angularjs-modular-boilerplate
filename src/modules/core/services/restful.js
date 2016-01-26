@@ -8,8 +8,8 @@
 //
 module.exports = function (module) {
 	module.factory('api', ['$rootScope','$http', function ($rootScope,$http) {
-		//var parseUrl = 'http://localhost:8080';
-		var parseUrl = 'http://careapi.demo.hatchitup.com';
+		var parseUrl = 'http://localhost:8080';
+		//var parseUrl = 'http://careapi.demo.hatchitup.com';
 
 		var parseHeaders = {}; //set Headers for JWTTOKEN
 

@@ -15,13 +15,17 @@ module.exports = function (module) {
   		if(err){
 
   		}
-      console.log(response);
-  		if(response.data && response.data.plan.paid) {
+      console.log(err,response);
+  		if(response.data && response.data.plan && response.data.plan.paid) {
   			$scope.plan = response.data;
   		}
   		else{
   			$scope.alerts.push({type:'info',msg:'Your billing is pending. Please visit billing page and fix this.'});
   		}
+
+      if(response.data && response.data.user && response.data.user.firstName===''){
+        $state.go('dashboard.account');
+      }
       // if(response.data.plan.user_id.care_giver && response.data.plan.user_id.care_giver.length>0){
       //   $scope.alerts.push({type:'info',msg:'You have no member in your network, you won\'t be able to add reminders.'});
       // }
