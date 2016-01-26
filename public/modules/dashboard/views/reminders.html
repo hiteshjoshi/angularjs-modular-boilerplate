@@ -90,6 +90,34 @@
                   </div>
 
 
+                  
+
+                  <div class="row">
+                    <div class="large-6 columns">
+                      <label>Select receipts</label>
+                        <select ng:model="newReminder.recipients" multiple="multiple">
+                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
+                        </select>
+                    </div>
+                    <div class="large-6 columns">
+                      <label>
+                        Is Recurring?
+                      </label>
+                      <input id="recurring_yes" ng:model="newReminder.recurring" type="radio" value="true"><label for="recurring_yes">Yes</label>
+                      <input id="recurring_no" ng:model="newReminder.recurring" type="radio" value="false"><label for="recurring_no">No</label>
+
+                      <label ng:show="newReminder.recurring || newReminder.recurring=='true'">Recurring Every</label>
+                      <select ng:show="newReminder.recurring || newReminder.recurring=='true'" ng:model="newReminder.recurring_frequency">
+                        <option value="3">Day</option>
+                        <option value="1">Week</option>
+                        <option value="2">Month</option>
+                      </select>
+
+                    </div>
+                  </div>
+
+
+
                   <div class="row">
 
                     <div class="large-6 columns">
@@ -115,29 +143,7 @@
                     
                   </div>
 
-                  <div class="row">
-                    <div class="large-6 columns">
-                      <label>Select receipts</label>
-                        <select ng:model="newReminder.recipients" multiple="multiple">
-                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
-                        </select>
-                    </div>
-                    <div class="large-6 columns">
-                      <label>
-                        Is Recurring?
-                      </label>
-                      <input id="recurring_yes" ng:model="newReminder.recurring" type="radio" value="true"><label for="recurring_yes">Yes</label>
-                      <input id="recurring_no" ng:model="newReminder.recurring" type="radio" value="false"><label for="recurring_no">No</label>
-
-                      <label ng:show="newReminder.recurring || newReminder.recurring=='true'">Recurring Every</label>
-                      <select ng:show="newReminder.recurring || newReminder.recurring=='true'" ng:model="newReminder.recurring_frequency">
-                        <option value="3">Day</option>
-                        <option value="1">Week</option>
-                        <option value="2">Month</option>
-                      </select>
-
-                    </div>
-                  </div>
+                  
 
                   <div class="row">
                     <div class="large-8 columns">
