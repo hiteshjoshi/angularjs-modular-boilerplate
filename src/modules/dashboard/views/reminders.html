@@ -73,6 +73,8 @@
                 <h4>Add new reminder</h4>
                 <hr>
                 <form ng:submit="addReminder();">
+                  
+
                   <div class="row">
                     <div class="large-6 columns">
                       <label>Title
@@ -85,6 +87,32 @@
                       <input id="text" ng:model="newReminder.notify_by_text" type="checkbox"><label for="text">Text</label>
                       <input id="email" ng:model="newReminder.notify_by_email" type="checkbox"><label for="email">Email</label>
                     </div>
+                  </div>
+
+
+                  <div class="row">
+
+                    <div class="large-6 columns">
+                      <label>Is this is a reassurance reminder?</label>
+                      <input id="voice" ng:model="newReminder.reassurance" type="radio" value="true"><label for="voice">Yes</label>
+                      <input id="text" ng:model="newReminder.reassurance" type="radio" value="false"><label for="text">No</label>
+                      
+                      <label ng:show="newReminder.reassurance || newReminder.reassurance=='true'">Number of attempts before reassurance</label>
+                      <select ng:show="newReminder.reassurance || newReminder.reassurance=='true'" ng:model="newReminder.recurring_frequency">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+
+                    </div>
+
+                    <div class="large-6 columns">
+                      <label>Select reassurance receipts</label>
+                        <select ng:model="newReminder.reassurance_recipients" multiple="multiple">
+                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
+                        </select>
+                    </div>
+                    
                   </div>
 
                   <div class="row">
