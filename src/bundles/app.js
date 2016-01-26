@@ -507,8 +507,8 @@ webpackJsonp([0],[
 	//
 	module.exports = function (module) {
 		module.factory('api', ['$rootScope','$http', function ($rootScope,$http) {
-			var parseUrl = 'http://localhost:8080';
-			//var parseUrl = 'http://careapi.demo.hatchitup.com';
+			//var parseUrl = 'http://localhost:8080';
+			var parseUrl = 'http://careapi.demo.hatchitup.com';
 
 			var parseHeaders = {}; //set Headers for JWTTOKEN
 
@@ -663,9 +663,9 @@ webpackJsonp([0],[
 			      	return false;
 			      }
 				},
-				url : ($rootScope.token && $rootScope.user) ? 'dashboard':'/',
-				firstName:$rootScope.user?'dashboard.account':false,
-				is_admin : ($rootScope.token && $rootScope.user && $rootScope.user.is_admin) ? true:false,
+				url : ($rootScope.token && $rootScope.user) ? 'dashboard':'/', //this returns url
+				firstName:$rootScope.user?'dashboard':false, //this returns url
+				is_admin : ($rootScope.token && $rootScope.user && $rootScope.user.is_admin) ? true:false, //this retuns state
 				state : ($rootScope.token && $rootScope.user) ? 'dashboard.account':'default.homepage',
 				allowedState:['default.homepage','default.login','default.signup','default.resources','default.faq','default.contact'],
 				socket: function() {
