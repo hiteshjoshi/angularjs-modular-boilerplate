@@ -21,21 +21,33 @@
             <div class="large-3 columns">
               <label>Allowed emails
                 <input type="text" ng:model="newPlan.emails" placeholder="Number of allowed emails" />
+                <select ng:model="newPlan.emails">
+                 <option ng:repeat="number in numbers" value="{{number}}"></option> 
+                </select>
               </label>
             </div>
             <div class="large-3 columns">
               <label>Allowed texts
                 <input type="text" ng:model="newPlan.text" placeholder="Number of allowed texts" />
+                <select ng:model="newPlan.text">
+                 <option ng:repeat="number in numbers" value="{{number}}"></option> 
+                </select>
               </label>
             </div>
             <div class="large-3 columns">
               <label>Allowed Voice calls
                 <input type="text" ng:model="newPlan.voice" placeholder="Number of allowed calls" />
+                <select ng:model="newPlan.voice">
+                 <option ng:repeat="number in numbers" value="{{number}}"></option> 
+                </select>
               </label>
             </div>
             <div class="large-3 columns">
               <label>Allowed Members
                 <input type="text" ng:model="newPlan.members" placeholder="Number of allowed members" />
+                <select ng:model="newPlan.members">
+                 <option ng:repeat="number in numbers" value="{{number}}"></option> 
+                </select>
               </label>
             </div>
 
