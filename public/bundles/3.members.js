@@ -50,6 +50,19 @@ webpackJsonp([3],{
 	      mobile : '',
 	      landline:''
 	    };
+
+	    $scope.resetMember = function(){
+	      $scope.newMember = {
+	        first_name : '',
+	        last_name : '',
+	        email_address:'',
+	        timezone : 'pacific',
+	        preferred_number:'1',
+	        mobile : '',
+	        landline:''
+	      };
+	    };
+	    
 	    $scope.closeAlert = function(index) {
 	      $scope.alerts.splice(index, 1);
 	    };
@@ -82,6 +95,8 @@ webpackJsonp([3],{
 	            $scope.members = response.data.members;
 	            $scope.show_form = false;
 	            $scope.edit_form = false;
+	            $scope.alerts=[];
+	            $scope.resetMember();
 	          }
 	            
 	          

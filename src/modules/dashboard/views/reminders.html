@@ -94,14 +94,14 @@
 
                   <div class="row">
                     <div class="large-6 columns">
-                      <label>Select receipts</label>
+                      <label>Select <span ng:show="newReminder.reassurance || newReminder.reassurance=='true'" ng:hide="!newReminder.reassurance || newReminder.reassurance=='false'"> reassurance</span> receipts</label>
                         <select ng:model="newReminder.recipients" multiple="multiple">
                             <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
                         </select>
                     </div>
                     <div class="large-6 columns">
                       <label>
-                        Is Recurring?
+                        Is this is a recurring reminder?
                       </label>
                       <input id="recurring_yes" ng:model="newReminder.recurring" type="radio" value="true"><label for="recurring_yes">Yes</label>
                       <input id="recurring_no" ng:model="newReminder.recurring" type="radio" value="false"><label for="recurring_no">No</label>
@@ -116,7 +116,7 @@
                     </div>
                   </div>
 
-
+                  <hr/>
 
                   <div class="row">
 
@@ -125,34 +125,30 @@
                       <input id="voice" ng:model="newReminder.reassurance" type="radio" value="true"><label for="voice">Yes</label>
                       <input id="text" ng:model="newReminder.reassurance" type="radio" value="false"><label for="text">No</label>
                       
+
+                    </div>
+
+                    <div class="large-6 columns">
                       <label ng:show="newReminder.reassurance || newReminder.reassurance=='true'">Number of attempts before reassurance</label>
                       <select ng:show="newReminder.reassurance || newReminder.reassurance=='true'" ng:model="newReminder.recurring_frequency">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                       </select>
-
-                    </div>
-
-                    <div class="large-6 columns">
-                      <label>Select reassurance receipts</label>
-                        <select ng:model="newReminder.reassurance_recipients" multiple="multiple">
-                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
-                        </select>
                     </div>
                     
                   </div>
 
-                  
+                  <hr/>
 
                   <div class="row">
-                    <div class="large-8 columns">
+                    <div class="large-6 columns">
                       <label>
-                        Reminder text message (SMS)
+                        Reminder text message (SMS) Max 160 Characters
                         <textarea ng:disabled="disable_text" ng:model="newReminder.text_sms" class=""></textarea>
                       </label>
                     </div>
-                    <div class="large-4 columns">
+                    <div class="large-6 columns">
                       <label>
                         Number to call for voice recording
                         <input ng:disabled="disable_voice" ng:model="newReminder.number_voice_recording" type="text" placeholder="Your 10 digit mobile number.">

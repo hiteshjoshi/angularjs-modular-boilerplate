@@ -17,7 +17,7 @@
   
 
   <div class="row" ng:hide="show_form">
-    <div class="large-12">
+    <div >
 
     <p>
       This is the Caregiver information page, or we like to call it your Private Social Network page. All those people you want to surround the Care Receiver can be listed on this page. For example they could include parents, grandchildren, grandparents, neighbors, doctors, family and friends.<br/>
@@ -39,7 +39,7 @@
       <h4>Your private network</h4>
       <hr>
 
-      <table ng:show="members.length">
+      <table class="large-12" ng:show="members.length">
         <thead>
           <tr>
             <th width="120">Name</th>
@@ -202,6 +202,15 @@
       </form>
     </div>
   </div>
+
+  
+
+  <div class="row">
+  <hr/>
+    <a class="button tiny right" ng:click="show_form=true" ng:hide="show_form"><i class="fa fa-plus"></i> Add member</a>
+    <a class="button tiny right" ng:click="show_form=false" ng:show="show_form"><i class="fa fa-minus"></i> Show members</a>
+  </div>
+  
 
 
 

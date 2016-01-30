@@ -43,8 +43,6 @@ webpackJsonp([2],{
 	    $scope.edit_form = false;
 
 
-
-
 	    $scope.newReminder = {
 	      schedule_date : new Date(),
 	      recipients: [],
@@ -145,6 +143,7 @@ webpackJsonp([2],{
 	            });
 	          }
 	          else{
+	            $scope.alerts=[];
 	            $scope.reminders.push(response.data.reminder);
 	            $scope.show_form = false;
 	          }
@@ -163,6 +162,9 @@ webpackJsonp([2],{
 	            _.forEach(response.errors,function(item){
 	              $scope.alerts.push({type:'error',msg:item.msg});
 	            });
+	          }
+	          else{
+	            $scope.alerts=[];
 	          }
 	        }
 	      });
@@ -197,6 +199,7 @@ webpackJsonp([2],{
 	          }
 	          else
 	          {
+	            $scope.alerts=[];
 	            $scope.reminders.splice(index,1);
 	          }
 	        }

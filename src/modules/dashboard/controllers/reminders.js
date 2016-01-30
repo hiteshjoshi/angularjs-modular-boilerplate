@@ -13,8 +13,6 @@ module.exports = function (module) {
     $scope.edit_form = false;
 
 
-
-
     $scope.newReminder = {
       schedule_date : new Date(),
       recipients: [],
@@ -115,6 +113,7 @@ module.exports = function (module) {
             });
           }
           else{
+            $scope.alerts=[];
             $scope.reminders.push(response.data.reminder);
             $scope.show_form = false;
           }
@@ -133,6 +132,9 @@ module.exports = function (module) {
             _.forEach(response.errors,function(item){
               $scope.alerts.push({type:'error',msg:item.msg});
             });
+          }
+          else{
+            $scope.alerts=[];
           }
         }
       });
@@ -167,6 +169,7 @@ module.exports = function (module) {
           }
           else
           {
+            $scope.alerts=[];
             $scope.reminders.splice(index,1);
           }
         }
