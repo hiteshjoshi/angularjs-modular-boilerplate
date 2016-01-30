@@ -5,7 +5,7 @@
           {{reminder.title}}
         </p>
         Is next scheduled for {{reminder.schedule_date | date:'MMM d, y @ h:mm a'}}
-        <span ng:show="reminder.recurring">and will recur every {{reminder.recurring_frequency}} after that.</span>
+        <span ng:show="reminder.recurring">and will recur every {{months[reminder.recurring_frequency]}} after that.</span>
 
         <p>
           Your network member's
@@ -43,7 +43,11 @@
         <p>
           The following receipts will be notified if it exceeds 3 times.
         </p>
+        <p ng:repeat="recipient in reminder.recipients">
 
+          {{network[recipient].first_name}} {{network[recipient].last_name}}
+
+        </p>
 
 
       </div>

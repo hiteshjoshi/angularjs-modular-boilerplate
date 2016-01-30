@@ -27,6 +27,13 @@ module.exports = function (module) {
       recurring_frequency:1
     };
     $scope.members = [];
+
+    $scope.months = {
+      "1":"Week",
+      "2":"Month",
+      "3":"Day"
+    }
+
     api.get('users',$scope.user._id,'networks',false,function (err,response){
         if(err){
 
@@ -184,6 +191,12 @@ module.exports = function (module) {
 
     $scope.reminder = reminder;
     $scope.network = network;
+
+    $scope.months = {
+      "1":"Week",
+      "2":"Month",
+      "3":"Day"
+    }
 
 		$scope.ok = function () {
 			$modalInstance.close($scope.selected.item);
