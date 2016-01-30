@@ -523,7 +523,7 @@ methods.getReminders = function(req,res){
 methods.addReminder = function(req,res){
 	//Check for POST request errors.
 	req.checkBody('title', 'Title is required.').notEmpty();
-	req.checkBody('recipients', 'Recipients are required.').notEmpty();
+	//req.checkBody('recipients', 'Recipients are required.').notEmpty();
 	req.checkBody('schedule_date', 'Schedule date is required.').notEmpty();
 	//req.checkBody('schedule_time', 'Schedule time is required.').notEmpty();
 	if(req.param('notify_by_voice'))

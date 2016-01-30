@@ -96,7 +96,7 @@
                     <div class="large-6 columns">
                       <label>Select <span ng:show="newReminder.reassurance || newReminder.reassurance=='true'" ng:hide="!newReminder.reassurance || newReminder.reassurance=='false'"> reassurance</span> receipts</label>
                         <select ng:model="newReminder.recipients" multiple="multiple">
-                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}</option>
+                            <option ng-repeat="member in members" value="{{member._id}}">{{member.first_name}} {{member.last_name}}(if non selected only account holder will receive messages)</option>
                         </select>
                     </div>
                     <div class="large-6 columns">

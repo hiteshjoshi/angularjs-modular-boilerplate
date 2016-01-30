@@ -98,7 +98,7 @@ webpackJsonp([3],{
 	            $scope.alerts=[];
 	            $scope.resetMember();
 	            if(response.data.total<2){ //1 or 0
-	              $state.go('dashboard.reminders');
+	              $scope.showGO = true;
 	            }
 	          }
 	            
