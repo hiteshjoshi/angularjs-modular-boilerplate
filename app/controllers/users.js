@@ -24,6 +24,7 @@ var Paypal = require('paypal-recurring2');
 
 
 
+
 /* the response object for API
 	error : true / false
 	code : contains any error code
@@ -1374,7 +1375,7 @@ methods.getUser = function(req,res){
   				user:req.user,
   				plan:plan
   			};
-  			console.log(response.data.plan.plan_id);
+  			//console.log(response.data.plan.plan_id);
   			return (SendResponse(res));
   		}
 	});
@@ -1427,7 +1428,8 @@ methods.updateUser = function(req,res){
 			lastName : req.param('last_name'),
 			landline : (req.param('landline')),
 			mobile : (req.param('mobile')),
-			preferred_number : parseInt(req.param('preferred_number'))
+			preferred_number : parseInt(req.param('preferred_number')),
+			updated:true
 		})
 		.exec(function(err,user){
 			if(err) {
@@ -1439,6 +1441,9 @@ methods.updateUser = function(req,res){
 				return (SendResponse(res));
 	  		}
 	  		else{
+	  			if(user.updated){
+	  				response.data = {move_next:true}
+	  			}
 	  			response.userMessage = 'Profile updated.';
 	  			return (SendResponse(res));
 	  		}

@@ -36,7 +36,7 @@ webpackJsonp([3],{
 	 * @desc: Show some activity feed
 	 */
 	module.exports = function (module) {
-	  module.controller('membersCtrl', ['$scope', 'api','lodash', function ($scope, api,_) {
+	  module.controller('membersCtrl', ['$scope', 'api','lodash','$state', function ($scope, api,_,$state) {
 
 	    $scope.show_form = false;
 	    $scope.edit_form = false;
@@ -62,7 +62,7 @@ webpackJsonp([3],{
 	        landline:''
 	      };
 	    };
-	    
+
 	    $scope.closeAlert = function(index) {
 	      $scope.alerts.splice(index, 1);
 	    };
@@ -97,6 +97,9 @@ webpackJsonp([3],{
 	            $scope.edit_form = false;
 	            $scope.alerts=[];
 	            $scope.resetMember();
+	            if(response.data.total<2){ //1 or 0
+	              $state.go('dashboard.reminders');
+	            }
 	          }
 	            
 	          

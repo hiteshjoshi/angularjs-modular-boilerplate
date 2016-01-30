@@ -36,7 +36,7 @@ webpackJsonp([6],{
 	 * @desc: Show some activity feed
 	 */
 	module.exports = function (module) {
-	  module.controller('accountCtrl', ['$scope', 'api','lodash', function ($scope, api,lodash) {
+	  module.controller('accountCtrl', ['$scope', 'api','lodash','$state', function ($scope, api,lodash,$state) {
 
 	    $scope.updateUser = {};
 	    $scope.alerts = [];
@@ -81,8 +81,11 @@ webpackJsonp([6],{
 	          }
 	          else
 	          {
+	            if(response.data && response.data.move_next){
+	              $state.go('dashboard.members');
+	            }
 	            $scope.alerts = [];
-	            $scope.alerts.push({type:'info',msg:'Profile updated.'}); 
+	            $scope.alerts.push({type:'info',msg:'Profile updated!'}); 
 	          }
 	        }
 	  		});
