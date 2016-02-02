@@ -38,12 +38,12 @@ The information here will be used to create your account. You can update your pr
     <div class="row">
       <div class="large-4 columns">
         <label>Mobile
-          <input type="text" placeholder="Mobile" ng:model="updateUser.mobile"/>
+          <input type="text" style="font-family: Arial;" placeholder="Mobile" ng:model="updateUser.mobile"/>
         </label>
       </div>
       <div class="large-4 columns">
         <label>Landline
-          <input type="text" placeholder="Landline" ng:model="updateUser.landline"/>
+          <input type="text" style="font-family: Arial;" placeholder="Landline" ng:model="updateUser.landline"/>
         </label>
       </div>
       
@@ -100,7 +100,7 @@ The information here will be used to create your account. You can update your pr
         </label>
       </div>
       <div class="large-6 columns">
-        <label>State
+        <label>State / Province
           <input type="text" placeholder="State" ng:model="updateUser.state"/>
         </label>
       </div>
@@ -108,8 +108,8 @@ The information here will be used to create your account. You can update your pr
     
     <div class="row">
       <div class="large-6 columns">
-        <label>Postal code
-          <input type="text" placeholder="Postal code" ng:model="updateUser.postal"/>
+        <label>Zip / Postal code
+          <input type="text" style="font-family: Arial;"  placeholder="Postal code" ng:model="updateUser.postal"/>
         </label>
       </div>
       <div class="large-6 columns">
@@ -124,6 +124,6 @@ The information here will be used to create your account. You can update your pr
     <div class="row">
       <alert ng:show="alerts.length" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
     </div>
-  <button type="submit" class="button">Update profile</button>
+  <button type="submit" class="button">Update profile and continue to step 2</button>
 </form>
 </div>

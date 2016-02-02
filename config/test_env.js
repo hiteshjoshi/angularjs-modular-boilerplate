@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  db: 'mongodb://localhost/shithere',
+  db: 'mongodb://localhost/your_project_test',
   sessionSecret: "thisisareallylongandbigsecrettoken",
   baseUrl:"http://api.costart.local:8000/",
   cookieDomain:".costart.local",

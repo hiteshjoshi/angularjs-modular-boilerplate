@@ -65,7 +65,10 @@ var Reminder = new Schema({
   //start: { type: Date},
   //schedule_time : { type: String, default: '' },
   recurring : { type: Boolean, default: true },
-  recurring_frequency : { type: Number, default: 1 } //1=weekly, 2=monthly, 3= daily
+  recurring_frequency : { type: Number, default: 1 }, //1=weekly, 2=monthly, 3= daily
+  reassurance_reminder : {type:Boolean,default:false},
+  reassurance_attempts : {type : Number,default:0},
+  alert : {type:Boolean,default:false}
 });
 
 

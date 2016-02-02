@@ -18,7 +18,8 @@ module.exports = function(app,callback){
       log("There is error with the database.")
 
     if(data){
-      log("Atleast one admin exists.")
+      log("Atleast one admin exists......")
+      console.log(data);
       callback(true);
     }
     else{
@@ -28,6 +29,7 @@ module.exports = function(app,callback){
         lastName : "user",
         email: "me@hiteshjoshi.com",
         password : "@Hitesh@90",
+        email_verified: true,
         is_admin:true
       })
       newAdmin.save(function(e,d){

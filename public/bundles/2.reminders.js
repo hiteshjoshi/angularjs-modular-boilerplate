@@ -59,10 +59,10 @@ webpackJsonp([2],{
 	    $scope.members = [];
 
 	    $scope.months = {
-	      "1":"Week",
-	      "2":"Month",
-	      "3":"Day"
-	    }
+	      '1':'Week',
+	      '2':'Month',
+	      '3':'Day'
+	    };
 
 	    api.get('users',$scope.user._id,'networks',false,function (err,response){
 	        if(err){
@@ -223,10 +223,10 @@ webpackJsonp([2],{
 	    $scope.network = network;
 
 	    $scope.months = {
-	      "1":"Week",
-	      "2":"Month",
-	      "3":"Day"
-	    }
+	      '1':'Week',
+	      '2':'Month',
+	      '3':'Day'
+	    };
 
 			$scope.ok = function () {
 				$modalInstance.close($scope.selected.item);

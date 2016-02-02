@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  db: 'mongodb://localhost/c2c_baby',
+  db: 'mongodb://localhost/c1',
   sessionSecret: "thisisareallylongandbigsecrettoken",
   baseUrl:"http://costart.in/",
   cookieDomain:".costart.in",
